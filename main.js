@@ -3,4 +3,4 @@ function Relocate(location){
     bgElement.style.backgroundImage = "url(img/"+location+".png)"
 }
 
-Relocate("volcano")
+Relocate("deep_forest")
