@@ -13,44 +13,46 @@
     />
   </head>
   <body class="bg-dark-subtle bg">
-    <div class="row m-2">
+    <div class="row m-2 pt-2">
       <div class="col-md-2">
-        <div
-          class="progress bg-secondary mt-2"
-          role="progressbar"
-          aria-label="health"
-          aria-valuenow="0"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        >
-          <div class="progress-bar bg-danger health" style="width: 100%"></div>
+        <div class="border border-dark border-5 rounded-3 bg-secondary p-2 bg-opacity-25">
+            <div
+            class="progress bg-secondary"
+            role="progressbar"
+            aria-label="health"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            >
+            <div class="progress-bar bg-danger health" style="width: 100%"></div>
         </div>
         <div
-          class="progress bg-secondary mt-2"
-          role="progressbar"
-          aria-label="food"
-          aria-valuenow="0"
-          aria-valuemin="0"
-          aria-valuemax="100"
+        class="progress bg-secondary mt-2"
+        role="progressbar"
+        aria-label="food"
+        aria-valuenow="0"
+        aria-valuemin="0"
+        aria-valuemax="100"
         >
-          <div class="progress-bar bg-warning food" style="width: 100%"></div>
-        </div>
-        <div
-          class="progress bg-secondary mt-2"
-          role="progressbar"
-          aria-label="water"
-          aria-valuenow="0"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        >
-          <div class="progress-bar bg-primary water" style="width: 100%"></div>
-        </div>
-      </div>
-      <div class="col-md-8"></div>
-      <div class="col-md-2 text-end">
-        <button class="btn btn-success" data-bs-toggle="dropdown">Options</button>
-        <ul class="dropdown-menu text-center bg-dark">
-            <li><button class="btn text-light">Save</button></li>
+        <div class="progress-bar bg-warning food" style="width: 100%"></div>
+    </div>
+    <div
+    class="progress bg-secondary mt-2"
+    role="progressbar"
+    aria-label="water"
+    aria-valuenow="0"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    >
+    <div class="progress-bar bg-primary water" style="width: 100%"></div>
+</div>
+</div>
+</div>
+<div class="col-md-8"></div>
+<div class="col-md-2 text-end">
+    <button class="btn btn-success" data-bs-toggle="dropdown">Options</button>
+    <ul class="dropdown-menu text-center bg-dark">
+        <li><button class="btn text-light">Save</button></li>
             <li><button class="btn text-light">Load</button></li>
           </ul>
       </div>
