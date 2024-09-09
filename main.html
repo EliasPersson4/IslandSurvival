@@ -8,9 +8,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body class="bg-dark-subtle bg">
-<div class="container border-2 rounded-3 w-75 h-25 bg-secondary border-light">
-    <p class="text-light">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora illo commodi deserunt unde consequatur, fuga laudantium quos iure, amet sed sint veniam blanditiis quibusdam dolorem vitae. Blanditiis, totam nostrum aut porro praesentium aperiam magni eos perferendis facere sint debitis! Voluptatem sit sunt dolor aspernatur, cupiditate corporis quo est dolorem necessitatibus?</p>
-</div>
+    <div class="container row">
+        <div class="col-md-3">
+
+            <div class="progress bg-secondary mt-2" role="progressbar" aria-label="example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-danger health" style="width: 100%"></div>
+            </div>
+            <div class="progress bg-secondary mt-2" role="progressbar" aria-label="example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-warning food" style="width: 100%"></div>
+            </div>
+            <div class="progress bg-secondary mt-2" role="progressbar" aria-label="example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-primary water" style="width: 100%"></div>
+            </div>
+        </div>
+          
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="main.js"></script>
