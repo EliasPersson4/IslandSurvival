@@ -14,3 +14,6 @@ body{
     min-height: 15vh;
     max-height: 15vh;
 }
+.btn:active{
+    transform: scale(0.98);
+}
