@@ -47,17 +47,11 @@ locations.forEach(element => {
     travelElement.appendChild(listElement)
 });
 
-var isPlaying = true;
+let isPlaying = true;
 
 function togglePlay() {
-  isPlaying ? audioElement.pause() : audioElement.play();
-};
-
-audioElement.onplaying = function() {
-  isPlaying = true;
-};
-audioElement.onpause = function() {
-  isPlaying = false;
+    isPlaying ? audioElement.pause() : audioElement.play()
+    isPlaying = !isPlaying
 };
 
 document.querySelectorAll("button").forEach(element => {
@@ -67,3 +61,5 @@ document.querySelectorAll("button").forEach(element => {
 
     })
 });
+
+document.querySelector(".music-toggle").addEventListener("click", togglePlay)
