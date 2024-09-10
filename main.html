@@ -15,46 +15,61 @@
   <body class="bg-dark-subtle bg">
     <div class="row m-2 pt-2">
       <div class="col-md-2">
-        <div class="border border-dark border-5 rounded-3 bg-secondary p-2 bg-opacity-75">
-            <div
+        <div
+          class="border border-dark border-5 rounded-3 bg-secondary p-2 bg-opacity-75"
+        >
+          <div
             class="progress bg-secondary"
             role="progressbar"
             aria-label="health"
             aria-valuenow="0"
             aria-valuemin="0"
             aria-valuemax="100"
-            >
-            <div class="progress-bar bg-danger health" style="width: 100%"></div>
+          >
+            <div
+              class="progress-bar bg-danger health"
+              style="width: 100%"
+            ></div>
+          </div>
+          <div
+            class="progress bg-secondary mt-2"
+            role="progressbar"
+            aria-label="food"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div class="progress-bar bg-warning food" style="width: 100%"></div>
+          </div>
+          <div
+            class="progress bg-secondary mt-2"
+            role="progressbar"
+            aria-label="water"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div
+              class="progress-bar bg-primary water"
+              style="width: 100%"
+            ></div>
+          </div>
         </div>
-        <div
-        class="progress bg-secondary mt-2"
-        role="progressbar"
-        aria-label="food"
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        >
-        <div class="progress-bar bg-warning food" style="width: 100%"></div>
-    </div>
-    <div
-    class="progress bg-secondary mt-2"
-    role="progressbar"
-    aria-label="water"
-    aria-valuenow="0"
-    aria-valuemin="0"
-    aria-valuemax="100"
-    >
-    <div class="progress-bar bg-primary water" style="width: 100%"></div>
-</div>
-</div>
-</div>
-<div class="col-md-8"></div>
-<div class="col-md-2 text-end">
-    <button class="btn btn-success" data-bs-toggle="dropdown">Options</button>
-    <ul class="dropdown-menu text-center bg-dark">
-        <li><button class="btn text-light">Save</button></li>
-            <li><button class="btn text-light">Load</button></li>
-          </ul>
+      </div>
+      <div class="col-md-8">
+        <div class="container w-50 bg-secondary border-dark border border-5 rounded-4 bg-opacity-50 text-center">
+            <h1 class="location">Beach
+            </h1>
+        </div>
+      </div>
+      <div class="col-md-2 text-end">
+        <button class="btn btn-success" data-bs-toggle="dropdown">
+          Options
+        </button>
+        <ul class="dropdown-menu text-center bg-dark">
+          <li><button class="btn text-light">Save</button></li>
+          <li><button class="btn text-light">Load</button></li>
+        </ul>
       </div>
     </div>
     <div class="fixed-bottom mb-5">
@@ -73,50 +88,63 @@
         <div class="col-md-1"></div>
       </div>
       <div class="container row text-center m-auto">
-        
-        
-        <button class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button
+          class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
           <h4 class="">Inventory</h4>
         </button>
 
-
-        <button class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75">
-            <h4 class="">Travel</h4>
+        <button
+          class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75"
+            data-bs-toggle="dropdown"
+          >
+          <h4 class="">Travel</h4>
         </button>
+        <ul class="dropdown-menu travel-menu" style="max-width: 1rem;">
+          </ul>
 
-
-        <button class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75">
+        <button
+          class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75"
+        >
           <h4 class="">Hunt/Gather</h4>
         </button>
-        
-        
-        <button class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75">
+
+        <button
+          class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75"
+        >
           <h4 class="">Investigate</h4>
         </button>
-      
-    
+      </div>
     </div>
-    </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content bg-dark text-light">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Inventory</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              aray med items
-            </div>
-            <div class="modal-body">
-                Crafting
-              </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary">spejut</button>
-              <button type="button" class="btn btn-secondary">fiskespö</button>
-            </div>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Inventory</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">aray med items</div>
+          <div class="modal-body">Crafting</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary">spejut</button>
+            <button type="button" class="btn btn-secondary">fiskespö</button>
           </div>
         </div>
       </div>
+    </div>
   </body>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

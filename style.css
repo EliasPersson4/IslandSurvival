@@ -1,5 +1,5 @@
 .bg{
-    background-image: url(img/beach.jpg);
+    background-image: url(img/beach.png);
     height: 100%;
     width: 100%;
     background-position: center;
@@ -16,4 +16,7 @@ body{
 }
 .btn:active{
     transform: scale(0.98);
+}
+.location,.travel-btn{
+    text-transform: capitalize;
 }
