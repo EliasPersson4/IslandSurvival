@@ -9,7 +9,7 @@ let water = 60
 
 const travelElement = document.querySelector(".travel-menu")
 const locationElement = document.querySelector(".location")
-const audioElement = document.querySelector("music")
+const audioElement = document.querySelector(".music")
 const locations = ["beach", "deep_forest", "forest", "hotspring", "lake", "river", "ruins", "shipwreck", "volcano"]
 let currentLocation = "beach"
 function Relocate(location){
