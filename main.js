@@ -35,7 +35,7 @@ locations.forEach(element => {
     buttonElement.addEventListener("click", function(){
 
         Relocate(buttonElement.textContent.replace(" ", "_"))
-        
+
         audioElement.setAttribute("src", "mp3/"+buttonElement.textContent.replace(" ", "_")+".mp3")
         
         locationElement.innerHTML = buttonElement.textContent
