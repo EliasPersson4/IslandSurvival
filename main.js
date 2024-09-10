@@ -47,7 +47,18 @@ locations.forEach(element => {
     travelElement.appendChild(listElement)
 });
 
+var isPlaying = false;
 
+function togglePlay() {
+  isPlaying ? audioElement.pause() : audioElement.play();
+};
+
+myAudio.onplaying = function() {
+  isPlaying = true;
+};
+myAudio.onpause = function() {
+  isPlaying = false;
+};
 
 document.querySelectorAll("button").forEach(element => {
     element.addEventListener("click", function(){
