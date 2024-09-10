@@ -35,7 +35,7 @@ locations.forEach(element => {
     buttonElement.addEventListener("click", function(){
 
         Relocate(buttonElement.textContent.replace(" ", "_"))
-        
+
         audioElement.setAttribute("src", "mp3/"+buttonElement.textContent.replace(" ", "_")+".mp3")
         
         locationElement.innerHTML = buttonElement.textContent
@@ -47,16 +47,16 @@ locations.forEach(element => {
     travelElement.appendChild(listElement)
 });
 
-var isPlaying = false;
+var isPlaying = true;
 
 function togglePlay() {
   isPlaying ? audioElement.pause() : audioElement.play();
 };
 
-myAudio.onplaying = function() {
+audioElement.onplaying = function() {
   isPlaying = true;
 };
-myAudio.onpause = function() {
+audioElement.onpause = function() {
   isPlaying = false;
 };
 
