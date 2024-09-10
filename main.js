@@ -9,6 +9,7 @@ let water = 60
 
 const travelElement = document.querySelector(".travel-menu")
 const locationElement = document.querySelector(".location")
+const audioElement = document.querySelector("music")
 const locations = ["beach", "deep_forest", "forest", "hotspring", "lake", "river", "ruins", "shipwreck", "volcano"]
 let currentLocation = "beach"
 function Relocate(location){
@@ -32,6 +33,7 @@ locations.forEach(element => {
     buttonElement.className = "btn btn-secondary travel-btn w-100"
     buttonElement.addEventListener("click", function(){
         Relocate(buttonElement.textContent.replace(" ", "_"))
+        audioElement.setAttribute("src", "mp3/"+textContent.replace(" ", "_")+".mp3")
         locationElement.innerHTML = buttonElement.textContent
         currentLocation = buttonElement.textContent
     })
