@@ -50,7 +50,7 @@ locations.forEach(element => {
 let isPlaying = true;
 
 function togglePlay() {
-    isPlaying ? audioElement.pause() : audioElement.play()
+    isPlaying ? audioElement.muted = true : audioElement.muted = false
     isPlaying = !isPlaying
 };
 
