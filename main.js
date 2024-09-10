@@ -47,16 +47,16 @@ locations.forEach(element => {
     travelElement.appendChild(listElement)
 });
 
-var isPlaying = false;
+var isPlaying = true;
 
 function togglePlay() {
   isPlaying ? audioElement.pause() : audioElement.play();
 };
 
-myAudio.onplaying = function() {
+audioElement.onplaying = function() {
   isPlaying = true;
 };
-myAudio.onpause = function() {
+audioElement.onpause = function() {
   isPlaying = false;
 };
 
