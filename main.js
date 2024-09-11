@@ -14,6 +14,7 @@ const interactElement = document.querySelector(".interact-menu")
 const hunt_gatherElement = document.querySelector(".hunt/gather-menu")
 const locations = ["beach", "deep_forest", "forest", "hotspring", "lake", "river", "ruins", "shipwreck", "volcano"]
 const interactions = ["sleep", "investigate", "stroke_yo_bone"]
+const hunt_gather = ["Hunt", "Fish", "Gather"]
 let currentLocation = "beach"
 
 function Relocate(location){
