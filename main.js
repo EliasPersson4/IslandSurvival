@@ -11,7 +11,9 @@ const travelElement = document.querySelector(".travel-menu")
 const locationElement = document.querySelector(".location")
 const audioElement = document.querySelector(".music")
 const interactElement = document.querySelector(".interact-menu")
+
 const locations = ["beach", "deep_forest", "forest", "hotspring", "lake", "river", "ruins", "shipwreck", "volcano"]
+const interactions = ["sleep", "investigate", "stroke_yo_bone"]
 let currentLocation = "beach"
 
 function Relocate(location){
@@ -49,6 +51,25 @@ locations.forEach(element => {
     listElement.appendChild(buttonElement)
     travelElement.appendChild(listElement)
 });
+
+
+interactions.forEach(element => {
+    let listElement = document.createElement("li")
+    listElement.className = "dropdown-item"
+
+    let buttonElement = document.createElement("button")
+    buttonElement.textContent = element.replace("_", " ")
+    buttonElement.className = "btn btn-secondary interact-btn w-100"
+    buttonElement.addEventListener("click", function(){
+
+        Relocate(buttonElement.textContent.replace(" ", "_"))
+    
+    })
+
+    listElement.appendChild(buttonElement)
+    interactElement.appendChild(listElement)
+});
+
 
 let isPlaying = true;
 
