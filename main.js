@@ -11,10 +11,12 @@ const travelElement = document.querySelector(".travel-menu")
 const locationElement = document.querySelector(".location")
 const audioElement = document.querySelector(".music")
 const interactElement = document.querySelector(".interact-menu")
-const hunt_gatherElement = document.querySelector(".hunt-gather-menu")
+const huntGatherElement = document.querySelector(".hunt-gather-menu")
+
 const locations = ["beach", "deep_forest", "forest", "hotspring", "lake", "river", "ruins", "shipwreck", "volcano"]
 const interactions = ["sleep", "investigate", "stroke_yo_bone"]
-const hunt_gather = ["Hunt", "Fish", "Gather"]
+const huntGather = ["Hunt", "Fish", "Gather"]
+
 let currentLocation = "beach"
 
 function Relocate(location){
@@ -52,7 +54,7 @@ function PopulateDropdown(parent, array, ...extraCss){
 
 PopulateDropdown(interactElement, interactions, "interact-btn")
 PopulateDropdown(travelElement, locations, "travel-btn")
-PopulateDropdown(hunt_gatherElement, hunt_gather, "hunt-gather-btn")
+PopulateDropdown(huntGatherElement, huntGather, "hunt-gather-btn")
 
 document.querySelectorAll(".travel-btn").forEach(element => {
     element.addEventListener("click", function(){
