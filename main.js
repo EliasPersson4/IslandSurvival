@@ -52,7 +52,7 @@ function PopulateDropdown(parent, array, ...extraCss){
 
 PopulateDropdown(interactElement, interactions, "interact-btn")
 PopulateDropdown(travelElement, locations, "travel-btn")
-PopulateDropdown(hunt_gatherElement,)
+PopulateDropdown(hunt_gatherElement, hunt_gather, "hunt-gather-btn")
 
 document.querySelectorAll(".travel-btn").forEach(element => {
     element.addEventListener("click", function(){
