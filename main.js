@@ -11,7 +11,7 @@ const travelElement = document.querySelector(".travel-menu")
 const locationElement = document.querySelector(".location")
 const audioElement = document.querySelector(".music")
 const interactElement = document.querySelector(".interact-menu")
-const hunt_gatherElement = document.querySelector(".hunt/gather-menu")
+const hunt_gatherElement = document.querySelector(".hunt-gather-menu")
 const locations = ["beach", "deep_forest", "forest", "hotspring", "lake", "river", "ruins", "shipwreck", "volcano"]
 const interactions = ["sleep", "investigate", "stroke_yo_bone"]
 let currentLocation = "beach"
@@ -24,7 +24,6 @@ function Relocate(location){
     locationElement.innerHTML = location
 
     currentLocation = location
-
 }
 
 function UpdateStats(){
@@ -35,41 +34,32 @@ function UpdateStats(){
 
 UpdateStats()
 
-locations.forEach(element => {
-    let listElement = document.createElement("li")
-    listElement.className = "dropdown-item"
+function PopulateDropdown(parent, array, ...extraCss){
+    array.forEach(element => {
+        let listElement = document.createElement("li")
+        listElement.className = "dropdown-item"
+        
+        let buttonElement = document.createElement("button")
+        buttonElement.textContent = element.replace("_", " ")
+        buttonElement.className = "btn btn-secondary w-100 "+extraCss
+        
+        listElement.appendChild(buttonElement)
+        parent.appendChild(listElement)
+    });
+}
 
-    let buttonElement = document.createElement("button")
-    buttonElement.textContent = element.replace("_", " ")
-    buttonElement.className = "btn btn-secondary travel-btn w-100"
-    buttonElement.addEventListener("click", function(){
 
-        Relocate(buttonElement.textContent.replace(" ", "_"))
-    
+PopulateDropdown(interactElement, interactions, "interact-btn")
+PopulateDropdown(travelElement, locations, "travel-btn")
+PopulateDropdown(hunt_gatherElement,)
+
+document.querySelectorAll(".travel-btn").forEach(element => {
+    element.addEventListener("click", function(){
+            
+        Relocate(element.innerHTML)
+        
     })
-
-    listElement.appendChild(buttonElement)
-    travelElement.appendChild(listElement)
 });
-
-
-interactions.forEach(element => {
-    let listElement = document.createElement("li")
-    listElement.className = "dropdown-item"
-
-    let buttonElement = document.createElement("button")
-    buttonElement.textContent = element.replace("_", " ")
-    buttonElement.className = "btn btn-secondary interact-btn w-100"
-    buttonElement.addEventListener("click", function(){
-
-        Relocate(buttonElement.textContent.replace(" ", "_"))
-    
-    })
-
-    listElement.appendChild(buttonElement)
-    interactElement.appendChild(listElement)
-});
-
 
 let isPlaying = true;
 
