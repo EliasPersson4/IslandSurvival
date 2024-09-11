@@ -17,6 +17,13 @@ let currentLocation = "beach"
 
 function Relocate(location){
     bgElement.style.backgroundImage = "url(img/"+location+".png)"
+
+    audioElement.setAttribute("src", "mp3/"+location+".mp3")
+
+    locationElement.innerHTML = location
+
+    currentLocation = location
+
 }
 
 function UpdateStats(){
@@ -37,12 +44,7 @@ locations.forEach(element => {
     buttonElement.addEventListener("click", function(){
 
         Relocate(buttonElement.textContent.replace(" ", "_"))
-
-        audioElement.setAttribute("src", "mp3/"+buttonElement.textContent.replace(" ", "_")+".mp3")
-        
-        locationElement.innerHTML = buttonElement.textContent
-        
-        currentLocation = buttonElement.textContent
+    
     })
 
     listElement.appendChild(buttonElement)
