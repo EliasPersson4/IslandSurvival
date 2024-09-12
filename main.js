@@ -73,7 +73,7 @@ function togglePlay() {
 
 document.querySelectorAll("button").forEach(element => {
     element.addEventListener("click", function(){
-        var audio = new Audio('mp3/button'+(1+Math.floor(Math.random()*3))+'.mp3');
+        var audio = new Audio('mp3/sfx/button'+(1+Math.floor(Math.random()*3))+'.mp3');
         audio.play()
 
     })
