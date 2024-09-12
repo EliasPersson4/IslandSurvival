@@ -21,11 +21,11 @@ let currentLocation: string = "beach";
 
 function Relocate(location: string): void {
     if (bgElement) {
-        bgElement.style.backgroundImage = `url(img/${location}.png)`;
+        bgElement.style.backgroundImage = `url(img/${location.replace(" ", "_")}.png)`;
     }
 
     if (audioElement) {
-        audioElement.setAttribute("src", `mp3/music/${location}.mp3`);
+        audioElement.setAttribute("src", `mp3/music/${location.replace(" ", "_")}.mp3`);
     }
     if (locationElement) {
         locationElement.textContent = location;

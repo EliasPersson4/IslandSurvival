@@ -17,10 +17,10 @@ var huntGather = ["Hunt", "Fish", "Gather"];
 var currentLocation = "beach";
 function Relocate(location) {
     if (bgElement) {
-        bgElement.style.backgroundImage = "url(img/".concat(location, ".png)");
+        bgElement.style.backgroundImage = "url(img/".concat(location.replace(" ", "_"), ".png)");
     }
     if (audioElement) {
-        audioElement.setAttribute("src", "mp3/music/".concat(location, ".mp3"));
+        audioElement.setAttribute("src", "mp3/music/".concat(location.replace(" ", "_"), ".mp3"));
     }
     if (locationElement) {
         locationElement.textContent = location;
