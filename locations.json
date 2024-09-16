@@ -19,7 +19,8 @@
       }
     ],
     "connections": ["shipwreck", "forest"],
-    "activities": ["fish", "dirty_water"]
+    "activities": ["fish", "dirty_water"],
+    "interact": [, "dirty_water"]
   },
   "shipwreck": {
     "description": [
@@ -41,7 +42,8 @@
       }
     ],
     "connections": ["beach"],
-    "activities": ["food", "water"]
+    "activities": ["food", "water"],
+    "interact": ["fish", "dirty_water"]
   },
   "forest": {
     "description": [
@@ -63,7 +65,8 @@
       }
     ],
     "connections": ["beach", "river", "deep_forest", "volcano", "ruins"],
-    "activities": ["wood", "vines", "foraging", "hunt"]
+    "activities": ["wood", "vines", "foraging", "hunt"],
+    "interact": ["fish", "dirty_water"]
   },
   "river": {
     "description": [
@@ -85,7 +88,8 @@
       }
     ],
     "connections": ["lake", "forest"],
-    "activities": ["fish", "stone", "water"]
+    "activities": ["fish", "stone", "water"],
+    "interact": ["fish", "dirty_water"]
   },
   "deep_forest": {
     "description": [
@@ -107,7 +111,8 @@
       }
     ],
     "connections": ["forest"],
-    "activities": ["hunt", "wood", "forage", "twine"]
+    "activities": ["hunt", "wood", "forage", "twine"],
+    "interact": ["fish", "dirty_water"]
   },
   "lake": {
     "description": [
@@ -129,7 +134,8 @@
       }
     ],
     "connections": ["river"],
-    "activities": ["stone", "dirty_water", "fish"]
+    "activities": ["stone", "dirty_water", "fish"],
+    "interact": ["fish", "dirty_water"]
   },
   "volcano": {
     "description": [
@@ -155,7 +161,8 @@
       }
     ],
     "connections": ["forest", "hotspring"],
-    "activities": ["stone"]
+    "activities": ["stone"],
+    "interact": ["fish", "dirty_water"]
   },
   "hotspring": {
     "description": [
@@ -177,7 +184,8 @@
       }
     ],
     "connections": ["volcano"],
-    "activities": []
+    "activities": [],
+    "interact": ["fish", "dirty_water"]
   },
   "ruins": {
     "description": [
@@ -199,6 +207,7 @@
       }
     ],
     "connections": ["forest"],
-    "activities": []
+    "activities": [],
+    "interact": ["fish", "dirty_water"]
   }
 }
