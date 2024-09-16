@@ -42,13 +42,14 @@ var foodElement = document.querySelector(".food");
 var food = 100;
 var waterElement = document.querySelector(".water");
 var water = 60;
+var actionsElement = document.querySelector(".actions");
+var actions = 7;
 var travelElement = document.querySelector(".travel-menu");
 var locationElement = document.querySelector(".location");
 var audioElement = document.querySelector(".music");
 var interactElement = document.querySelector(".interact-menu");
 var huntGatherElement = document.querySelector(".hunt-gather-menu");
 var dialogElement = document.querySelector(".main-dialoge");
-var actionsElement = document.querySelector(".actions");
 var visited = [];
 var interactions = ["sleep", "investigate", "stroke_yo_bone"];
 var currentLocation = "beach";
@@ -64,6 +65,8 @@ function Relocate(location) {
     }
     currentLocation = location;
     getText(location.replace(" ", "_"));
+    actions -= 1;
+    UpdateStats();
 }
 function randInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -113,6 +116,9 @@ function UpdateStats() {
     if (waterElement) {
         waterElement.style.width = "".concat(water, "%");
     }
+    if (actionsElement) {
+        actionsElement.innerHTML = "".concat(actions);
+    }
 }
 function PopulateDropdown(parent, array) {
     var extraCss = [];
@@ -133,14 +139,11 @@ function PopulateDropdown(parent, array) {
     }
 }
 Relocate("beach");
-UpdateStats();
 PopulateDropdown(interactElement, interactions, "interact-btn");
-var isPlaying = !(audioElement === null || audioElement === void 0 ? void 0 : audioElement.muted);
 function togglePlay() {
     if (audioElement) {
-        audioElement.muted = isPlaying;
+        audioElement.muted = !audioElement.muted;
     }
-    isPlaying = !isPlaying;
 }
 document.querySelectorAll("button").forEach(function (element) {
     element.addEventListener("click", function () {

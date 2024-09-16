@@ -6,6 +6,8 @@ const foodElement: HTMLElement | null = document.querySelector(".food");
 let food: number = 100;
 const waterElement: HTMLElement | null = document.querySelector(".water");
 let water: number = 60;
+const actionsElement: HTMLElement | null = document.querySelector(".actions")
+let actions : number = 7
 
 const travelElement: HTMLElement | null = document.querySelector(".travel-menu");
 const locationElement: HTMLElement | null = document.querySelector(".location");
@@ -13,7 +15,6 @@ const audioElement: HTMLAudioElement | null = document.querySelector(".music");
 const interactElement: HTMLElement | null = document.querySelector(".interact-menu");
 const huntGatherElement: HTMLElement | null = document.querySelector(".hunt-gather-menu");
 const dialogElement: HTMLElement | null = document.querySelector(".main-dialoge")
-const actionsElement: HTMLElement | null = document.querySelector(".actions")
 
 let visited: string[] = []
 const interactions: string[] = ["sleep", "investigate", "stroke_yo_bone"];
@@ -36,7 +37,9 @@ function Relocate(location: string): void {
     currentLocation = location;
     
     getText(location.replace(" ", "_"))
-    
+    actions -= 1
+    UpdateStats();
+
 }
 
 function randInt(min:number, max:number): number {
@@ -86,8 +89,10 @@ function UpdateStats(): void {
     if (waterElement) {
         waterElement.style.width = `${water}%`;
     }
+    if (actionsElement) {
+        actionsElement.innerHTML = `${actions}`
+    }
 }
-
 
 function PopulateDropdown(parent: HTMLElement | null, array: string[], ...extraCss: string[]): void {
     if (parent) {
@@ -106,18 +111,12 @@ function PopulateDropdown(parent: HTMLElement | null, array: string[], ...extraC
     }
 }
 Relocate("beach")
-UpdateStats();
 PopulateDropdown(interactElement, interactions, "interact-btn");
-
-
-
-let isPlaying: boolean = !audioElement?.muted;
 
 function togglePlay(): void {
     if (audioElement) {
-        audioElement.muted = isPlaying;
+        audioElement.muted = !audioElement.muted;
     }
-    isPlaying = !isPlaying;
 }
 
 document.querySelectorAll("button").forEach(element => {
