@@ -17,6 +17,6 @@ body{
 .btn:active{
     transform: scale(0.98);
 }
-.location,.travel-btn{
+.location,.btn{
     text-transform: capitalize;
 }
