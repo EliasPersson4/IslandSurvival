@@ -20,7 +20,7 @@
     ],
     "connections": ["shipwreck", "forest"],
     "activities": ["fish", "dirty_water"],
-    "interact": [, "dirty_water"]
+    "interact": ["fish", "dirty_water"]
   },
   "shipwreck": {
     "description": [
