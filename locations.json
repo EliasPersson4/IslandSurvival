@@ -21,15 +21,34 @@
     "connections": ["shipwreck", "forest"],
     "activities": [
       {
-        "id": "fish", 
+        "id": "fish",
         "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
       },
       {
-        "id": "dirty_water", 
+        "id": "dirty_water",
         "text": "You walked up to the sea and collected salt water."
       }
     ],
-    "resources": ["fish", "dirty_water"]
+    "resources": ["raw_food", "dirty_water"],
+    "interact": [
+      {
+      "id": "sleep",
+      "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+    },
+    {
+      "id": "Use_campfire",
+      "text": "You walked up to the sea and collected salt water."
+    },
+    {
+      "id": "investegate",
+      "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+    },
+    {
+      "id": "bath",
+      "text": "You step into the cold water and you wash away the grime, leaving you feeling refreshed and clear-headed."
+    }
+  ]
+    
   },
   "shipwreck": {
     "description": [
@@ -53,11 +72,29 @@
     "connections": ["beach"],
     "activities": [
       {
-        "id": "food", 
+        "id": "food",
         "text": "You walked in the shipwreck and looked for anything useful, you found your lunch box that you had not eaten before the crash, you also found a bottle of water. |On your way out you spotted a flare and took it."
       }
-    ],        "resources": ["fish", "dirty_water"]
+    ],
+    "resources": ["food", "water", "flare"],
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  },
+  {
+    "id": "repair",
+    "text": "You examine the damaged boat, thinking there might still be hope. With enough planks and effort, you could patch it up. |After hours of hard work, the boat is finally repaired—it's not perfect, but it just might carry you off this island."
+  }
+  ]  },
   "forest": {
     "description": [
       {
@@ -78,9 +115,43 @@
       }
     ],
     "connections": ["beach", "river", "deep_forest", "volcano", "ruins"],
-    "activities": ["wood", "vines", "foraging", "hunt"],
-    "interact": ["fish", "dirty_water"]
+    "activities": [
+      {
+        "id": "sticks",
+        "text": "You tried to find some useful materials, you found x sticks "
+      },
+      {
+        "id": "planks",
+        "text": ""
+      },
+      {
+        "id": "twine",
+        "text": "You tried to find some useful materials, you found y twines."
+      },
+      {
+        "id": "foraging",
+        "text": "While looking for materials you passed by some mushrooms you took them with you."
+      },
+      {
+        "id": "raw_food",
+        "text": "You found some footprints from a rabbit and followed them, you found a rabbit and attacked it and you managed to land a hit and killed it. |You found some footprints from a rabbit and followed them, you found a rabbit and attacked it but it fled."
+      }
+    ],
+    "resources": ["sticks", "planks", "twine", "food", "raw_food"],
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  }
+  ]  },
   "river": {
     "description": [
       {
@@ -101,9 +172,39 @@
       }
     ],
     "connections": ["lake", "forest"],
-    "activities": ["fish", "stone", "water"],
-    "interact": ["fish", "dirty_water"]
+    "activities": [
+      {
+        "id": "fish",
+        "text": "You walked up to the river and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+      },
+      {
+        "id": "stone",
+        "text": "You walked up to the river and picked up a stone."
+      },
+      {
+        "id": "water",
+        "text": "You walked up to the river and collected some clean water."
+      }
+    ],
+    "resources": ["food", "water", "stone"],
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  },
+  {
+    "id": "bath",
+    "text": "You step into the flowing river, the cold water rushing past you as you wash away the grime. You feel refreshed and clear-headed."
+  }
+  ]  },
   "deep_forest": {
     "description": [
       {
@@ -124,9 +225,43 @@
       }
     ],
     "connections": ["forest"],
-    "activities": ["hunt", "wood", "forage", "twine"],
-    "interact": ["fish", "dirty_water"]
+    "activities": [
+      {
+        "id": "raw_food",
+        "text": "You found some footprints from a deer and followed them, you found a rabbit and attacked it and you managed to land a hit and killed it. |You found some footprints from a deer and followed them, you found a rabbit and attacked it but it fled."
+      },
+      {
+        "id": "sticks",
+        "text": "You tried to find some useful materials, you found x sticks "
+      },
+      {
+        "id": "planks",
+        "text": ""
+      },
+      {
+        "id": "foraging",
+        "text": "While looking for materials you passed by some mushrooms/berries you took them with you."
+      },
+      {
+        "id": "twine",
+        "text": "You tried to find some useful materials, you found y vines."
+      }
+    ],
+    "resources": ["raw_food", "sticks", "planks", "food", "twine"],
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  }
+  ]  },
   "lake": {
     "description": [
       {
@@ -147,9 +282,39 @@
       }
     ],
     "connections": ["river"],
-    "activities": ["stone", "dirty_water", "fish"],
-    "interact": ["fish", "dirty_water"]
+    "activities": [
+      {
+        "id": "stone",
+        "text": "You walked up to the lake and picked up a stone."
+      },
+      {
+        "id": "dirty_water",
+        "text": "You walked up to the lake and collected some dirty water."
+      },
+      {
+        "id": "fish",
+        "text": "You walked up to the river and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+      }
+    ],
+    "resources": ["raw_food", "dirty_water", "stone"],
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  },
+  {
+    "id": "bath",
+    "text": "You step into the cold water and you wash away the grime, leaving you feeling refreshed and clear-headed."
+  }
+  ]  },
   "volcano": {
     "description": [
       {
@@ -174,9 +339,21 @@
       }
     ],
     "connections": ["forest", "hotspring"],
-    "activities": ["stone"],
-    "interact": ["fish", "dirty_water"]
+    "activities": [],
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  }
+  ]  },
   "hotspring": {
     "description": [
       {
@@ -198,8 +375,24 @@
     ],
     "connections": ["volcano"],
     "activities": [],
-    "interact": ["fish", "dirty_water"]
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  },
+  {
+    "id": "bath",
+    "text": "The natural hot springs are a welcome relief from the constant survival grind. You dip into the steaming waters, letting your body relax"
+  }
+  ]  },
   "ruins": {
     "description": [
       {
@@ -221,6 +414,18 @@
     ],
     "connections": ["forest"],
     "activities": [],
-    "interact": ["fish", "dirty_water"]
+"interact": [
+  {
+    "id": "sleep",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+  },
+  {
+    "id": "Use_campfire",
+    "text": "You walked up to the sea and collected salt water."
+  },
+  {
+    "id": "investegate",
+    "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
   }
+  ]  }
 }
