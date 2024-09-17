@@ -50,6 +50,7 @@ var audioElement = document.querySelector(".music");
 var interactElement = document.querySelector(".interact-menu");
 var huntGatherElement = document.querySelector(".hunt-gather-menu");
 var dialogElement = document.querySelector(".main-dialoge");
+var itemElement = document.querySelector(".items");
 var visited = [];
 var interactions = ["sleep", "investigate", "stroke_yo_bone"];
 var currentLocation = "beach";
@@ -101,7 +102,7 @@ function getText(location) {
                             Relocate(element.textContent.trim());
                         });
                     });
-                    PopulateDropdown(huntGatherElement, data.activities, "hunt-gather-btn");
+                    PopulateDropdown(huntGatherElement, data.activities.id, "hunt-gather-btn");
                     document.querySelectorAll(".hunt-gather-btn").forEach(function (element) {
                         element.addEventListener("click", function () {
                             getItem(element.textContent);
@@ -116,6 +117,7 @@ function getItem(string) {
     if (inventory.length < 7) {
         inventory.push(string.replace("_", " "));
     }
+    UpdateStats();
 }
 function UpdateStats() {
     if (healthElement) {
@@ -129,6 +131,25 @@ function UpdateStats() {
     }
     if (actionsElement) {
         actionsElement.innerHTML = "".concat(actions);
+    }
+    if (itemElement) {
+        itemElement.innerHTML = "";
+        var counter_1 = {};
+        // Counting occurrences
+        inventory.forEach(function (ele) {
+            if (counter_1[ele]) {
+                counter_1[ele] += 1;
+            }
+            else {
+                counter_1[ele] = 1;
+            }
+        });
+        // Convert the counter object to a string to display it in a text field
+        var result = Object.entries(counter_1).map(function (_a) {
+            var key = _a[0], value = _a[1];
+            return "".concat(key, ": ").concat(value);
+        }).join(', ');
+        itemElement.innerHTML = result;
     }
 }
 function PopulateDropdown(parent, array) {

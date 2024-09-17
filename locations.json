@@ -19,8 +19,17 @@
       }
     ],
     "connections": ["shipwreck", "forest"],
-    "activities": ["fish", "dirty_water"],
-    "interact": ["fish", "dirty_water"]
+    "activities": [
+      {
+        "id": "fish", 
+        "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+      },
+      {
+        "id": "dirty_water", 
+        "text": "You walked up to the sea and collected salt water."
+      }
+    ],
+    "resources": ["fish", "dirty_water"]
   },
   "shipwreck": {
     "description": [
@@ -42,8 +51,12 @@
       }
     ],
     "connections": ["beach"],
-    "activities": ["food", "water"],
-    "interact": ["fish", "dirty_water"]
+    "activities": [
+      {
+        "id": "food", 
+        "text": "You walked in the shipwreck and looked for anything useful, you found your lunch box that you had not eaten before the crash, you also found a bottle of water. |On your way out you spotted a flare and took it."
+      }
+    ],        "resources": ["fish", "dirty_water"]
   },
   "forest": {
     "description": [

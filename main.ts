@@ -15,6 +15,7 @@ const audioElement: HTMLAudioElement | null = document.querySelector(".music");
 const interactElement: HTMLElement | null = document.querySelector(".interact-menu");
 const huntGatherElement: HTMLElement | null = document.querySelector(".hunt-gather-menu");
 const dialogElement: HTMLElement | null = document.querySelector(".main-dialoge")
+const itemElement: HTMLElement | null = document.querySelector(".items")
 
 let visited: string[] = []
 const interactions: string[] = ["sleep", "investigate", "stroke_yo_bone"];
@@ -76,7 +77,7 @@ async function getText(location: string) : Promise<void> {
         });
     });
 
-    PopulateDropdown(huntGatherElement, data.activities, "hunt-gather-btn")
+    PopulateDropdown(huntGatherElement, data.activities.id, "hunt-gather-btn")
     document.querySelectorAll(".hunt-gather-btn").forEach(element => {
         element.addEventListener("click", function(){
             getItem(element.textContent!)
@@ -88,6 +89,7 @@ function getItem(string:string): void{
     if(inventory.length < 7){
         inventory.push(string.replace("_", " "))
     }
+    UpdateStats()
 }
 
 function UpdateStats(): void {
@@ -102,6 +104,23 @@ function UpdateStats(): void {
     }
     if (actionsElement) {
         actionsElement.innerHTML = `${actions}`
+    }
+    if (itemElement) {
+        itemElement.innerHTML = ""
+        const counter = {};
+
+        // Counting occurrences
+        inventory.forEach(ele => {
+            if (counter[ele]) {
+                counter[ele] += 1;
+            } else {
+                counter[ele] = 1;
+            }
+        });
+        
+        // Convert the counter object to a string to display it in a text field
+        const result = Object.entries(counter).map(([key, value]) => `${key}: ${value}`).join(', ');
+        itemElement.innerHTML = result
     }
 }
 
