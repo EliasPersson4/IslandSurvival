@@ -53,6 +53,7 @@ var dialogElement = document.querySelector(".main-dialoge");
 var visited = [];
 var interactions = ["sleep", "investigate", "stroke_yo_bone"];
 var currentLocation = "beach";
+var inventory = [];
 function Relocate(location) {
     if (bgElement) {
         bgElement.style.backgroundImage = "url(img/".concat(location.replace(" ", "_"), ".png)");
@@ -101,10 +102,20 @@ function getText(location) {
                         });
                     });
                     PopulateDropdown(huntGatherElement, data.activities, "hunt-gather-btn");
+                    document.querySelectorAll(".hunt-gather-btn").forEach(function (element) {
+                        element.addEventListener("click", function () {
+                            getItem(element.textContent);
+                        });
+                    });
                     return [2 /*return*/];
             }
         });
     });
+}
+function getItem(string) {
+    if (inventory.length < 7) {
+        inventory.push(string.replace("_", " "));
+    }
 }
 function UpdateStats() {
     if (healthElement) {

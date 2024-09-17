@@ -21,6 +21,7 @@ const interactions: string[] = ["sleep", "investigate", "stroke_yo_bone"];
 
 let currentLocation: string = "beach";
 
+let inventory: string[] = []
 
 function Relocate(location: string): void {
     if (bgElement) {
@@ -76,7 +77,17 @@ async function getText(location: string) : Promise<void> {
     });
 
     PopulateDropdown(huntGatherElement, data.activities, "hunt-gather-btn")
+    document.querySelectorAll(".hunt-gather-btn").forEach(element => {
+        element.addEventListener("click", function(){
+            getItem(element.textContent!)
+        })
+    })
+}
 
+function getItem(string:string): void{
+    if(inventory.length < 7){
+        inventory.push(string.replace("_", " "))
+    }
 }
 
 function UpdateStats(): void {
