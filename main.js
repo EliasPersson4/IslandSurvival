@@ -135,13 +135,27 @@ function getText(location) {
                     }
                     if (!inventory.includes("Stone Axe")) {
                         aTags = document.querySelectorAll(".hunt-gather-btn");
-                        searchText_1 = "planks";
-                        aTags.forEach(function (element) {
-                            if (element.textContent == searchText_1) {
-                                found_1 = element;
+                        searchText = "planks";
+                        found = void 0;
+                        for (i = 0; i < aTags.length; i++) {
+                            if (aTags[i].textContent == searchText) {
+                                found = aTags[i];
+                                break;
                             }
-                        });
-                        found_1.disabled = true;
+                        }
+                        found.disabled = true;
+                    }
+                    if (!inventory.includes("Campfire")) {
+                        aTags = document.querySelectorAll(".interact-btn");
+                        searchText = "use campfire";
+                        found = void 0;
+                        for (i = 0; i < aTags.length; i++) {
+                            if (aTags[i].textContent == searchText) {
+                                found = aTags[i];
+                                break;
+                            }
+                        }
+                        found.disabled = true;
                     }
                     return [2 /*return*/];
             }
