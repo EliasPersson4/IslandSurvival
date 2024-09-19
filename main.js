@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,7 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
 var bgElement = document.querySelector(".bg");
 var healthElement = document.querySelector(".health");
 var health = 90;
@@ -57,17 +55,20 @@ var itemElement = document.querySelector(".items");
 var visited = [];
 var currentLocation = "beach";
 var inventory = [];
-function EatFood(food) {
-    switch (food) {
+/*
+function EatFood(food:string){
+    switch(food){
         case "raw_meat":
         case "raw_fish":
         case "berries":
         case "mushrooms":
-            if (randInt(1, 100) < 20) {
+            if(randInt(1,100) < 20){
+                continue
             }
-            break;
+        break;
     }
 }
+*/
 function Relocate(location) {
     if (!actions)
         return;

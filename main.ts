@@ -1,5 +1,3 @@
-import { get } from "http";
-
 const bgElement: HTMLElement = document.querySelector(".bg")!;
 
 const healthElement: HTMLElement = document.querySelector(".health")!;
@@ -26,7 +24,7 @@ let visited: string[] = []
 let currentLocation: string = "beach";
 
 let inventory: string[] = []
-
+/*
 function EatFood(food:string){
     switch(food){
         case "raw_meat":
@@ -34,11 +32,12 @@ function EatFood(food:string){
         case "berries":
         case "mushrooms":
             if(randInt(1,100) < 20){
-                
+                continue
             }    
         break;
     }
 }
+*/
 
 function Relocate(location: string): void {
     if(!actions)
@@ -115,12 +114,12 @@ async function getText(location: string) : Promise<void> {
         let searchText: string = "planks";
         let found
     
-        for (var i = 0; i < aTags.length; i++) {
-        if (aTags[i].textContent == searchText) {
-            found = aTags[i];
-            break;
-        }
-        }
+        aTags.forEach(element => {
+            if (element.textContent == searchText) {
+                found = element
+            }
+            
+});
         found.disabled = true
         
     }
@@ -130,12 +129,12 @@ async function getText(location: string) : Promise<void> {
         let searchText: string = "use campfire";
         let found
     
-        for (var i = 0; i < aTags.length; i++) {
-        if (aTags[i].textContent == searchText) {
-            found = aTags[i];
-            break;
-        }
-        }
+            aTags.forEach(element => {
+            if (element.textContent == searchText) {
+                found = element;
+            }
+            
+});
         found.disabled = true
         
     }
