@@ -92,7 +92,7 @@ function randInt(min, max) {
 }
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, id, entry, activityIds, interactIds, aTags, searchText, found, i;
+        var data, id, entry, activityIds, interactIds, aTags, searchText, found, i, aTags, searchText, found, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("./locations.json").then(function (response) {
@@ -136,6 +136,18 @@ function getText(location) {
                     if (!inventory.includes("Stone Axe")) {
                         aTags = document.querySelectorAll(".hunt-gather-btn");
                         searchText = "planks";
+                        found = void 0;
+                        for (i = 0; i < aTags.length; i++) {
+                            if (aTags[i].textContent == searchText) {
+                                found = aTags[i];
+                                break;
+                            }
+                        }
+                        found.disabled = true;
+                    }
+                    if (!inventory.includes("Campfire")) {
+                        aTags = document.querySelectorAll(".interact-btn");
+                        searchText = "use campfire";
                         found = void 0;
                         for (i = 0; i < aTags.length; i++) {
                             if (aTags[i].textContent == searchText) {

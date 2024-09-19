@@ -124,6 +124,21 @@ async function getText(location: string) : Promise<void> {
         found.disabled = true
         
     }
+
+    if (!inventory.includes("Campfire")) {
+        let aTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
+        let searchText: string = "use campfire";
+        let found
+    
+        for (var i = 0; i < aTags.length; i++) {
+        if (aTags[i].textContent == searchText) {
+            found = aTags[i];
+            break;
+        }
+        }
+        found.disabled = true
+        
+    }
 }
 
 function updateDialogWithActivity(activityId: string): void {
