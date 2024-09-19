@@ -18,7 +18,6 @@ const dialogElement: HTMLElement | null = document.querySelector(".main-dialoge"
 const itemElement: HTMLElement | null = document.querySelector(".items")
 
 let visited: string[] = []
-const interactions: string[] = ["sleep", "investigate", "stroke_yo_bone"];
 
 let currentLocation: string = "beach";
 
@@ -76,13 +75,47 @@ async function getText(location: string) : Promise<void> {
             Relocate(element.textContent!.trim());
         });
     });
-
-    PopulateDropdown(huntGatherElement, data.activities.id, "hunt-gather-btn")
+    const activityIds = data.activities.map(activity => activity.id);
+    PopulateDropdown(huntGatherElement, activityIds, "hunt-gather-btn")
     document.querySelectorAll(".hunt-gather-btn").forEach(element => {
         element.addEventListener("click", function(){
-            getItem(element.textContent!)
+            getItem(element.textContent!.replace("_", " "));
+            updateDialogWithActivity(element.textContent!.replace(" ", "_"));
         })
     })
+    const interactIds = data.interact.map(interact => interact.id);
+    PopulateDropdown(interactElement, interactIds, "interact-btn");
+    document.querySelectorAll(".interact-btn").forEach(element => {
+        element.addEventListener("click", function(){
+            getItem(element.textContent!.replace("_", " "));
+            updateDialogWithInteract(element.textContent!.replace(" ", "_"));
+        })
+    })
+
+}
+
+function updateDialogWithActivity(activityId: string): void {
+    fetch("./locations.json")
+        .then(response => response.json())
+        .then(json => {
+            const data = json[currentLocation];
+            const activity = data.activities.find(act => act.id === activityId);
+            if (dialogElement && activity?.text) {
+                dialogElement.innerHTML = activity.text;
+            }
+        });
+}
+
+function updateDialogWithInteract(interactId: string): void {
+    fetch("./locations.json")
+        .then(response => response.json())
+        .then(json => {
+            const data = json[currentLocation];
+            const interact = data.interact.find(inter => inter.id === interactId);
+            if (dialogElement && interact?.text) {
+                dialogElement.innerHTML = interact.text;
+            }
+        });
 }
 
 function getItem(string:string): void{
@@ -141,7 +174,6 @@ function PopulateDropdown(parent: HTMLElement | null, array: string[], ...extraC
     }
 }
 Relocate("beach")
-PopulateDropdown(interactElement, interactions, "interact-btn");
 
 function togglePlay(): void {
     if (audioElement) {

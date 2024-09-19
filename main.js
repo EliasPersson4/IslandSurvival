@@ -52,7 +52,6 @@ var huntGatherElement = document.querySelector(".hunt-gather-menu");
 var dialogElement = document.querySelector(".main-dialoge");
 var itemElement = document.querySelector(".items");
 var visited = [];
-var interactions = ["sleep", "investigate", "stroke_yo_bone"];
 var currentLocation = "beach";
 var inventory = [];
 function Relocate(location) {
@@ -75,7 +74,7 @@ function randInt(min, max) {
 }
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, id, entry;
+        var data, id, entry, activityIds, interactIds;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("./locations.json").then(function (response) {
@@ -102,15 +101,47 @@ function getText(location) {
                             Relocate(element.textContent.trim());
                         });
                     });
-                    PopulateDropdown(huntGatherElement, data.activities.id, "hunt-gather-btn");
+                    activityIds = data.activities.map(function (activity) { return activity.id; });
+                    PopulateDropdown(huntGatherElement, activityIds, "hunt-gather-btn");
                     document.querySelectorAll(".hunt-gather-btn").forEach(function (element) {
                         element.addEventListener("click", function () {
-                            getItem(element.textContent);
+                            getItem(element.textContent.replace("_", " "));
+                            updateDialogWithActivity(element.textContent.replace(" ", "_"));
+                        });
+                    });
+                    interactIds = data.interact.map(function (interact) { return interact.id; });
+                    PopulateDropdown(interactElement, interactIds, "interact-btn");
+                    document.querySelectorAll(".interact-btn").forEach(function (element) {
+                        element.addEventListener("click", function () {
+                            getItem(element.textContent.replace("_", " "));
+                            updateDialogWithInteract(element.textContent.replace(" ", "_"));
                         });
                     });
                     return [2 /*return*/];
             }
         });
+    });
+}
+function updateDialogWithActivity(activityId) {
+    fetch("./locations.json")
+        .then(function (response) { return response.json(); })
+        .then(function (json) {
+        var data = json[currentLocation];
+        var activity = data.activities.find(function (act) { return act.id === activityId; });
+        if (dialogElement && (activity === null || activity === void 0 ? void 0 : activity.text)) {
+            dialogElement.innerHTML = activity.text;
+        }
+    });
+}
+function updateDialogWithInteract(interactId) {
+    fetch("./locations.json")
+        .then(function (response) { return response.json(); })
+        .then(function (json) {
+        var data = json[currentLocation];
+        var interact = data.interact.find(function (inter) { return inter.id === interactId; });
+        if (dialogElement && (interact === null || interact === void 0 ? void 0 : interact.text)) {
+            dialogElement.innerHTML = interact.text;
+        }
     });
 }
 function getItem(string) {
@@ -171,7 +202,6 @@ function PopulateDropdown(parent, array) {
     }
 }
 Relocate("beach");
-PopulateDropdown(interactElement, interactions, "interact-btn");
 function togglePlay() {
     if (audioElement) {
         audioElement.muted = !audioElement.muted;

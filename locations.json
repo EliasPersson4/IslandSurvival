@@ -33,15 +33,15 @@
     "interact": [
       {
       "id": "sleep",
-      "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+      "text": "you sleep."
     },
     {
       "id": "Use_campfire",
-      "text": "You walked up to the sea and collected salt water."
+      "text": "fire."
     },
     {
       "id": "investegate",
-      "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+      "text": "investegate."
     },
     {
       "id": "bath",
@@ -133,7 +133,7 @@
         "text": "While looking for materials you passed by some mushrooms you took them with you."
       },
       {
-        "id": "raw_food",
+        "id": "hunt",
         "text": "You found some footprints from a rabbit and followed them, you found a rabbit and attacked it and you managed to land a hit and killed it. |You found some footprints from a rabbit and followed them, you found a rabbit and attacked it but it fled."
       }
     ],
@@ -227,7 +227,7 @@
     "connections": ["forest"],
     "activities": [
       {
-        "id": "raw_food",
+        "id": "hunt",
         "text": "You found some footprints from a deer and followed them, you found a rabbit and attacked it and you managed to land a hit and killed it. |You found some footprints from a deer and followed them, you found a rabbit and attacked it but it fled."
       },
       {
