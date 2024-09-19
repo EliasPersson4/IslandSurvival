@@ -39,9 +39,9 @@ var bgElement = document.querySelector(".bg");
 var healthElement = document.querySelector(".health");
 var health = 90;
 var foodElement = document.querySelector(".food");
-var food = 100;
+var food = 105;
 var waterElement = document.querySelector(".water");
-var water = 60;
+var water = 70;
 var actionsElement = document.querySelector(".actions");
 var actions = 7;
 var travelElement = document.querySelector(".travel-menu");
@@ -55,6 +55,8 @@ var visited = [];
 var currentLocation = "beach";
 var inventory = [];
 function Relocate(location) {
+    if (!actions)
+        return;
     if (bgElement) {
         bgElement.style.backgroundImage = "url(img/".concat(location.replace(" ", "_"), ".png)");
     }
@@ -67,6 +69,8 @@ function Relocate(location) {
     currentLocation = location;
     getText(location.replace(" ", "_"));
     actions -= 1;
+    food -= 5;
+    water -= 10;
     UpdateStats();
 }
 function randInt(min, max) {
@@ -74,7 +78,7 @@ function randInt(min, max) {
 }
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, id, entry, activityIds, interactIds;
+        var data, id, entry, activityIds, interactIds, aTags, searchText, found, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("./locations.json").then(function (response) {
@@ -105,7 +109,6 @@ function getText(location) {
                     PopulateDropdown(huntGatherElement, activityIds, "hunt-gather-btn");
                     document.querySelectorAll(".hunt-gather-btn").forEach(function (element) {
                         element.addEventListener("click", function () {
-                            getItem(element.textContent.replace("_", " "));
                             updateDialogWithActivity(element.textContent.replace(" ", "_"));
                         });
                     });
@@ -113,27 +116,84 @@ function getText(location) {
                     PopulateDropdown(interactElement, interactIds, "interact-btn");
                     document.querySelectorAll(".interact-btn").forEach(function (element) {
                         element.addEventListener("click", function () {
-                            getItem(element.textContent.replace("_", " "));
                             updateDialogWithInteract(element.textContent.replace(" ", "_"));
                         });
                     });
+                    if (!inventory.includes("Stone Axe")) {
+                        aTags = document.querySelectorAll(".hunt-gather-btn");
+                        searchText = "planks";
+                        found = void 0;
+                        for (i = 0; i < aTags.length; i++) {
+                            if (aTags[i].textContent == searchText) {
+                                found = aTags[i];
+                                break;
+                            }
+                        }
+                        found.disabled = true;
+                    }
                     return [2 /*return*/];
             }
         });
     });
 }
 function updateDialogWithActivity(activityId) {
+    if (!actions)
+        return;
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) {
         var data = json[currentLocation];
         var activity = data.activities.find(function (act) { return act.id === activityId; });
-        if (dialogElement && (activity === null || activity === void 0 ? void 0 : activity.text)) {
-            dialogElement.innerHTML = activity.text;
+        var rng;
+        var returnString = "";
+        switch (activityId) {
+            case "fish":
+                returnString += activity.text.split("|")[0];
+                rng = randInt(1, 100);
+                if (rng > 50) {
+                    returnString += activity.text.split("|")[1];
+                    getItem(activityId.replace("_", " "));
+                }
+                else {
+                    returnString += activity.text.split("|")[2];
+                }
+                break;
+            case "hunt":
+                returnString += activity.text.split("|")[0];
+                rng = randInt(1, 100);
+                if (rng > 70) {
+                    returnString += activity.text.split("|")[1];
+                    getItem("raw_food".replace("_", " "));
+                }
+                else {
+                    returnString += activity.text.split("|")[2];
+                }
+                break;
+            case "sticks":
+            case "twine":
+                var amount = randInt(1, 3);
+                for (var i = 0; i < amount; i++) {
+                    getItem(activityId.trim());
+                }
+                returnString = activity.text.replace("x", amount);
+                break;
+            default:
+                getItem(activityId.trim());
+                returnString = activity.text;
+                break;
         }
+        if (dialogElement && (activity === null || activity === void 0 ? void 0 : activity.text)) {
+            dialogElement.innerHTML = returnString;
+        }
+        actions -= 1;
+        food -= 10;
+        water -= 5;
+        UpdateStats();
     });
 }
 function updateDialogWithInteract(interactId) {
+    if (!actions)
+        return;
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) {
@@ -166,7 +226,6 @@ function UpdateStats() {
     if (itemElement) {
         itemElement.innerHTML = "";
         var counter_1 = {};
-        // Counting occurrences
         inventory.forEach(function (ele) {
             if (counter_1[ele]) {
                 counter_1[ele] += 1;
@@ -175,7 +234,6 @@ function UpdateStats() {
                 counter_1[ele] = 1;
             }
         });
-        // Convert the counter object to a string to display it in a text field
         var result = Object.entries(counter_1).map(function (_a) {
             var key = _a[0], value = _a[1];
             return "".concat(key, ": ").concat(value);
