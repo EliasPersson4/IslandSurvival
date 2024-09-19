@@ -20,3 +20,6 @@ body{
 .location,.btn{
     text-transform: capitalize;
 }
+.poisoned{
+    max-height: 3vh;
+}

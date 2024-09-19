@@ -35,7 +35,7 @@
       "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
     },
     {
-      "id": "use_campfire",
+      "id": "campfire",
       "text": "You used your campfire and cooked your food and water."
     },
     {
@@ -81,7 +81,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
@@ -141,7 +141,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
@@ -189,7 +189,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
@@ -249,7 +249,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
@@ -297,7 +297,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
@@ -340,7 +340,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
@@ -375,7 +375,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
@@ -414,7 +414,7 @@
     "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
   },
   {
-    "id": "use_campfire",
+    "id": "campfire",
     "text": "You used your campfire and cooked your food and water."
   },
   {
