@@ -142,7 +142,28 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body"><h3>Items</h3><p><span class="items"></span></p><button class="btn btn-primary">Drinck</button> <button class="btn btn-warning ">Eat</button></div>
+          <div class="modal-body"><h3>Items</h3><p><span class="items"></span></p> 
+            <button
+            class="btn btn-primary"
+              data-bs-toggle="dropdown"
+            >
+            <h4 class="">Drinck</h4>
+          </button>
+          <ul class="dropdown-menu " style="max-width: 1rem"></ul>  
+          <button
+          class="btn btn-warning"
+            data-bs-toggle="dropdown"
+          >
+          <h4 class="">Eat</h4>
+        </button>
+        <ul class="dropdown-menu " style="max-width: 1rem"></ul>
+        <button
+          class="btn btn-danger"
+            data-bs-toggle="dropdown"
+          >
+          <h4 class="">Discard Item</h4>
+        </button>
+        <ul class="dropdown-menu " style="max-width: 1rem"></ul></div>
           <div class="modal-body"><h3>Crafting</h3></div>
           <div class="modal-footer crafting-list">
             <button type="button" class="btn btn-secondary">Spear</button>
