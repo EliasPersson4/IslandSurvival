@@ -135,7 +135,6 @@
         "text": "You found some footprints from a rabbit and followed them, you found a rabbit and attacked it. |You managed to land a hit and killed it. |But it fled."
       }
     ],
-    "resources": ["sticks", "planks", "twine", "food", "raw_food"],
 "interact": [
   {
     "id": "sleep",
@@ -184,7 +183,6 @@
         "text": "You walked up to the river and collected some clean water."
       }
     ],
-    "resources": ["food", "water", "stone"],
 "interact": [
   {
     "id": "sleep",
@@ -245,7 +243,6 @@
         "text": "You tried to find some useful materials, you found x vines."
       }
     ],
-    "resources": ["raw_food", "sticks", "planks", "food", "twine"],
 "interact": [
   {
     "id": "sleep",
@@ -294,7 +291,6 @@
         "text": "You walked up to the lake and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
       }
     ],
-    "resources": ["raw_food", "dirty_water", "stone"],
 "interact": [
   {
     "id": "sleep",
