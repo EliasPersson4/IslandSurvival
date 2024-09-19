@@ -1,3 +1,5 @@
+import { get } from "http";
+
 const bgElement: HTMLElement = document.querySelector(".bg")!;
 
 const healthElement: HTMLElement = document.querySelector(".health")!;
@@ -8,6 +10,8 @@ const waterElement: HTMLElement = document.querySelector(".water")!;
 let water: number = 70;
 const actionsElement: HTMLElement = document.querySelector(".actions")!
 let actions : number = 7
+
+let poisoned: boolean = false
 
 const travelElement: HTMLElement = document.querySelector(".travel-menu")!;
 const locationElement: HTMLElement = document.querySelector(".location")!;
@@ -22,6 +26,19 @@ let visited: string[] = []
 let currentLocation: string = "beach";
 
 let inventory: string[] = []
+
+function EatFood(food:string){
+    switch(food){
+        case "raw_meat":
+        case "raw_fish":
+        case "berries":
+        case "mushrooms":
+            if(randInt(1,100) < 20){
+                
+            }    
+        break;
+    }
+}
 
 function Relocate(location: string): void {
     if(!actions)
@@ -141,7 +158,7 @@ function updateDialogWithActivity(activityId: string): void {
                     
                     if (rng > 50) {
                         returnString += activity.text.split("|")[1]
-                        getItem(activityId.replace("_", " "));
+                        getItem(("raw_"+activityId).replace("_", " "));
                     }   
                     else{
                         returnString += activity.text.split("|")[2]
@@ -154,7 +171,7 @@ function updateDialogWithActivity(activityId: string): void {
                     
                     if (rng > 70) {
                         returnString += activity.text.split("|")[1]
-                        getItem("raw_food".replace("_", " "));
+                        getItem("raw_meat".replace("_", " "));
                     }   
                     else{
                         returnString += activity.text.split("|")[2]
@@ -167,6 +184,15 @@ function updateDialogWithActivity(activityId: string): void {
                             getItem(activityId.trim())
                         }
                         returnString = activity.text.replace("x", amount)
+                        break;
+                    case "food":
+                        returnString += activity.text.split("|")[0]
+                        if(randInt(1,100) > 70){
+                            returnString += activity.text.split("|")[1]
+                            getItem("flare")
+                        }
+                        getItem("cooked_meat".replace("_", " "))
+                        getItem("water")
                         break;
                 default:
                     getItem(activityId.trim())

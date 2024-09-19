@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
 var bgElement = document.querySelector(".bg");
 var healthElement = document.querySelector(".health");
 var health = 90;
@@ -44,6 +46,7 @@ var waterElement = document.querySelector(".water");
 var water = 70;
 var actionsElement = document.querySelector(".actions");
 var actions = 7;
+var poisoned = false;
 var travelElement = document.querySelector(".travel-menu");
 var locationElement = document.querySelector(".location");
 var audioElement = document.querySelector(".music");
@@ -54,6 +57,17 @@ var itemElement = document.querySelector(".items");
 var visited = [];
 var currentLocation = "beach";
 var inventory = [];
+function EatFood(food) {
+    switch (food) {
+        case "raw_meat":
+        case "raw_fish":
+        case "berries":
+        case "mushrooms":
+            if (randInt(1, 100) < 20) {
+            }
+            break;
+    }
+}
 function Relocate(location) {
     if (!actions)
         return;
@@ -164,7 +178,7 @@ function updateDialogWithActivity(activityId) {
                 rng = randInt(1, 100);
                 if (rng > 50) {
                     returnString += activity.text.split("|")[1];
-                    getItem(activityId.replace("_", " "));
+                    getItem(("raw_" + activityId).replace("_", " "));
                 }
                 else {
                     returnString += activity.text.split("|")[2];
@@ -175,7 +189,7 @@ function updateDialogWithActivity(activityId) {
                 rng = randInt(1, 100);
                 if (rng > 70) {
                     returnString += activity.text.split("|")[1];
-                    getItem("raw_food".replace("_", " "));
+                    getItem("raw_meat".replace("_", " "));
                 }
                 else {
                     returnString += activity.text.split("|")[2];
@@ -188,6 +202,15 @@ function updateDialogWithActivity(activityId) {
                     getItem(activityId.trim());
                 }
                 returnString = activity.text.replace("x", amount);
+                break;
+            case "food":
+                returnString += activity.text.split("|")[0];
+                if (randInt(1, 100) > 70) {
+                    returnString += activity.text.split("|")[1];
+                    getItem("flare");
+                }
+                getItem("cooked_meat".replace("_", " "));
+                getItem("water");
                 break;
             default:
                 getItem(activityId.trim());
