@@ -44,6 +44,7 @@ var waterElement = document.querySelector(".water");
 var water = 70;
 var actionsElement = document.querySelector(".actions");
 var actions = 7;
+var poisonElement = document.querySelector(".poisoned");
 var poisoned = false;
 var travelElement = document.querySelector(".travel-menu");
 var locationElement = document.querySelector(".location");
@@ -54,21 +55,7 @@ var dialogElement = document.querySelector(".main-dialoge");
 var itemElement = document.querySelector(".items");
 var visited = [];
 var currentLocation = "beach";
-var inventory = [];
-/*
-function EatFood(food:string){
-    switch(food){
-        case "raw_meat":
-        case "raw_fish":
-        case "berries":
-        case "mushrooms":
-            if(randInt(1,100) < 20){
-                continue
-            }
-        break;
-    }
-}
-*/
+var inventory = ["Campfire", "Stone Axe"];
 function Relocate(location) {
     if (!actions)
         return;
@@ -93,12 +80,14 @@ function randInt(min, max) {
 }
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, id, entry, activityIds, interactIds, aTags, searchText, found, i, aTags, searchText, found, i;
+        var data, id, entry, activityIds, interactIds, bTags, searchText2_1, found2_1, aTags, searchText_1, found_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("./locations.json").then(function (response) {
+                case 0: return [4 /*yield*/, fetch("./locations.json")
+                        .then(function (response) {
                         return response.json();
-                    }).then(function (json) {
+                    })
+                        .then(function (json) {
                         data = json[location];
                     })];
                 case 1:
@@ -134,29 +123,25 @@ function getText(location) {
                             updateDialogWithInteract(element.textContent.replace(" ", "_"));
                         });
                     });
+                    if (!inventory.includes("Campfire")) {
+                        bTags = document.querySelectorAll(".interact-btn");
+                        searchText2_1 = "campfire";
+                        bTags.forEach(function (element2) {
+                            if (element2.textContent == searchText2_1) {
+                                found2_1 = element2;
+                            }
+                        });
+                        found2_1.disabled = true;
+                    }
                     if (!inventory.includes("Stone Axe")) {
                         aTags = document.querySelectorAll(".hunt-gather-btn");
-                        searchText = "planks";
-                        found = void 0;
-                        for (i = 0; i < aTags.length; i++) {
-                            if (aTags[i].textContent == searchText) {
-                                found = aTags[i];
-                                break;
+                        searchText_1 = "planks";
+                        aTags.forEach(function (element) {
+                            if (element.textContent == searchText_1) {
+                                found_1 = element;
                             }
-                        }
-                        found.disabled = true;
-                    }
-                    if (!inventory.includes("Campfire")) {
-                        aTags = document.querySelectorAll(".interact-btn");
-                        searchText = "use campfire";
-                        found = void 0;
-                        for (i = 0; i < aTags.length; i++) {
-                            if (aTags[i].textContent == searchText) {
-                                found = aTags[i];
-                                break;
-                            }
-                        }
-                        found.disabled = true;
+                        });
+                        found_1.disabled = true;
                     }
                     return [2 /*return*/];
             }
@@ -270,11 +255,14 @@ function UpdateStats() {
                 counter_1[ele] = 1;
             }
         });
-        var result = Object.entries(counter_1).map(function (_a) {
+        var result = Object.entries(counter_1)
+            .map(function (_a) {
             var key = _a[0], value = _a[1];
             return "".concat(key, ": ").concat(value);
-        }).join(', ');
+        })
+            .join(", ");
         itemElement.innerHTML = result;
+        poisonElement.hidden = !poisoned;
     }
 }
 function PopulateDropdown(parent, array) {
