@@ -1,21 +1,21 @@
-const bgElement: HTMLElement | null = document.querySelector(".bg");
+const bgElement: HTMLElement = document.querySelector(".bg")!;
 
-const healthElement: HTMLElement | null = document.querySelector(".health");
+const healthElement: HTMLElement = document.querySelector(".health")!;
 let health: number = 90;
-const foodElement: HTMLElement | null = document.querySelector(".food");
+const foodElement: HTMLElement = document.querySelector(".food")!;
 let food: number = 105;
-const waterElement: HTMLElement | null = document.querySelector(".water");
+const waterElement: HTMLElement = document.querySelector(".water")!;
 let water: number = 70;
-const actionsElement: HTMLElement | null = document.querySelector(".actions")
+const actionsElement: HTMLElement = document.querySelector(".actions")!
 let actions : number = 7
 
-const travelElement: HTMLElement | null = document.querySelector(".travel-menu");
-const locationElement: HTMLElement | null = document.querySelector(".location");
-const audioElement: HTMLAudioElement | null = document.querySelector(".music");
-const interactElement: HTMLElement | null = document.querySelector(".interact-menu");
-const huntGatherElement: HTMLElement | null = document.querySelector(".hunt-gather-menu");
-const dialogElement: HTMLElement | null = document.querySelector(".main-dialoge")
-const itemElement: HTMLElement | null = document.querySelector(".items")
+const travelElement: HTMLElement = document.querySelector(".travel-menu")!;
+const locationElement: HTMLElement = document.querySelector(".location")!;
+const audioElement: HTMLAudioElement = document.querySelector(".music")!;
+const interactElement: HTMLElement = document.querySelector(".interact-menu")!;
+const huntGatherElement: HTMLElement = document.querySelector(".hunt-gather-menu")!;
+const dialogElement: HTMLElement = document.querySelector(".main-dialoge")!
+const itemElement: HTMLElement = document.querySelector(".items")!
 
 let visited: string[] = []
 
@@ -44,7 +44,6 @@ function Relocate(location: string): void {
     food -= 5
     water -= 10
     UpdateStats();
-
 }
 
 function randInt(min:number, max:number): number {
