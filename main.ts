@@ -3,9 +3,9 @@ const bgElement: HTMLElement | null = document.querySelector(".bg");
 const healthElement: HTMLElement | null = document.querySelector(".health");
 let health: number = 90;
 const foodElement: HTMLElement | null = document.querySelector(".food");
-let food: number = 100;
+let food: number = 105;
 const waterElement: HTMLElement | null = document.querySelector(".water");
-let water: number = 60;
+let water: number = 70;
 const actionsElement: HTMLElement | null = document.querySelector(".actions")
 let actions : number = 7
 
@@ -24,6 +24,8 @@ let currentLocation: string = "beach";
 let inventory: string[] = []
 
 function Relocate(location: string): void {
+    if(!actions)
+        return
     if (bgElement) {
         bgElement.style.backgroundImage = `url(img/${location.replace(" ", "_")}.png)`;
     }
@@ -39,6 +41,8 @@ function Relocate(location: string): void {
     
     getText(location.replace(" ", "_"))
     actions -= 1
+    food -= 5
+    water -= 10
     UpdateStats();
 
 }
@@ -79,7 +83,6 @@ async function getText(location: string) : Promise<void> {
     PopulateDropdown(huntGatherElement, activityIds, "hunt-gather-btn")
     document.querySelectorAll(".hunt-gather-btn").forEach(element => {
         element.addEventListener("click", function(){
-            getItem(element.textContent!.replace("_", " "));
             updateDialogWithActivity(element.textContent!.replace(" ", "_"));
         })
     })
@@ -87,26 +90,91 @@ async function getText(location: string) : Promise<void> {
     PopulateDropdown(interactElement, interactIds, "interact-btn");
     document.querySelectorAll(".interact-btn").forEach(element => {
         element.addEventListener("click", function(){
-            getItem(element.textContent!.replace("_", " "));
             updateDialogWithInteract(element.textContent!.replace(" ", "_"));
         })
     })
 
+    if (!inventory.includes("Stone Axe")) {
+        let aTags: NodeListOf<Element> = document.querySelectorAll(".hunt-gather-btn");
+        let searchText: string = "planks";
+        let found
+    
+        for (var i = 0; i < aTags.length; i++) {
+        if (aTags[i].textContent == searchText) {
+            found = aTags[i];
+            break;
+        }
+        }
+        found.disabled = true
+        
+    }
 }
 
 function updateDialogWithActivity(activityId: string): void {
+    if(!actions)
+        return
     fetch("./locations.json")
         .then(response => response.json())
         .then(json => {
             const data = json[currentLocation];
             const activity = data.activities.find(act => act.id === activityId);
-            if (dialogElement && activity?.text) {
-                dialogElement.innerHTML = activity.text;
+            let rng: number
+            let returnString: string = ""
+            switch(activityId){
+                case "fish":
+                    returnString += activity.text.split("|")[0]
+                    rng = randInt(1,100)
+                    
+                    if (rng > 50) {
+                        returnString += activity.text.split("|")[1]
+                        getItem(activityId.replace("_", " "));
+                    }   
+                    else{
+                        returnString += activity.text.split("|")[2]
+                    }
+
+                    break;
+                case "hunt":
+                    returnString += activity.text.split("|")[0]
+                    rng = randInt(1,100)
+                    
+                    if (rng > 70) {
+                        returnString += activity.text.split("|")[1]
+                        getItem("raw_food".replace("_", " "));
+                    }   
+                    else{
+                        returnString += activity.text.split("|")[2]
+                    }
+                    break;
+                    case "sticks":
+                    case "twine":
+                        let amount: number = randInt(1,3)
+                        for (let i = 0; i < amount; i++) {
+                            getItem(activityId.trim())
+                        }
+                        returnString = activity.text.replace("x", amount)
+                        break;
+                default:
+                    getItem(activityId.trim())
+                    returnString = activity.text
+                    break;
+
+
             }
+
+            if (dialogElement && activity?.text) {
+                dialogElement.innerHTML = returnString;
+            }
+            actions -= 1
+            food -= 10
+            water -= 5
+            UpdateStats()
         });
 }
 
 function updateDialogWithInteract(interactId: string): void {
+    if(!actions)
+        return
     fetch("./locations.json")
         .then(response => response.json())
         .then(json => {
@@ -142,7 +210,6 @@ function UpdateStats(): void {
         itemElement.innerHTML = ""
         const counter = {};
 
-        // Counting occurrences
         inventory.forEach(ele => {
             if (counter[ele]) {
                 counter[ele] += 1;
@@ -151,7 +218,6 @@ function UpdateStats(): void {
             }
         });
         
-        // Convert the counter object to a string to display it in a text field
         const result = Object.entries(counter).map(([key, value]) => `${key}: ${value}`).join(', ');
         itemElement.innerHTML = result
     }

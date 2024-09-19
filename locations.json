@@ -126,7 +126,7 @@
       },
       {
         "id": "twine",
-        "text": "You tried to find some useful materials, you found y twines."
+        "text": "You tried to find some useful materials, you found x twines."
       },
       {
         "id": "foraging",
@@ -134,7 +134,7 @@
       },
       {
         "id": "hunt",
-        "text": "You found some footprints from a rabbit and followed them, you found a rabbit and attacked it and you managed to land a hit and killed it. |You found some footprints from a rabbit and followed them, you found a rabbit and attacked it but it fled."
+        "text": "You found some footprints from a rabbit and followed them, you found a rabbit and attacked it. |You managed to land a hit and killed it. |But it fled."
       }
     ],
     "resources": ["sticks", "planks", "twine", "food", "raw_food"],
@@ -244,7 +244,7 @@
       },
       {
         "id": "twine",
-        "text": "You tried to find some useful materials, you found y vines."
+        "text": "You tried to find some useful materials, you found x vines."
       }
     ],
     "resources": ["raw_food", "sticks", "planks", "food", "twine"],
@@ -293,7 +293,7 @@
       },
       {
         "id": "fish",
-        "text": "You walked up to the river and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
+        "text": "You walked up to the lake and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
       }
     ],
     "resources": ["raw_food", "dirty_water", "stone"],
