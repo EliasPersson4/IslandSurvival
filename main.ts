@@ -1,5 +1,3 @@
-import { get } from "http";
-
 const bgElement: HTMLElement = document.querySelector(".bg")!;
 
 const healthElement: HTMLElement = document.querySelector(".health")!;
