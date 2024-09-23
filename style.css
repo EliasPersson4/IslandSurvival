@@ -23,3 +23,10 @@ body{
 .poisoned{
     max-height: 3vh;
 }
+.transition{
+    background-color: black;
+    z-index: 1;
+    min-width: 100vw;
+    min-height: 100vh;
+    opacity: 0;
+}

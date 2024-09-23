@@ -18,6 +18,10 @@ const interactElement: HTMLElement = document.querySelector(".interact-menu")!;
 const huntGatherElement: HTMLElement = document.querySelector(".hunt-gather-menu")!;
 const dialogElement: HTMLElement = document.querySelector(".main-dialoge")!;
 const itemElement: HTMLElement = document.querySelector(".items")!;
+const transitionElement: HTMLElement = document.querySelector(".transition")!;
+const transHideElement = document.querySelectorAll(".trans-hidden")
+
+const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 
 let visited: string[] = [];
 
@@ -25,6 +29,60 @@ let currentLocation: string = "beach";
 
 let inventory: string[] = ["Campfire", "Stone Axe"];
 
+async function transition(location:string): Promise<void>{
+    for (let i = 0; i < 100; i+=5) {
+        await sleep(30)
+        transitionElement.style.opacity = `${i/100}`
+        transHideElement.forEach(element => {
+            element.style.opacity = `${1-(i/100)}`
+         });
+    }
+    Relocate(location)
+    await sleep(200)
+
+    for (let j = 100; j > 0; j-=5) {
+        await sleep(30)
+        transitionElement.style.opacity = `${j/100}`
+        transHideElement.forEach(element => {
+            element.style.opacity = `${1-(j/100)}`
+         });
+    }
+}
+
+async function goToSleep(text: string, textElement: HTMLElement): Promise<void> {
+    for (let i = 0; i < 100; i+=5) {
+        await sleep(30)
+        transitionElement.style.opacity = `${i/100}`
+        transHideElement.forEach(element => {
+            element.style.opacity = `${1-(i/100)}`
+         });
+    }
+
+    if (inventory.includes("sleeping bag")) {
+        actions = 6
+        text = text.replace("x", "all of your")
+    }
+    else{
+        let recovered = randInt(2,4) 
+        actions += recovered
+        text = text.replace("x", recovered.toString())
+
+        if (actions >= 6){
+            text = text.replace(recovered.toString(), "all of your")
+            actions = 6
+        }
+    }
+    textElement.innerHTML = text
+    UpdateStats()
+
+    for (let j = 100; j > 0; j-=5) {
+        await sleep(30)
+        transitionElement.style.opacity = `${j/100}`
+        transHideElement.forEach(element => {
+            element.style.opacity = `${1-(j/100)}`
+        });
+    }
+}
 
 function Relocate(location: string): void {
   if (!actions) return;
@@ -85,7 +143,7 @@ async function getText(location: string): Promise<void> {
   PopulateDropdown(travelElement, data.connections, "travel-btn");
   document.querySelectorAll(".travel-btn").forEach((element) => {
     element.addEventListener("click", function () {
-      Relocate(element.textContent!.trim());
+      transition(element.textContent!.trim());
     });
   });
   const activityIds = data.activities.map((activity) => activity.id);
@@ -198,15 +256,28 @@ function updateDialogWithActivity(activityId: string): void {
 }
 
 function updateDialogWithInteract(interactId: string): void {
-  if (!actions) return;
+  if (!actions && interactId != "sleep") return;
   fetch("./locations.json")
     .then((response) => response.json())
-    .then((json) => {
+    .then(async (json) => {
       const data = json[currentLocation];
       const interact = data.interact.find((inter) => inter.id === interactId);
-      if (dialogElement && interact?.text) {
-        dialogElement.innerHTML = interact.text;
+      let returnString
+      switch(interactId){
+        case "sleep":
+            goToSleep(interact.text, dialogElement)
+            break
+        default:
+            returnString = interact.text
+            actions -= 1
       }
+      
+      
+      
+      if (dialogElement && interact?.text && !(interactId == "sleep")) {
+        dialogElement.innerHTML = returnString;
+      }
+      UpdateStats()
     });
 }
 
