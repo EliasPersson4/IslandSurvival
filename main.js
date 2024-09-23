@@ -270,7 +270,7 @@ function setupEatButtons() {
                     food += 35;
                 case "Berry":
                     food += 25;
-                    poisoned = (randInt(1, 100) > 70);
+                    poisoned = randInt(1, 100) > 70;
                     break;
                 default:
                     break;

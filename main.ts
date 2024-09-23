@@ -15,7 +15,8 @@ const travelElement: HTMLElement = document.querySelector(".travel-menu")!;
 const locationElement: HTMLElement = document.querySelector(".location")!;
 const audioElement: HTMLAudioElement = document.querySelector(".music")!;
 const interactElement: HTMLElement = document.querySelector(".interact-menu")!;
-const huntGatherElement: HTMLElement = document.querySelector(".hunt-gather-menu")!;
+const huntGatherElement: HTMLElement =
+  document.querySelector(".hunt-gather-menu")!;
 const dialogElement: HTMLElement = document.querySelector(".main-dialoge")!;
 const itemElement: HTMLElement = document.querySelector(".items")!;
 const transitionElement: HTMLElement = document.querySelector(".transition")!;
@@ -56,9 +57,7 @@ async function goToSleep(
   text: string,
   textElement: HTMLElement
 ): Promise<void> {
-  const audio: HTMLAudioElement = new Audio(
-    `mp3/sfx/sleep.mp3`
-  );
+  const audio: HTMLAudioElement = new Audio(`mp3/sfx/sleep.mp3`);
   audio.play();
   for (let i = 0; i < 100; i += 5) {
     await sleep(30);
@@ -83,7 +82,6 @@ async function goToSleep(
   }
   textElement.innerHTML = text;
   UpdateStats();
-  
 
   for (let j = 100; j > 0; j -= 5) {
     await sleep(30);
@@ -156,23 +154,23 @@ function setupEatButtons() {
       switch (element.innerHTML) {
         case "Raw Fish":
           food += 15;
-          case "Raw Meat":
-            food += 20;
+        case "Raw Meat":
+          food += 20;
           poisoned = true;
           break;
         case "Cooked Meat":
           food += 60;
           break;
         case "Cooked Fish":
-          food +=50;
+          food += 50;
           break;
         case "Mushroom":
-          food += 35
-          case "Berry":
-          food += 25
-          poisoned = (randInt(1,100) > 70);
+          food += 35;
+        case "Berry":
+          food += 25;
+          poisoned = randInt(1, 100) > 70;
           break;
-      
+
         default:
           break;
       }
@@ -181,7 +179,7 @@ function setupEatButtons() {
 
       if (foodItems.length) {
         setupEatButtons();
-      } 
+      }
     });
   });
 }
@@ -197,7 +195,7 @@ function setupDrinkButtons() {
 
       if (drinkItems.length) {
         setupEatButtons();
-      } 
+      }
     });
   });
 }
@@ -328,7 +326,6 @@ function updateDialogWithActivity(activityId: string): void {
           } else {
             returnString += activity.text.split("|")[2];
           }
-          
 
           break;
         case "hunt":
@@ -364,9 +361,7 @@ function updateDialogWithActivity(activityId: string): void {
           returnString = activity.text;
           break;
       }
-      const audio: HTMLAudioElement = new Audio(
-        `mp3/sfx/${activityId}.mp3`
-      );
+      const audio: HTMLAudioElement = new Audio(`mp3/sfx/${activityId}.mp3`);
       audio.play();
       if (dialogElement && activity?.text) {
         dialogElement.innerHTML = returnString;
@@ -404,9 +399,7 @@ function updateDialogWithInteract(interactId: string): void {
       if (poisoned) {
         health -= 5;
       }
-      const audio: HTMLAudioElement = new Audio(
-        `mp3/sfx/${interactId}.mp3`
-      );
+      const audio: HTMLAudioElement = new Audio(`mp3/sfx/${interactId}.mp3`);
       audio.play();
       UpdateStats();
     });
