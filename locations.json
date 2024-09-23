@@ -32,7 +32,7 @@
     "interact": [
       {
       "id": "sleep",
-      "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+      "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
     },
     {
       "id": "campfire",
@@ -78,7 +78,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",
@@ -138,7 +138,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",
@@ -186,7 +186,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",
@@ -246,7 +246,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",
@@ -294,7 +294,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",
@@ -337,7 +337,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",
@@ -372,7 +372,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",
@@ -411,7 +411,7 @@
 "interact": [
   {
     "id": "sleep",
-    "text": "You went to sleep. You wake up you feling rested. You recuverd x actions"
+    "text": "You went to sleep; You awaken feeling rested, you have recovered x actions"
   },
   {
     "id": "campfire",

@@ -39,11 +39,11 @@ var bgElement = document.querySelector(".bg");
 var healthElement = document.querySelector(".health");
 var health = 90;
 var foodElement = document.querySelector(".food");
-var food = 105;
+var food = 100;
 var waterElement = document.querySelector(".water");
-var water = 70;
+var water = 60;
 var actionsElement = document.querySelector(".actions");
-var actions = 7;
+var actions = 6;
 var poisonElement = document.querySelector(".poisoned");
 var poisoned = false;
 var travelElement = document.querySelector(".travel-menu");
@@ -53,12 +53,158 @@ var interactElement = document.querySelector(".interact-menu");
 var huntGatherElement = document.querySelector(".hunt-gather-menu");
 var dialogElement = document.querySelector(".main-dialoge");
 var itemElement = document.querySelector(".items");
+var transitionElement = document.querySelector(".transition");
+var transHideElement = document.querySelectorAll(".trans-hidden");
+var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var discardElement = document.querySelector(".discard-menu");
 var eatElement = document.querySelector(".eat-menu");
 var drinkElement = document.querySelector(".drink-menu");
 var visited = [];
 var currentLocation = "beach";
 var inventory = ["Campfire", "Stone Axe"];
+function transition(location) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _loop_1, i, _loop_2, j;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _loop_1 = function (i) {
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0: return [4 /*yield*/, sleep(30)];
+                                case 1:
+                                    _b.sent();
+                                    transitionElement.style.opacity = "".concat(i / 100);
+                                    transHideElement.forEach(function (element) {
+                                        element.style.opacity = "".concat(1 - (i / 100));
+                                    });
+                                    return [2 /*return*/];
+                            }
+                        });
+                    };
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < 100)) return [3 /*break*/, 4];
+                    return [5 /*yield**/, _loop_1(i)];
+                case 2:
+                    _a.sent();
+                    _a.label = 3;
+                case 3:
+                    i += 5;
+                    return [3 /*break*/, 1];
+                case 4:
+                    Relocate(location);
+                    return [4 /*yield*/, sleep(200)];
+                case 5:
+                    _a.sent();
+                    _loop_2 = function (j) {
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
+                                case 0: return [4 /*yield*/, sleep(30)];
+                                case 1:
+                                    _c.sent();
+                                    transitionElement.style.opacity = "".concat(j / 100);
+                                    transHideElement.forEach(function (element) {
+                                        element.style.opacity = "".concat(1 - (j / 100));
+                                    });
+                                    return [2 /*return*/];
+                            }
+                        });
+                    };
+                    j = 100;
+                    _a.label = 6;
+                case 6:
+                    if (!(j > 0)) return [3 /*break*/, 9];
+                    return [5 /*yield**/, _loop_2(j)];
+                case 7:
+                    _a.sent();
+                    _a.label = 8;
+                case 8:
+                    j -= 5;
+                    return [3 /*break*/, 6];
+                case 9: return [2 /*return*/];
+            }
+        });
+    });
+}
+function goToSleep(text, textElement) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _loop_3, i, recovered, _loop_4, j;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _loop_3 = function (i) {
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0: return [4 /*yield*/, sleep(30)];
+                                case 1:
+                                    _b.sent();
+                                    transitionElement.style.opacity = "".concat(i / 100);
+                                    transHideElement.forEach(function (element) {
+                                        element.style.opacity = "".concat(1 - (i / 100));
+                                    });
+                                    return [2 /*return*/];
+                            }
+                        });
+                    };
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < 100)) return [3 /*break*/, 4];
+                    return [5 /*yield**/, _loop_3(i)];
+                case 2:
+                    _a.sent();
+                    _a.label = 3;
+                case 3:
+                    i += 5;
+                    return [3 /*break*/, 1];
+                case 4:
+                    if (inventory.includes("sleeping bag")) {
+                        actions = 6;
+                        text = text.replace("x", "all of your");
+                    }
+                    else {
+                        recovered = randInt(2, 4);
+                        actions += recovered;
+                        text = text.replace("x", recovered.toString());
+                        if (actions >= 6) {
+                            text = text.replace(recovered.toString(), "all of your");
+                            actions = 6;
+                        }
+                    }
+                    textElement.innerHTML = text;
+                    UpdateStats();
+                    _loop_4 = function (j) {
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
+                                case 0: return [4 /*yield*/, sleep(30)];
+                                case 1:
+                                    _c.sent();
+                                    transitionElement.style.opacity = "".concat(j / 100);
+                                    transHideElement.forEach(function (element) {
+                                        element.style.opacity = "".concat(1 - (j / 100));
+                                    });
+                                    return [2 /*return*/];
+                            }
+                        });
+                    };
+                    j = 100;
+                    _a.label = 5;
+                case 5:
+                    if (!(j > 0)) return [3 /*break*/, 8];
+                    return [5 /*yield**/, _loop_4(j)];
+                case 6:
+                    _a.sent();
+                    _a.label = 7;
+                case 7:
+                    j -= 5;
+                    return [3 /*break*/, 5];
+                case 8: return [2 /*return*/];
+            }
+        });
+    });
+}
 function Relocate(location) {
     if (!actions)
         return;
@@ -73,9 +219,11 @@ function Relocate(location) {
     }
     currentLocation = location;
     getText(location.replace(" ", "_"));
-    actions -= 1;
-    food -= 5;
-    water -= 10;
+    if (visited.length) {
+        actions -= 1;
+        food -= 5;
+        water -= 10;
+    }
     UpdateStats();
 }
 function randInt(min, max) {
@@ -164,7 +312,7 @@ function getText(location) {
                     PopulateDropdown(travelElement, data.connections, "travel-btn");
                     document.querySelectorAll(".travel-btn").forEach(function (element) {
                         element.addEventListener("click", function () {
-                            Relocate(element.textContent.trim());
+                            transition(element.textContent.trim());
                         });
                     });
                     activityIds = data.activities.map(function (activity) { return activity.id; });
@@ -280,17 +428,31 @@ function updateDialogWithActivity(activityId) {
     });
 }
 function updateDialogWithInteract(interactId) {
-    if (!actions)
+    var _this = this;
+    if (!actions && interactId != "sleep")
         return;
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
-        .then(function (json) {
-        var data = json[currentLocation];
-        var interact = data.interact.find(function (inter) { return inter.id === interactId; });
-        if (dialogElement && (interact === null || interact === void 0 ? void 0 : interact.text)) {
-            dialogElement.innerHTML = interact.text;
-        }
-    });
+        .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
+        var data, interact, returnString;
+        return __generator(this, function (_a) {
+            data = json[currentLocation];
+            interact = data.interact.find(function (inter) { return inter.id === interactId; });
+            switch (interactId) {
+                case "sleep":
+                    goToSleep(interact.text, dialogElement);
+                    break;
+                default:
+                    returnString = interact.text;
+                    actions -= 1;
+            }
+            if (dialogElement && (interact === null || interact === void 0 ? void 0 : interact.text) && !(interactId == "sleep")) {
+                dialogElement.innerHTML = returnString;
+            }
+            UpdateStats();
+            return [2 /*return*/];
+        });
+    }); });
 }
 function getItem(string) {
     if (inventory.length < 7) {
@@ -337,7 +499,7 @@ function PopulateDropdown(parent, array) {
     for (var _i = 2; _i < arguments.length; _i++) {
         extraCss[_i - 2] = arguments[_i];
     }
-    if (parent) {
+    if (parent && array.length) {
         parent.replaceChildren();
         array.forEach(function (element) {
             var listElement = document.createElement("li");
