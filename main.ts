@@ -56,6 +56,10 @@ async function goToSleep(
   text: string,
   textElement: HTMLElement
 ): Promise<void> {
+  const audio: HTMLAudioElement = new Audio(
+    `mp3/sfx/sleep.mp3`
+  );
+  audio.play();
   for (let i = 0; i < 100; i += 5) {
     await sleep(30);
     transitionElement.style.opacity = `${i / 100}`;
@@ -79,6 +83,7 @@ async function goToSleep(
   }
   textElement.innerHTML = text;
   UpdateStats();
+  
 
   for (let j = 100; j > 0; j -= 5) {
     await sleep(30);
@@ -147,6 +152,29 @@ function setupEatButtons() {
       let index = inventory.indexOf(element.innerHTML);
       if (index > -1) {
         inventory.splice(index, 1);
+      }
+      switch (element.innerHTML) {
+        case "Raw Fish":
+          food += 15;
+          case "Raw Meat":
+            food += 20;
+          poisoned = true;
+          break;
+        case "Cooked Meat":
+          food += 60;
+          break;
+        case "Cooked Fish":
+          food +=50;
+          break;
+        case "Mushroom":
+          food += 35
+          case "Berry":
+          food += 25
+          poisoned = (randInt(1,100) > 70);
+          break;
+      
+        default:
+          break;
       }
       UpdateStats();
       let foodItems = getFoodItems(inventory);
@@ -246,7 +274,9 @@ async function getText(location: string): Promise<void> {
       updateDialogWithInteract(element.textContent!.replace(" ", "_"));
     });
   });
-
+  if (poisoned) {
+    health -= 5;
+  }
   UpdateStats();
 }
 
@@ -298,6 +328,7 @@ function updateDialogWithActivity(activityId: string): void {
           } else {
             returnString += activity.text.split("|")[2];
           }
+          
 
           break;
         case "hunt":
@@ -333,13 +364,19 @@ function updateDialogWithActivity(activityId: string): void {
           returnString = activity.text;
           break;
       }
-
+      const audio: HTMLAudioElement = new Audio(
+        `mp3/sfx/${activityId}.mp3`
+      );
+      audio.play();
       if (dialogElement && activity?.text) {
         dialogElement.innerHTML = returnString;
       }
       actions -= 1;
       food -= 10;
       water -= 5;
+      if (poisoned) {
+        health -= 5;
+      }
       UpdateStats();
     });
 }
@@ -364,6 +401,13 @@ function updateDialogWithInteract(interactId: string): void {
       if (dialogElement && interact?.text && !(interactId == "sleep")) {
         dialogElement.innerHTML = returnString;
       }
+      if (poisoned) {
+        health -= 5;
+      }
+      const audio: HTMLAudioElement = new Audio(
+        `mp3/sfx/${interactId}.mp3`
+      );
+      audio.play();
       UpdateStats();
     });
 }

@@ -130,10 +130,12 @@ function transition(location) {
 }
 function goToSleep(text, textElement) {
     return __awaiter(this, void 0, void 0, function () {
-        var _loop_3, i, recovered, _loop_4, j;
+        var audio, _loop_3, i, recovered, _loop_4, j;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    audio = new Audio("mp3/sfx/sleep.mp3");
+                    audio.play();
                     _loop_3 = function (i) {
                         return __generator(this, function (_b) {
                             switch (_b.label) {
@@ -251,6 +253,28 @@ function setupEatButtons() {
             if (index > -1) {
                 inventory.splice(index, 1);
             }
+            switch (element.innerHTML) {
+                case "Raw Fish":
+                    food += 15;
+                case "Raw Meat":
+                    food += 20;
+                    poisoned = true;
+                    break;
+                case "Cooked Meat":
+                    food += 60;
+                    break;
+                case "Cooked Fish":
+                    food += 50;
+                    break;
+                case "Mushroom":
+                    food += 35;
+                case "Berry":
+                    food += 25;
+                    poisoned = (randInt(1, 100) > 70);
+                    break;
+                default:
+                    break;
+            }
             UpdateStats();
             var foodItems = getFoodItems(inventory);
             if (foodItems.length) {
@@ -347,6 +371,9 @@ function getText(location) {
                             updateDialogWithInteract(element.textContent.replace(" ", "_"));
                         });
                     });
+                    if (poisoned) {
+                        health -= 5;
+                    }
                     UpdateStats();
                     return [2 /*return*/];
             }
@@ -432,12 +459,17 @@ function updateDialogWithActivity(activityId) {
                 returnString = activity.text;
                 break;
         }
+        var audio = new Audio("mp3/sfx/".concat(activityId, ".mp3"));
+        audio.play();
         if (dialogElement && (activity === null || activity === void 0 ? void 0 : activity.text)) {
             dialogElement.innerHTML = returnString;
         }
         actions -= 1;
         food -= 10;
         water -= 5;
+        if (poisoned) {
+            health -= 5;
+        }
         UpdateStats();
     });
 }
@@ -448,7 +480,7 @@ function updateDialogWithInteract(interactId) {
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
-        var data, interact, returnString;
+        var data, interact, returnString, audio;
         return __generator(this, function (_a) {
             data = json[currentLocation];
             interact = data.interact.find(function (inter) { return inter.id === interactId; });
@@ -463,6 +495,11 @@ function updateDialogWithInteract(interactId) {
             if (dialogElement && (interact === null || interact === void 0 ? void 0 : interact.text) && !(interactId == "sleep")) {
                 dialogElement.innerHTML = returnString;
             }
+            if (poisoned) {
+                health -= 5;
+            }
+            audio = new Audio("mp3/sfx/".concat(interactId, ".mp3"));
+            audio.play();
             UpdateStats();
             return [2 /*return*/];
         });
