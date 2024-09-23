@@ -241,11 +241,6 @@ function setupDiscardButtons() {
                 PopulateDropdown(discardElement, inventory, "discard-btn");
                 setupDiscardButtons();
             }
-            else {
-                document.querySelectorAll(".discard-menu").forEach(function (menu) {
-                    menu.style.display = "none";
-                });
-            }
         });
     });
 }
@@ -259,13 +254,22 @@ function setupEatButtons() {
             UpdateStats();
             var foodItems = getFoodItems(inventory);
             if (foodItems.length) {
-                PopulateDropdown(eatElement, foodItems, "eat-btn");
                 setupEatButtons();
             }
-            else {
-                document.querySelectorAll(".eat-menu").forEach(function (menu) {
-                    menu.style.display = "none";
-                });
+        });
+    });
+}
+function setupDrinkButtons() {
+    document.querySelectorAll(".drink-btn").forEach(function (element) {
+        element.addEventListener("click", function () {
+            var index = inventory.indexOf(element.innerHTML);
+            if (index > -1) {
+                inventory.splice(index, 1);
+            }
+            UpdateStats();
+            var drinkItems = getDrinkItems(inventory);
+            if (drinkItems.length) {
+                setupEatButtons();
             }
         });
     });
@@ -286,9 +290,21 @@ function isFood(item) {
 function getFoodItems(inventory) {
     return inventory.filter(isFood);
 }
+function isDrink(item) {
+    switch (item) {
+        case "Water":
+        case "Dirty Water":
+            return true;
+        default:
+            return false;
+    }
+}
+function getDrinkItems(inventory) {
+    return inventory.filter(isDrink);
+}
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, id, entry, activityIds, interactIds, foodItems;
+        var data, id, entry, activityIds, interactIds;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("./locations.json")
@@ -331,11 +347,6 @@ function getText(location) {
                             updateDialogWithInteract(element.textContent.replace(" ", "_"));
                         });
                     });
-                    PopulateDropdown(discardElement, inventory, "discard-btn");
-                    setupDiscardButtons();
-                    foodItems = getFoodItems(inventory);
-                    PopulateDropdown(eatElement, foodItems, "eat-btn");
-                    setupEatButtons();
                     UpdateStats();
                     return [2 /*return*/];
             }
@@ -350,9 +361,9 @@ function checkForItems() {
         bTags.forEach(function (element2) {
             if (element2.textContent == searchText2_1) {
                 found2_1 = element2;
+                found2_1.disabled = true;
             }
         });
-        found2_1.disabled = true;
     }
     if (!inventory.includes("Stone Axe")) {
         var aTags = document.querySelectorAll(".hunt-gather-btn");
@@ -361,9 +372,9 @@ function checkForItems() {
         aTags.forEach(function (element) {
             if (element.textContent == searchText_1) {
                 found_1 = element;
+                found_1.disabled = true;
             }
         });
-        found_1.disabled = true;
     }
 }
 function updateDialogWithActivity(activityId) {
@@ -413,8 +424,8 @@ function updateDialogWithActivity(activityId) {
                     returnString += activity.text.split("|")[1];
                     getItem("flare");
                 }
-                getItem("cooked_meat".replace("_", " "));
-                getItem("water");
+                getItem("Cooked_Meat".replace("_", " "));
+                getItem("Water");
                 break;
             default:
                 getItem(activityId.trim());
@@ -427,7 +438,6 @@ function updateDialogWithActivity(activityId) {
         actions -= 1;
         food -= 10;
         water -= 5;
-        PopulateDropdown(discardElement, inventory, "discard-btn");
         UpdateStats();
     });
 }
@@ -496,7 +506,13 @@ function UpdateStats() {
             .join(", ");
         itemElement.innerHTML = result;
         poisonElement.hidden = !poisoned;
+        PopulateDropdown(eatElement, getFoodItems(inventory), "eat-btn");
+        PopulateDropdown(drinkElement, getDrinkItems(inventory), "drink-btn");
+        PopulateDropdown(discardElement, inventory, "discard-btn");
         checkForItems();
+        setupDiscardButtons();
+        setupEatButtons();
+        setupDrinkButtons();
     }
 }
 function PopulateDropdown(parent, array) {
@@ -504,8 +520,8 @@ function PopulateDropdown(parent, array) {
     for (var _i = 2; _i < arguments.length; _i++) {
         extraCss[_i - 2] = arguments[_i];
     }
+    parent.replaceChildren();
     if (parent && array.length) {
-        parent.replaceChildren();
         array.forEach(function (element) {
             var listElement = document.createElement("li");
             listElement.className = "dropdown-item";

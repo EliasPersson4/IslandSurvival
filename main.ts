@@ -15,8 +15,7 @@ const travelElement: HTMLElement = document.querySelector(".travel-menu")!;
 const locationElement: HTMLElement = document.querySelector(".location")!;
 const audioElement: HTMLAudioElement = document.querySelector(".music")!;
 const interactElement: HTMLElement = document.querySelector(".interact-menu")!;
-const huntGatherElement: HTMLElement =
-  document.querySelector(".hunt-gather-menu")!;
+const huntGatherElement: HTMLElement = document.querySelector(".hunt-gather-menu")!;
 const dialogElement: HTMLElement = document.querySelector(".main-dialoge")!;
 const itemElement: HTMLElement = document.querySelector(".items")!;
 const transitionElement: HTMLElement = document.querySelector(".transition")!;
@@ -137,10 +136,6 @@ function setupDiscardButtons() {
       if (inventory.length) {
         PopulateDropdown(discardElement, inventory, "discard-btn");
         setupDiscardButtons();
-      } else {
-        document.querySelectorAll(".discard-menu").forEach((menu) => {
-          menu.style.display = "none";
-        });
       }
     });
   });
@@ -153,18 +148,28 @@ function setupEatButtons() {
       if (index > -1) {
         inventory.splice(index, 1);
       }
-
       UpdateStats();
       let foodItems = getFoodItems(inventory);
 
       if (foodItems.length) {
-        PopulateDropdown(eatElement, foodItems, "eat-btn");
         setupEatButtons();
-      } else {
-        document.querySelectorAll(".eat-menu").forEach((menu) => {
-          menu.style.display = "none";
-        });
+      } 
+    });
+  });
+}
+function setupDrinkButtons() {
+  document.querySelectorAll(".drink-btn").forEach((element) => {
+    element.addEventListener("click", function () {
+      let index = inventory.indexOf(element.innerHTML);
+      if (index > -1) {
+        inventory.splice(index, 1);
       }
+      UpdateStats();
+      let drinkItems = getDrinkItems(inventory);
+
+      if (drinkItems.length) {
+        setupEatButtons();
+      } 
     });
   });
 }
@@ -184,6 +189,19 @@ function isFood(item) {
 }
 function getFoodItems(inventory) {
   return inventory.filter(isFood);
+}
+
+function isDrink(item) {
+  switch (item) {
+    case "Water":
+    case "Dirty Water":
+      return true;
+    default:
+      return false;
+  }
+}
+function getDrinkItems(inventory) {
+  return inventory.filter(isDrink);
 }
 async function getText(location: string): Promise<void> {
   let data;
@@ -229,47 +247,36 @@ async function getText(location: string): Promise<void> {
     });
   });
 
-  PopulateDropdown(discardElement, inventory, "discard-btn");
-
-  setupDiscardButtons();
-
-  let foodItems = getFoodItems(inventory);
-  PopulateDropdown(eatElement, foodItems, "eat-btn");
-
-  setupEatButtons();
-
-UpdateStats()
+  UpdateStats();
 }
 
+function checkForItems() {
+  if (!inventory.includes("Campfire")) {
+    let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
+    let searchText2: string = "campfire";
+    let found2;
 
-function checkForItems(){
-    if (!inventory.includes("Campfire")) {
-        let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
-        let searchText2: string = "campfire";
-        let found2;
-      
-        bTags.forEach((element2) => {
-          if (element2.textContent == searchText2) {
-            found2 = element2;
-          }
-        });
+    bTags.forEach((element2) => {
+      if (element2.textContent == searchText2) {
+        found2 = element2;
         found2.disabled = true;
       }
-      if (!inventory.includes("Stone Axe")) {
-        let aTags: NodeListOf<Element> =
-          document.querySelectorAll(".hunt-gather-btn");
-        let searchText: string = "planks";
-        let found;
-      
-        aTags.forEach((element) => {
-          if (element.textContent == searchText) {
-            found = element;
-          }
-        });
+    });
+  }
+  if (!inventory.includes("Stone Axe")) {
+    let aTags: NodeListOf<Element> =
+      document.querySelectorAll(".hunt-gather-btn");
+    let searchText: string = "planks";
+    let found;
+
+    aTags.forEach((element) => {
+      if (element.textContent == searchText) {
+        found = element;
         found.disabled = true;
       }
+    });
+  }
 }
-
 
 function updateDialogWithActivity(activityId: string): void {
   if (!actions) return;
@@ -318,8 +325,8 @@ function updateDialogWithActivity(activityId: string): void {
             returnString += activity.text.split("|")[1];
             getItem("flare");
           }
-          getItem("cooked_meat".replace("_", " "));
-          getItem("water");
+          getItem("Cooked_Meat".replace("_", " "));
+          getItem("Water");
           break;
         default:
           getItem(activityId.trim());
@@ -333,7 +340,6 @@ function updateDialogWithActivity(activityId: string): void {
       actions -= 1;
       food -= 10;
       water -= 5;
-      PopulateDropdown(discardElement, inventory, "discard-btn");
       UpdateStats();
     });
 }
@@ -399,7 +405,13 @@ function UpdateStats(): void {
       .join(", ");
     itemElement.innerHTML = result;
     poisonElement.hidden = !poisoned;
-    checkForItems()
+    PopulateDropdown(eatElement, getFoodItems(inventory), "eat-btn");
+    PopulateDropdown(drinkElement, getDrinkItems(inventory), "drink-btn");
+    PopulateDropdown(discardElement, inventory, "discard-btn");
+    checkForItems();
+    setupDiscardButtons();
+    setupEatButtons();
+    setupDrinkButtons();
   }
 }
 
@@ -408,8 +420,8 @@ function PopulateDropdown(
   array: string[],
   ...extraCss: string[]
 ): void {
+  parent!.replaceChildren();
   if (parent && array.length) {
-    parent.replaceChildren();
     array.forEach((element) => {
       let listElement: HTMLElement = document.createElement("li");
       listElement.className = "dropdown-item";
