@@ -54,11 +54,11 @@ var huntGatherElement = document.querySelector(".hunt-gather-menu");
 var dialogElement = document.querySelector(".main-dialoge");
 var itemElement = document.querySelector(".items");
 var transitionElement = document.querySelector(".transition");
-var transHideElement = document.querySelectorAll(".trans-hidden");
-var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var discardElement = document.querySelector(".discard-menu");
 var eatElement = document.querySelector(".eat-menu");
 var drinkElement = document.querySelector(".drink-menu");
+var transHideElement = document.querySelectorAll(".trans-hidden");
+var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
 var inventory = ["Campfire", "Stone Axe"];
@@ -76,7 +76,7 @@ function transition(location) {
                                     _b.sent();
                                     transitionElement.style.opacity = "".concat(i / 100);
                                     transHideElement.forEach(function (element) {
-                                        element.style.opacity = "".concat(1 - (i / 100));
+                                        element.style.opacity = "".concat(1 - i / 100);
                                     });
                                     return [2 /*return*/];
                             }
@@ -106,7 +106,7 @@ function transition(location) {
                                     _c.sent();
                                     transitionElement.style.opacity = "".concat(j / 100);
                                     transHideElement.forEach(function (element) {
-                                        element.style.opacity = "".concat(1 - (j / 100));
+                                        element.style.opacity = "".concat(1 - j / 100);
                                     });
                                     return [2 /*return*/];
                             }
@@ -142,7 +142,7 @@ function goToSleep(text, textElement) {
                                     _b.sent();
                                     transitionElement.style.opacity = "".concat(i / 100);
                                     transHideElement.forEach(function (element) {
-                                        element.style.opacity = "".concat(1 - (i / 100));
+                                        element.style.opacity = "".concat(1 - i / 100);
                                     });
                                     return [2 /*return*/];
                             }
@@ -183,7 +183,7 @@ function goToSleep(text, textElement) {
                                     _c.sent();
                                     transitionElement.style.opacity = "".concat(j / 100);
                                     transHideElement.forEach(function (element) {
-                                        element.style.opacity = "".concat(1 - (j / 100));
+                                        element.style.opacity = "".concat(1 - j / 100);
                                     });
                                     return [2 /*return*/];
                             }
@@ -229,63 +229,65 @@ function Relocate(location) {
 function randInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function setupDiscardButtons() {
+    document.querySelectorAll(".discard-btn").forEach(function (element) {
+        element.addEventListener("click", function () {
+            var index = inventory.indexOf(element.innerHTML);
+            if (index > -1) {
+                inventory.splice(index, 1);
+            }
+            UpdateStats();
+            if (inventory.length) {
+                PopulateDropdown(discardElement, inventory, "discard-btn");
+                setupDiscardButtons();
+            }
+            else {
+                document.querySelectorAll(".discard-menu").forEach(function (menu) {
+                    menu.style.display = "none";
+                });
+            }
+        });
+    });
+}
+function setupEatButtons() {
+    document.querySelectorAll(".eat-btn").forEach(function (element) {
+        element.addEventListener("click", function () {
+            var index = inventory.indexOf(element.innerHTML);
+            if (index > -1) {
+                inventory.splice(index, 1);
+            }
+            UpdateStats();
+            var foodItems = getFoodItems(inventory);
+            if (foodItems.length) {
+                PopulateDropdown(eatElement, foodItems, "eat-btn");
+                setupEatButtons();
+            }
+            else {
+                document.querySelectorAll(".eat-menu").forEach(function (menu) {
+                    menu.style.display = "none";
+                });
+            }
+        });
+    });
+}
+function isFood(item) {
+    switch (item) {
+        case "Raw Meat":
+        case "Raw Fish":
+        case "Cooked Meat":
+        case "Cooked Fish":
+        case "Mushroom":
+        case "Berry":
+            return true;
+        default:
+            return false;
+    }
+}
+function getFoodItems(inventory) {
+    return inventory.filter(isFood);
+}
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
-        function setupDiscardButtons() {
-            document.querySelectorAll(".discard-btn").forEach(function (element) {
-                element.addEventListener("click", function () {
-                    var index = inventory.indexOf(element.innerHTML);
-                    if (index > -1) {
-                        inventory.splice(index, 1);
-                    }
-                    UpdateStats();
-                    if (inventory.length) {
-                        PopulateDropdown(discardElement, inventory, "discard-btn");
-                        setupDiscardButtons();
-                    }
-                    else {
-                        document.querySelectorAll(".discard-menu").forEach(function (menu) {
-                            menu.style.display = 'none';
-                        });
-                    }
-                });
-            });
-        }
-        function isFood(item) {
-            switch (item) {
-                case "raw meat":
-                case "Raw Fish":
-                case "cooked meat":
-                case "mushrom":
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        function getFoodItems(inventory) {
-            return inventory.filter(isFood);
-        }
-        function setupEatButtons() {
-            document.querySelectorAll(".eat-btn").forEach(function (element) {
-                element.addEventListener("click", function () {
-                    var index = inventory.indexOf(element.innerHTML);
-                    if (index > -1) {
-                        inventory.splice(index, 1);
-                    }
-                    UpdateStats();
-                    foodItems = getFoodItems(inventory);
-                    if (foodItems.length) {
-                        PopulateDropdown(eatElement, foodItems, "eat-btn");
-                        setupEatButtons();
-                    }
-                    else {
-                        document.querySelectorAll(".eat-menu").forEach(function (menu) {
-                            menu.style.display = 'none';
-                        });
-                    }
-                });
-            });
-        }
         var data, id, entry, activityIds, interactIds, foodItems;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -334,33 +336,35 @@ function getText(location) {
                     foodItems = getFoodItems(inventory);
                     PopulateDropdown(eatElement, foodItems, "eat-btn");
                     setupEatButtons();
+                    UpdateStats();
                     return [2 /*return*/];
             }
         });
     });
 }
-;
-if (!inventory.includes("Campfire")) {
-    var bTags = document.querySelectorAll(".interact-btn");
-    var searchText2_1 = "campfire";
-    var found2_1;
-    bTags.forEach(function (element2) {
-        if (element2.textContent == searchText2_1) {
-            found2_1 = element2;
-        }
-    });
-    found2_1.disabled = true;
-}
-if (!inventory.includes("Stone Axe")) {
-    var aTags = document.querySelectorAll(".hunt-gather-btn");
-    var searchText_1 = "planks";
-    var found_1;
-    aTags.forEach(function (element) {
-        if (element.textContent == searchText_1) {
-            found_1 = element;
-        }
-    });
-    found_1.disabled = true;
+function checkForItems() {
+    if (!inventory.includes("Campfire")) {
+        var bTags = document.querySelectorAll(".interact-btn");
+        var searchText2_1 = "campfire";
+        var found2_1;
+        bTags.forEach(function (element2) {
+            if (element2.textContent == searchText2_1) {
+                found2_1 = element2;
+            }
+        });
+        found2_1.disabled = true;
+    }
+    if (!inventory.includes("Stone Axe")) {
+        var aTags = document.querySelectorAll(".hunt-gather-btn");
+        var searchText_1 = "planks";
+        var found_1;
+        aTags.forEach(function (element) {
+            if (element.textContent == searchText_1) {
+                found_1 = element;
+            }
+        });
+        found_1.disabled = true;
+    }
 }
 function updateDialogWithActivity(activityId) {
     if (!actions)
@@ -389,7 +393,7 @@ function updateDialogWithActivity(activityId) {
                 rng = randInt(1, 100);
                 if (rng > 70) {
                     returnString += activity.text.split("|")[1];
-                    getItem("raw_meat".replace("_", " "));
+                    getItem("Raw_Meat".replace("_", " "));
                 }
                 else {
                     returnString += activity.text.split("|")[2];
@@ -492,6 +496,7 @@ function UpdateStats() {
             .join(", ");
         itemElement.innerHTML = result;
         poisonElement.hidden = !poisoned;
+        checkForItems();
     }
 }
 function PopulateDropdown(parent, array) {

@@ -15,16 +15,17 @@ const travelElement: HTMLElement = document.querySelector(".travel-menu")!;
 const locationElement: HTMLElement = document.querySelector(".location")!;
 const audioElement: HTMLAudioElement = document.querySelector(".music")!;
 const interactElement: HTMLElement = document.querySelector(".interact-menu")!;
-const huntGatherElement: HTMLElement = document.querySelector(".hunt-gather-menu")!;
+const huntGatherElement: HTMLElement =
+  document.querySelector(".hunt-gather-menu")!;
 const dialogElement: HTMLElement = document.querySelector(".main-dialoge")!;
 const itemElement: HTMLElement = document.querySelector(".items")!;
 const transitionElement: HTMLElement = document.querySelector(".transition")!;
-const transHideElement = document.querySelectorAll(".trans-hidden")
-
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 const discardElement: HTMLElement = document.querySelector(".discard-menu")!;
 const eatElement: HTMLElement = document.querySelector(".eat-menu")!;
 const drinkElement: HTMLElement = document.querySelector(".drink-menu")!;
+const transHideElement = document.querySelectorAll(".trans-hidden");
+
+const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 let visited: string[] = [];
 
@@ -32,59 +33,61 @@ let currentLocation: string = "beach";
 
 let inventory: string[] = ["Campfire", "Stone Axe"];
 
-async function transition(location:string): Promise<void>{
-    for (let i = 0; i < 100; i+=5) {
-        await sleep(30)
-        transitionElement.style.opacity = `${i/100}`
-        transHideElement.forEach(element => {
-            element.style.opacity = `${1-(i/100)}`
-         });
-    }
-    Relocate(location)
-    await sleep(200)
+async function transition(location: string): Promise<void> {
+  for (let i = 0; i < 100; i += 5) {
+    await sleep(30);
+    transitionElement.style.opacity = `${i / 100}`;
+    transHideElement.forEach((element) => {
+      element.style.opacity = `${1 - i / 100}`;
+    });
+  }
+  Relocate(location);
+  await sleep(200);
 
-    for (let j = 100; j > 0; j-=5) {
-        await sleep(30)
-        transitionElement.style.opacity = `${j/100}`
-        transHideElement.forEach(element => {
-            element.style.opacity = `${1-(j/100)}`
-         });
-    }
+  for (let j = 100; j > 0; j -= 5) {
+    await sleep(30);
+    transitionElement.style.opacity = `${j / 100}`;
+    transHideElement.forEach((element) => {
+      element.style.opacity = `${1 - j / 100}`;
+    });
+  }
 }
 
-async function goToSleep(text: string, textElement: HTMLElement): Promise<void> {
-    for (let i = 0; i < 100; i+=5) {
-        await sleep(30)
-        transitionElement.style.opacity = `${i/100}`
-        transHideElement.forEach(element => {
-            element.style.opacity = `${1-(i/100)}`
-         });
-    }
+async function goToSleep(
+  text: string,
+  textElement: HTMLElement
+): Promise<void> {
+  for (let i = 0; i < 100; i += 5) {
+    await sleep(30);
+    transitionElement.style.opacity = `${i / 100}`;
+    transHideElement.forEach((element) => {
+      element.style.opacity = `${1 - i / 100}`;
+    });
+  }
 
-    if (inventory.includes("sleeping bag")) {
-        actions = 6
-        text = text.replace("x", "all of your")
-    }
-    else{
-        let recovered = randInt(2,4) 
-        actions += recovered
-        text = text.replace("x", recovered.toString())
+  if (inventory.includes("sleeping bag")) {
+    actions = 6;
+    text = text.replace("x", "all of your");
+  } else {
+    let recovered = randInt(2, 4);
+    actions += recovered;
+    text = text.replace("x", recovered.toString());
 
-        if (actions >= 6){
-            text = text.replace(recovered.toString(), "all of your")
-            actions = 6
-        }
+    if (actions >= 6) {
+      text = text.replace(recovered.toString(), "all of your");
+      actions = 6;
     }
-    textElement.innerHTML = text
-    UpdateStats()
+  }
+  textElement.innerHTML = text;
+  UpdateStats();
 
-    for (let j = 100; j > 0; j-=5) {
-        await sleep(30)
-        transitionElement.style.opacity = `${j/100}`
-        transHideElement.forEach(element => {
-            element.style.opacity = `${1-(j/100)}`
-        });
-    }
+  for (let j = 100; j > 0; j -= 5) {
+    await sleep(30);
+    transitionElement.style.opacity = `${j / 100}`;
+    transHideElement.forEach((element) => {
+      element.style.opacity = `${1 - j / 100}`;
+    });
+  }
 }
 
 function Relocate(location: string): void {
@@ -109,19 +112,79 @@ function Relocate(location: string): void {
   currentLocation = location;
 
   getText(location.replace(" ", "_"));
-  if(visited.length){
-      actions -= 1;
-      food -= 5;
-      water -= 10;
-    }
+  if (visited.length) {
+    actions -= 1;
+    food -= 5;
+    water -= 10;
+  }
   UpdateStats();
-
 }
 
 function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function setupDiscardButtons() {
+  document.querySelectorAll(".discard-btn").forEach((element) => {
+    element.addEventListener("click", function () {
+      let index = inventory.indexOf(element.innerHTML);
+      if (index > -1) {
+        inventory.splice(index, 1);
+      }
+
+      UpdateStats();
+
+      if (inventory.length) {
+        PopulateDropdown(discardElement, inventory, "discard-btn");
+        setupDiscardButtons();
+      } else {
+        document.querySelectorAll(".discard-menu").forEach((menu) => {
+          menu.style.display = "none";
+        });
+      }
+    });
+  });
+}
+
+function setupEatButtons() {
+  document.querySelectorAll(".eat-btn").forEach((element) => {
+    element.addEventListener("click", function () {
+      let index = inventory.indexOf(element.innerHTML);
+      if (index > -1) {
+        inventory.splice(index, 1);
+      }
+
+      UpdateStats();
+      let foodItems = getFoodItems(inventory);
+
+      if (foodItems.length) {
+        PopulateDropdown(eatElement, foodItems, "eat-btn");
+        setupEatButtons();
+      } else {
+        document.querySelectorAll(".eat-menu").forEach((menu) => {
+          menu.style.display = "none";
+        });
+      }
+    });
+  });
+}
+
+function isFood(item) {
+  switch (item) {
+    case "Raw Meat":
+    case "Raw Fish":
+    case "Cooked Meat":
+    case "Cooked Fish":
+    case "Mushroom":
+    case "Berry":
+      return true;
+    default:
+      return false;
+  }
+}
+function getFoodItems(inventory) {
+  return inventory.filter(isFood);
+}
 async function getText(location: string): Promise<void> {
   let data;
   await fetch("./locations.json")
@@ -168,100 +231,44 @@ async function getText(location: string): Promise<void> {
 
   PopulateDropdown(discardElement, inventory, "discard-btn");
 
-function setupDiscardButtons() {
-  document.querySelectorAll(".discard-btn").forEach((element) => {
-    element.addEventListener("click", function () {
-      let index = inventory.indexOf(element.innerHTML);
-      if (index > -1) {
-        inventory.splice(index, 1); 
-      }
+  setupDiscardButtons();
 
-      UpdateStats(); 
+  let foodItems = getFoodItems(inventory);
+  PopulateDropdown(eatElement, foodItems, "eat-btn");
 
-      if (inventory.length) {
-        PopulateDropdown(discardElement, inventory, "discard-btn");
-        setupDiscardButtons();
-      } else {
-        document.querySelectorAll(".discard-menu").forEach(menu => {
-          menu.style.display = 'none'; 
+  setupEatButtons();
+
+UpdateStats()
+}
+
+
+function checkForItems(){
+    if (!inventory.includes("Campfire")) {
+        let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
+        let searchText2: string = "campfire";
+        let found2;
+      
+        bTags.forEach((element2) => {
+          if (element2.textContent == searchText2) {
+            found2 = element2;
+          }
         });
+        found2.disabled = true;
       }
-    });
-  });
-}
-
-setupDiscardButtons();
-function isFood(item) {
-  switch (item) {
-    case "raw meat":
-    case "Raw Fish":
-    case "cooked meat":
-    case "mushrom":
-      return true; 
-    default:
-      return false;
-  }
-}
-
-function getFoodItems(inventory) {
-  return inventory.filter(isFood);
-}
-let foodItems = getFoodItems(inventory);
-PopulateDropdown(eatElement, foodItems, "eat-btn");
-
-function setupEatButtons() {
-  document.querySelectorAll(".eat-btn").forEach((element) => {
-    element.addEventListener("click", function () {
-      let index = inventory.indexOf(element.innerHTML);
-      if (index > -1) {
-        inventory.splice(index, 1); 
-      }
-
-      UpdateStats(); 
-      foodItems = getFoodItems(inventory);
-
-      if (foodItems.length) {
-        PopulateDropdown(eatElement, foodItems, "eat-btn");
-        setupEatButtons();
-      } else {
-        document.querySelectorAll(".eat-menu").forEach(menu => {
-          menu.style.display = 'none'; 
+      if (!inventory.includes("Stone Axe")) {
+        let aTags: NodeListOf<Element> =
+          document.querySelectorAll(".hunt-gather-btn");
+        let searchText: string = "planks";
+        let found;
+      
+        aTags.forEach((element) => {
+          if (element.textContent == searchText) {
+            found = element;
+          }
         });
+        found.disabled = true;
       }
-    });
-  });
 }
-
-setupEatButtons();
-
-};
-
-  
-  if (!inventory.includes("Campfire")) {
-    let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
-    let searchText2: string = "campfire";
-    let found2;
-
-    bTags.forEach((element2) => {
-      if (element2.textContent == searchText2) {
-        found2 = element2;
-    }
-});
-found2.disabled = true;
-  }
-  if (!inventory.includes("Stone Axe")) {
-    let aTags: NodeListOf<Element> = document.querySelectorAll(".hunt-gather-btn");
-    let searchText: string = "planks";
-    let found;
-  
-    aTags.forEach((element) => {
-      if (element.textContent == searchText) {
-        found = element;
-      }
-    });
-    found.disabled = true;
-  }
-
 
 
 function updateDialogWithActivity(activityId: string): void {
@@ -292,7 +299,7 @@ function updateDialogWithActivity(activityId: string): void {
 
           if (rng > 70) {
             returnString += activity.text.split("|")[1];
-            getItem("raw_meat".replace("_", " "));
+            getItem("Raw_Meat".replace("_", " "));
           } else {
             returnString += activity.text.split("|")[2];
           }
@@ -326,7 +333,7 @@ function updateDialogWithActivity(activityId: string): void {
       actions -= 1;
       food -= 10;
       water -= 5;
-      PopulateDropdown(discardElement, inventory, "discard-btn");    
+      PopulateDropdown(discardElement, inventory, "discard-btn");
       UpdateStats();
     });
 }
@@ -338,22 +345,20 @@ function updateDialogWithInteract(interactId: string): void {
     .then(async (json) => {
       const data = json[currentLocation];
       const interact = data.interact.find((inter) => inter.id === interactId);
-      let returnString
-      switch(interactId){
+      let returnString;
+      switch (interactId) {
         case "sleep":
-            goToSleep(interact.text, dialogElement)
-            break
+          goToSleep(interact.text, dialogElement);
+          break;
         default:
-            returnString = interact.text
-            actions -= 1
+          returnString = interact.text;
+          actions -= 1;
       }
-      
-      
-      
+
       if (dialogElement && interact?.text && !(interactId == "sleep")) {
         dialogElement.innerHTML = returnString;
       }
-      UpdateStats()
+      UpdateStats();
     });
 }
 
@@ -393,7 +398,8 @@ function UpdateStats(): void {
       .map(([key, value]) => `${key}: ${value}`)
       .join(", ");
     itemElement.innerHTML = result;
-    poisonElement.hidden = !poisoned
+    poisonElement.hidden = !poisoned;
+    checkForItems()
   }
 }
 
