@@ -18,6 +18,9 @@ const interactElement: HTMLElement = document.querySelector(".interact-menu")!;
 const huntGatherElement: HTMLElement = document.querySelector(".hunt-gather-menu")!;
 const dialogElement: HTMLElement = document.querySelector(".main-dialoge")!;
 const itemElement: HTMLElement = document.querySelector(".items")!;
+const discardElement: HTMLElement = document.querySelector(".discard-menu")!;
+const eatElement: HTMLElement = document.querySelector(".eat-menu")!;
+const drinkElement: HTMLElement = document.querySelector(".drink-menu")!;
 
 let visited: string[] = [];
 
@@ -103,6 +106,76 @@ async function getText(location: string): Promise<void> {
     });
   });
 
+  PopulateDropdown(discardElement, inventory, "discard-btn");
+
+function setupDiscardButtons() {
+  document.querySelectorAll(".discard-btn").forEach((element) => {
+    element.addEventListener("click", function () {
+      let index = inventory.indexOf(element.innerHTML);
+      if (index > -1) {
+        inventory.splice(index, 1); 
+      }
+
+      UpdateStats(); 
+
+      if (inventory.length) {
+        PopulateDropdown(discardElement, inventory, "discard-btn");
+        setupDiscardButtons();
+      } else {
+        document.querySelectorAll(".discard-menu").forEach(menu => {
+          menu.style.display = 'none'; 
+        });
+      }
+    });
+  });
+}
+
+setupDiscardButtons();
+function isFood(item) {
+  switch (item) {
+    case "raw meat":
+    case "Raw Fish":
+    case "cooked meat":
+    case "mushrom":
+      return true; 
+    default:
+      return false;
+  }
+}
+
+function getFoodItems(inventory) {
+  return inventory.filter(isFood);
+}
+let foodItems = getFoodItems(inventory);
+PopulateDropdown(eatElement, foodItems, "eat-btn");
+
+function setupEatButtons() {
+  document.querySelectorAll(".eat-btn").forEach((element) => {
+    element.addEventListener("click", function () {
+      let index = inventory.indexOf(element.innerHTML);
+      if (index > -1) {
+        inventory.splice(index, 1); 
+      }
+
+      UpdateStats(); 
+      foodItems = getFoodItems(inventory);
+
+      if (foodItems.length) {
+        PopulateDropdown(eatElement, foodItems, "eat-btn");
+        setupEatButtons();
+      } else {
+        document.querySelectorAll(".eat-menu").forEach(menu => {
+          menu.style.display = 'none'; 
+        });
+      }
+    });
+  });
+}
+
+setupEatButtons();
+
+};
+
   
   if (!inventory.includes("Campfire")) {
     let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
@@ -128,7 +201,7 @@ found2.disabled = true;
     });
     found.disabled = true;
   }
-}
+
 
 
 function updateDialogWithActivity(activityId: string): void {
@@ -141,13 +214,13 @@ function updateDialogWithActivity(activityId: string): void {
       let rng: number;
       let returnString: string = "";
       switch (activityId) {
-        case "fish":
+        case "Fish":
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
 
           if (rng > 50) {
             returnString += activity.text.split("|")[1];
-            getItem(("raw_" + activityId).replace("_", " "));
+            getItem(("Raw_" + activityId).replace("_", " "));
           } else {
             returnString += activity.text.split("|")[2];
           }
@@ -193,6 +266,7 @@ function updateDialogWithActivity(activityId: string): void {
       actions -= 1;
       food -= 10;
       water -= 5;
+      PopulateDropdown(discardElement, inventory, "discard-btn");    
       UpdateStats();
     });
 }

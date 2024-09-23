@@ -53,6 +53,9 @@ var interactElement = document.querySelector(".interact-menu");
 var huntGatherElement = document.querySelector(".hunt-gather-menu");
 var dialogElement = document.querySelector(".main-dialoge");
 var itemElement = document.querySelector(".items");
+var discardElement = document.querySelector(".discard-menu");
+var eatElement = document.querySelector(".eat-menu");
+var drinkElement = document.querySelector(".drink-menu");
 var visited = [];
 var currentLocation = "beach";
 var inventory = ["Campfire", "Stone Axe"];
@@ -80,7 +83,62 @@ function randInt(min, max) {
 }
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, id, entry, activityIds, interactIds, bTags, searchText2_1, found2_1, aTags, searchText_1, found_1;
+        function setupDiscardButtons() {
+            document.querySelectorAll(".discard-btn").forEach(function (element) {
+                element.addEventListener("click", function () {
+                    var index = inventory.indexOf(element.innerHTML);
+                    if (index > -1) {
+                        inventory.splice(index, 1);
+                    }
+                    UpdateStats();
+                    if (inventory.length) {
+                        PopulateDropdown(discardElement, inventory, "discard-btn");
+                        setupDiscardButtons();
+                    }
+                    else {
+                        document.querySelectorAll(".discard-menu").forEach(function (menu) {
+                            menu.style.display = 'none';
+                        });
+                    }
+                });
+            });
+        }
+        function isFood(item) {
+            switch (item) {
+                case "raw meat":
+                case "Raw Fish":
+                case "cooked meat":
+                case "mushrom":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        function getFoodItems(inventory) {
+            return inventory.filter(isFood);
+        }
+        function setupEatButtons() {
+            document.querySelectorAll(".eat-btn").forEach(function (element) {
+                element.addEventListener("click", function () {
+                    var index = inventory.indexOf(element.innerHTML);
+                    if (index > -1) {
+                        inventory.splice(index, 1);
+                    }
+                    UpdateStats();
+                    foodItems = getFoodItems(inventory);
+                    if (foodItems.length) {
+                        PopulateDropdown(eatElement, foodItems, "eat-btn");
+                        setupEatButtons();
+                    }
+                    else {
+                        document.querySelectorAll(".eat-menu").forEach(function (menu) {
+                            menu.style.display = 'none';
+                        });
+                    }
+                });
+            });
+        }
+        var data, id, entry, activityIds, interactIds, foodItems;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch("./locations.json")
@@ -123,44 +181,38 @@ function getText(location) {
                             updateDialogWithInteract(element.textContent.replace(" ", "_"));
                         });
                     });
-                    if (!inventory.includes("Campfire")) {
-                        bTags = document.querySelectorAll(".interact-btn");
-                        searchText2_1 = "campfire";
-                        bTags.forEach(function (element2) {
-                            if (element2.textContent == searchText2_1) {
-                                found2_1 = element2;
-                            }
-                        });
-                        found2_1.disabled = true;
-                    }
-                    if (!inventory.includes("Stone Axe")) {
-                        aTags = document.querySelectorAll(".hunt-gather-btn");
-                        searchText = "planks";
-                        found = void 0;
-                        for (i = 0; i < aTags.length; i++) {
-                            if (aTags[i].textContent == searchText) {
-                                found = aTags[i];
-                                break;
-                            }
-                        }
-                        found.disabled = true;
-                    }
-                    if (!inventory.includes("Campfire")) {
-                        aTags = document.querySelectorAll(".interact-btn");
-                        searchText = "use campfire";
-                        found = void 0;
-                        for (i = 0; i < aTags.length; i++) {
-                            if (aTags[i].textContent == searchText) {
-                                found = aTags[i];
-                                break;
-                            }
-                        }
-                        found.disabled = true;
-                    }
+                    PopulateDropdown(discardElement, inventory, "discard-btn");
+                    setupDiscardButtons();
+                    foodItems = getFoodItems(inventory);
+                    PopulateDropdown(eatElement, foodItems, "eat-btn");
+                    setupEatButtons();
                     return [2 /*return*/];
             }
         });
     });
+}
+;
+if (!inventory.includes("Campfire")) {
+    var bTags = document.querySelectorAll(".interact-btn");
+    var searchText2_1 = "campfire";
+    var found2_1;
+    bTags.forEach(function (element2) {
+        if (element2.textContent == searchText2_1) {
+            found2_1 = element2;
+        }
+    });
+    found2_1.disabled = true;
+}
+if (!inventory.includes("Stone Axe")) {
+    var aTags = document.querySelectorAll(".hunt-gather-btn");
+    var searchText_1 = "planks";
+    var found_1;
+    aTags.forEach(function (element) {
+        if (element.textContent == searchText_1) {
+            found_1 = element;
+        }
+    });
+    found_1.disabled = true;
 }
 function updateDialogWithActivity(activityId) {
     if (!actions)
@@ -173,12 +225,12 @@ function updateDialogWithActivity(activityId) {
         var rng;
         var returnString = "";
         switch (activityId) {
-            case "fish":
+            case "Fish":
                 returnString += activity.text.split("|")[0];
                 rng = randInt(1, 100);
                 if (rng > 50) {
                     returnString += activity.text.split("|")[1];
-                    getItem(("raw_" + activityId).replace("_", " "));
+                    getItem(("Raw_" + activityId).replace("_", " "));
                 }
                 else {
                     returnString += activity.text.split("|")[2];
@@ -223,6 +275,7 @@ function updateDialogWithActivity(activityId) {
         actions -= 1;
         food -= 10;
         water -= 5;
+        PopulateDropdown(discardElement, inventory, "discard-btn");
         UpdateStats();
     });
 }

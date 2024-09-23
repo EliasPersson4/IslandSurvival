@@ -21,7 +21,7 @@
     "connections": ["shipwreck", "forest"],
     "activities": [
       {
-        "id": "fish",
+        "id": "Fish",
         "text": "You walked up to the sea and started fishing. |You felt the fishing rod moving and pulled, you got a fish. |You sat there for what felt like hours but nothing, you walked back in disappointment."
       },
       {
