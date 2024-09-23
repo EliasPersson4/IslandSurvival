@@ -3,11 +3,11 @@ const bgElement: HTMLElement = document.querySelector(".bg")!;
 const healthElement: HTMLElement = document.querySelector(".health")!;
 let health: number = 90;
 const foodElement: HTMLElement = document.querySelector(".food")!;
-let food: number = 105;
+let food: number = 100;
 const waterElement: HTMLElement = document.querySelector(".water")!;
-let water: number = 70;
+let water: number = 60;
 const actionsElement: HTMLElement = document.querySelector(".actions")!;
-let actions: number = 7;
+let actions: number = 6;
 const poisonElement: HTMLElement = document.querySelector(".poisoned")!;
 let poisoned: boolean = false;
 
@@ -106,9 +106,11 @@ function Relocate(location: string): void {
   currentLocation = location;
 
   getText(location.replace(" ", "_"));
-  actions -= 1;
-  food -= 5;
-  water -= 10;
+  if(visited.length){
+      actions -= 1;
+      food -= 5;
+      water -= 10;
+    }
   UpdateStats();
 
 }
@@ -326,7 +328,7 @@ function PopulateDropdown(
   array: string[],
   ...extraCss: string[]
 ): void {
-  if (parent) {
+  if (parent && array.length) {
     parent.replaceChildren();
     array.forEach((element) => {
       let listElement: HTMLElement = document.createElement("li");

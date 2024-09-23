@@ -39,11 +39,11 @@ var bgElement = document.querySelector(".bg");
 var healthElement = document.querySelector(".health");
 var health = 90;
 var foodElement = document.querySelector(".food");
-var food = 105;
+var food = 100;
 var waterElement = document.querySelector(".water");
-var water = 70;
+var water = 60;
 var actionsElement = document.querySelector(".actions");
-var actions = 7;
+var actions = 6;
 var poisonElement = document.querySelector(".poisoned");
 var poisoned = false;
 var travelElement = document.querySelector(".travel-menu");
@@ -216,9 +216,11 @@ function Relocate(location) {
     }
     currentLocation = location;
     getText(location.replace(" ", "_"));
-    actions -= 1;
-    food -= 5;
-    water -= 10;
+    if (visited.length) {
+        actions -= 1;
+        food -= 5;
+        water -= 10;
+    }
     UpdateStats();
 }
 function randInt(min, max) {
@@ -430,7 +432,7 @@ function PopulateDropdown(parent, array) {
     for (var _i = 2; _i < arguments.length; _i++) {
         extraCss[_i - 2] = arguments[_i];
     }
-    if (parent) {
+    if (parent && array.length) {
         parent.replaceChildren();
         array.forEach(function (element) {
             var listElement = document.createElement("li");
