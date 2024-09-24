@@ -617,9 +617,18 @@ function updateDialogWithInteract(interactId) {
                         ruins = randInt(0, 1);
                         if (ruins) {
                             ruinsFound = true;
+                            PopulateDropdown(travelElement, data.connections, "travel-btn");
+                            document.querySelectorAll(".travel-btn").forEach(function (element) {
+                                element.addEventListener("click", function () {
+                                    transition(element.textContent.trim());
+                                });
+                            });
+                            returnString = "While investegating you found a hidden stone path";
+                        }
+                        else {
+                            returnString = interact.text;
                         }
                     }
-                    returnString = interact.text;
                     break;
                 default:
                     returnString = interact.text;
@@ -698,7 +707,7 @@ function PopulateDropdown(parent, array) {
             var buttonElement = document.createElement("button");
             buttonElement.textContent = element.replace("_", " ");
             buttonElement.className = "btn btn-secondary w-100 ".concat(extraCss.join(" "));
-            if (buttonElement.textContent == "ruins" && ) {
+            if (buttonElement.textContent == "ruins" && !ruinsFound) {
                 buttonElement.hidden = true;
             }
             listElement.appendChild(buttonElement);
