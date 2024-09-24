@@ -15,7 +15,8 @@ const travelElement: HTMLElement = document.querySelector(".travel-menu")!;
 const locationElement: HTMLElement = document.querySelector(".location")!;
 const audioElement: HTMLAudioElement = document.querySelector(".music")!;
 const interactElement: HTMLElement = document.querySelector(".interact-menu")!;
-const huntGatherElement: HTMLElement = document.querySelector(".hunt-gather-menu")!;
+const huntGatherElement: HTMLElement =
+  document.querySelector(".hunt-gather-menu")!;
 const dialogElement: HTMLElement = document.querySelector(".main-dialoge")!;
 const itemElement: HTMLElement = document.querySelector(".items")!;
 const transitionElement: HTMLElement = document.querySelector(".transition")!;
@@ -65,6 +66,8 @@ async function goToSleep(
   text: string,
   textElement: HTMLElement
 ): Promise<void> {
+  const audio: HTMLAudioElement = new Audio(`mp3/sfx/sleep.mp3`);
+  audio.play();
   for (let i = 0; i < 100; i += 5) {
     await sleep(30);
     transitionElement.style.opacity = `${i / 100}`;
@@ -157,12 +160,35 @@ function setupEatButtons() {
       if (index > -1) {
         inventory.splice(index, 1);
       }
+      switch (element.innerHTML) {
+        case "Raw Fish":
+          food += 15;
+        case "Raw Meat":
+          food += 20;
+          poisoned = true;
+          break;
+        case "Cooked Meat":
+          food += 60;
+          break;
+        case "Cooked Fish":
+          food += 50;
+          break;
+        case "Mushroom":
+          food += 35;
+        case "Berry":
+          food += 25;
+          poisoned = randInt(1, 100) > 70;
+          break;
+
+        default:
+          break;
+      }
       UpdateStats();
       let foodItems = getFoodItems(inventory);
 
       if (foodItems.length) {
         setupEatButtons();
-      } 
+      }
     });
   });
 }
@@ -178,7 +204,7 @@ function setupDrinkButtons() {
 
       if (drinkItems.length) {
         setupEatButtons();
-      } 
+      }
     });
   });
 }
@@ -212,6 +238,49 @@ function isDrink(item) {
 function getDrinkItems(inventory) {
   return inventory.filter(isDrink);
 }
+
+const recipes = {
+'spear': ['stick', 'stone', 'twine'],
+'fishing rod': ['stick', 'twine'],
+'stone axe': ['stick', 'stone'],
+'campfire': ['stick', 'stone'],
+'sleeping bag': ['twine', `leather`]
+};
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(1)')!.addEventListener('click', () => {
+craftItem('spear');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(2)')!.addEventListener('click', () => {
+craftItem('fishing rod');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(3)')!.addEventListener('click', () => {
+craftItem('stone axe');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(4)')!.addEventListener('click', () => {
+craftItem('campfire');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(5)')!.addEventListener('click', () => {
+craftItem('sleeping bag');
+});
+
+function craftItem(itemName) {
+const recipe = recipes[itemName];
+
+if (recipe.every(material => inventory.includes(material))) {
+  recipe.forEach(material => inventory.splice(inventory.indexOf(material)))
+
+  getItem(itemName);
+
+  document.querySelector('.main-dialoge')!.textContent = `You have crafted a ${itemName}!`;
+} else {
+  document.querySelector('.main-dialoge')!.textContent = `You don't have the necessary materials to craft a ${itemName}.`;
+}
+}
+
 async function getText(location: string): Promise<void> {
   let data;
   await fetch("./locations.json")
@@ -255,7 +324,9 @@ async function getText(location: string): Promise<void> {
       updateDialogWithInteract(element.textContent!.replace(" ", "_"));
     });
   });
-
+  if (poisoned) {
+    health -= 5;
+  }
   UpdateStats();
 }
 
@@ -342,13 +413,17 @@ function updateDialogWithActivity(activityId: string): void {
           returnString = activity.text;
           break;
       }
-
+      const audio: HTMLAudioElement = new Audio(`mp3/sfx/${activityId}.mp3`);
+      audio.play();
       if (dialogElement && activity?.text) {
         dialogElement.innerHTML = returnString;
       }
       actions -= 1;
       food -= 10;
       water -= 5;
+      if (poisoned) {
+        health -= 5;
+      }
       UpdateStats();
     });
 }
@@ -373,6 +448,11 @@ function updateDialogWithInteract(interactId: string): void {
       if (dialogElement && interact?.text && !(interactId == "sleep")) {
         dialogElement.innerHTML = returnString;
       }
+      if (poisoned) {
+        health -= 5;
+      }
+      const audio: HTMLAudioElement = new Audio(`mp3/sfx/${interactId}.mp3`);
+      audio.play();
       UpdateStats();
     });
 }
