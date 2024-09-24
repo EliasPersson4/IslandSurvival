@@ -31,7 +31,7 @@ let visited: string[] = [];
 
 let currentLocation: string = "beach";
 
-let inventory: string[] = ["Campfire", "Stone Axe"];
+let inventory: string[] = [];
 
 async function transition(location: string): Promise<void> {
   for (let i = 0; i < 100; i += 5) {
@@ -58,8 +58,8 @@ function canCraft(recipe: string[]): boolean{
         if(!inventory.includes(element)){
             return false
         }
-        return true
     });
+    return true
 }
 
 async function goToSleep(
@@ -76,7 +76,7 @@ async function goToSleep(
     });
   }
 
-  if (inventory.includes("sleeping bag")) {
+  if (inventory.includes("Sleeping Bag")) {
     actions = 6;
     text = text.replace("x", "all of your");
   } else {
@@ -240,37 +240,23 @@ function getDrinkItems(inventory) {
 }
 
 const recipes = {
-'spear': ['stick', 'stone', 'twine'],
-'fishing rod': ['stick', 'twine'],
-'stone axe': ['stick', 'stone'],
-'campfire': ['stick', 'stone'],
-'sleeping bag': ['twine', `leather`]
+'Spear': ['Sticks', 'Stone', 'Twine'],
+'Fishing Rod': ['Sticks', 'Twine'],
+'Stone Axe': ['Sticks', 'Stone'],
+'Campfire': ['Sticks', 'Stone'],
+'Sleeping Bag': ['Twine', 'Leather']
 };
 
-document.querySelector('.crafting-list .btn-secondary:nth-child(1)')!.addEventListener('click', () => {
-craftItem('spear');
-});
-
-document.querySelector('.crafting-list .btn-secondary:nth-child(2)')!.addEventListener('click', () => {
-craftItem('fishing rod');
-});
-
-document.querySelector('.crafting-list .btn-secondary:nth-child(3)')!.addEventListener('click', () => {
-craftItem('stone axe');
-});
-
-document.querySelector('.crafting-list .btn-secondary:nth-child(4)')!.addEventListener('click', () => {
-craftItem('campfire');
-});
-
-document.querySelector('.crafting-list .btn-secondary:nth-child(5)')!.addEventListener('click', () => {
-craftItem('sleeping bag');
+document.querySelectorAll('.crafting')!.forEach(element => {
+   element.addEventListener("click", function(){
+    craftItem(element.innerHTML)
+   }) 
 });
 
 function craftItem(itemName) {
 const recipe = recipes[itemName];
 
-if (recipe.every(material => inventory.includes(material))) {
+if (canCraft(recipe)) {
   recipe.forEach(material => inventory.splice(inventory.indexOf(material)))
 
   getItem(itemName);
@@ -367,8 +353,9 @@ function updateDialogWithActivity(activityId: string): void {
       const activity = data.activities.find((act) => act.id === activityId);
       let rng: number;
       let returnString: string = "";
+      
       switch (activityId) {
-        case "Fish":
+        case "fish":
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
 
@@ -393,9 +380,11 @@ function updateDialogWithActivity(activityId: string): void {
           break;
         case "sticks":
         case "twine":
+            let text = activityId[0].toUpperCase()+activityId.slice(1)
+
           let amount: number = randInt(1, 3);
           for (let i = 0; i < amount; i++) {
-            getItem(activityId.trim());
+            getItem(text.trim());
           }
           returnString = activity.text.replace("x", amount);
           break;
@@ -408,6 +397,10 @@ function updateDialogWithActivity(activityId: string): void {
           getItem("Cooked_Meat".replace("_", " "));
           getItem("Water");
           break;
+          case "stone":
+            getItem("Stone")
+            returnString = activity.text;
+            break
         default:
           getItem(activityId.trim());
           returnString = activity.text;

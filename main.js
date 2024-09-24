@@ -61,7 +61,7 @@ var transHideElement = document.querySelectorAll(".trans-hidden");
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
-var inventory = ["Campfire", "Stone Axe"];
+var inventory = [];
 function transition(location) {
     return __awaiter(this, void 0, void 0, function () {
         var _loop_1, i, _loop_2, j;
@@ -133,8 +133,8 @@ function canCraft(recipe) {
         if (!inventory.includes(element)) {
             return false;
         }
-        return true;
     });
+    return true;
 }
 function goToSleep(text, textElement) {
     return __awaiter(this, void 0, void 0, function () {
@@ -170,7 +170,7 @@ function goToSleep(text, textElement) {
                     i += 5;
                     return [3 /*break*/, 1];
                 case 4:
-                    if (inventory.includes("sleeping bag")) {
+                    if (inventory.includes("Sleeping Bag")) {
                         actions = 6;
                         text = text.replace("x", "all of your");
                     }
@@ -335,30 +335,20 @@ function getDrinkItems(inventory) {
     return inventory.filter(isDrink);
 }
 var recipes = {
-    'spear': ['stick', 'stone', 'twine'],
-    'fishing rod': ['stick', 'twine'],
-    'stone axe': ['stick', 'stone'],
-    'campfire': ['stick', 'stone'],
-    'sleeping bag': ['twine', "leather"]
+    'Spear': ['Sticks', 'Stone', 'Twine'],
+    'Fishing Rod': ['Sticks', 'Twine'],
+    'Stone Axe': ['Sticks', 'Stone'],
+    'Campfire': ['Sticks', 'Stone'],
+    'Sleeping Bag': ['Twine', 'Leather']
 };
-document.querySelector('.crafting-list .btn-secondary:nth-child(1)').addEventListener('click', function () {
-    craftItem('spear');
-});
-document.querySelector('.crafting-list .btn-secondary:nth-child(2)').addEventListener('click', function () {
-    craftItem('fishing rod');
-});
-document.querySelector('.crafting-list .btn-secondary:nth-child(3)').addEventListener('click', function () {
-    craftItem('stone axe');
-});
-document.querySelector('.crafting-list .btn-secondary:nth-child(4)').addEventListener('click', function () {
-    craftItem('campfire');
-});
-document.querySelector('.crafting-list .btn-secondary:nth-child(5)').addEventListener('click', function () {
-    craftItem('sleeping bag');
+document.querySelectorAll('.crafting').forEach(function (element) {
+    element.addEventListener("click", function () {
+        craftItem(element.innerHTML);
+    });
 });
 function craftItem(itemName) {
     var recipe = recipes[itemName];
-    if (recipe.every(function (material) { return inventory.includes(material); })) {
+    if (canCraft(recipe)) {
         recipe.forEach(function (material) { return inventory.splice(inventory.indexOf(material)); });
         getItem(itemName);
         document.querySelector('.main-dialoge').textContent = "You have crafted a ".concat(itemName, "!");
@@ -456,7 +446,7 @@ function updateDialogWithActivity(activityId) {
         var rng;
         var returnString = "";
         switch (activityId) {
-            case "Fish":
+            case "fish":
                 returnString += activity.text.split("|")[0];
                 rng = randInt(1, 100);
                 if (rng > 50) {
@@ -480,9 +470,10 @@ function updateDialogWithActivity(activityId) {
                 break;
             case "sticks":
             case "twine":
+                var text = activityId[0].toUpperCase() + activityId.slice(1);
                 var amount = randInt(1, 3);
                 for (var i = 0; i < amount; i++) {
-                    getItem(activityId.trim());
+                    getItem(text.trim());
                 }
                 returnString = activity.text.replace("x", amount);
                 break;
@@ -494,6 +485,10 @@ function updateDialogWithActivity(activityId) {
                 }
                 getItem("Cooked_Meat".replace("_", " "));
                 getItem("Water");
+                break;
+            case "stone":
+                getItem("Stone");
+                returnString = activity.text;
                 break;
             default:
                 getItem(activityId.trim());
