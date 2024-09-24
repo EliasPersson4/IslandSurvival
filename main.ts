@@ -53,13 +53,13 @@ async function transition(location: string): Promise<void> {
   }
 }
 
-function canCraft(recipe: string[]): boolean{
-    recipe.forEach(element => {
-        if(!inventory.includes(element)){
-            return false
-        }
-    });
-    return true
+function canCraft(recipe: string[]): boolean {
+  recipe.forEach((element) => {
+    if (!inventory.includes(element)) {
+      return false;
+    }
+  });
+  return true;
 }
 
 async function goToSleep(
@@ -240,31 +240,35 @@ function getDrinkItems(inventory) {
 }
 
 const recipes = {
-'Spear': ['Sticks', 'Stone', 'Twine'],
-'Fishing Rod': ['Sticks', 'Twine'],
-'Stone Axe': ['Sticks', 'Stone'],
-'Campfire': ['Sticks', 'Stone'],
-'Sleeping Bag': ['Twine', 'Leather']
+  Spear: ["Sticks", "Stone", "Twine"],
+  "Fishing Rod": ["Sticks", "Twine"],
+  "Stone Axe": ["Sticks", "Stone"],
+  Campfire: ["Sticks", "Stone"],
+  "Sleeping Bag": ["Twine", "Leather"],
 };
 
-document.querySelectorAll('.crafting')!.forEach(element => {
-   element.addEventListener("click", function(){
-    craftItem(element.innerHTML)
-   }) 
+document.querySelectorAll(".crafting")!.forEach((element) => {
+  element.addEventListener("click", function () {
+    craftItem(element.innerHTML);
+  });
 });
 
 function craftItem(itemName) {
-const recipe = recipes[itemName];
+  const recipe = recipes[itemName];
 
-if (canCraft(recipe)) {
-  recipe.forEach(material => inventory.splice(inventory.indexOf(material)))
+  if (canCraft(recipe)) {
+    recipe.forEach((material) => inventory.splice(inventory.indexOf(material)));
 
-  getItem(itemName);
+    getItem(itemName);
 
-  document.querySelector('.main-dialoge')!.textContent = `You have crafted a ${itemName}!`;
-} else {
-  document.querySelector('.main-dialoge')!.textContent = `You don't have the necessary materials to craft a ${itemName}.`;
-}
+    document.querySelector(
+      ".main-dialoge"
+    )!.textContent = `You have crafted a ${itemName}!`;
+  } else {
+    document.querySelector(
+      ".main-dialoge"
+    )!.textContent = `You don't have the necessary materials to craft a ${itemName}.`;
+  }
 }
 
 async function getText(location: string): Promise<void> {
@@ -353,7 +357,7 @@ function updateDialogWithActivity(activityId: string): void {
       const activity = data.activities.find((act) => act.id === activityId);
       let rng: number;
       let returnString: string = "";
-      
+
       switch (activityId) {
         case "fish":
           returnString += activity.text.split("|")[0];
@@ -380,7 +384,7 @@ function updateDialogWithActivity(activityId: string): void {
           break;
         case "sticks":
         case "twine":
-            let text = activityId[0].toUpperCase()+activityId.slice(1)
+          let text = activityId[0].toUpperCase() + activityId.slice(1);
 
           let amount: number = randInt(1, 3);
           for (let i = 0; i < amount; i++) {
@@ -397,10 +401,10 @@ function updateDialogWithActivity(activityId: string): void {
           getItem("Cooked_Meat".replace("_", " "));
           getItem("Water");
           break;
-          case "stone":
-            getItem("Stone")
-            returnString = activity.text;
-            break
+        case "stone":
+          getItem("Stone");
+          returnString = activity.text;
+          break;
         default:
           getItem(activityId.trim());
           returnString = activity.text;
@@ -410,11 +414,13 @@ function updateDialogWithActivity(activityId: string): void {
       audio.play();
       if (currentLocation == "deep_forest") {
         rng = randInt(1, 100);
-        if (rng>70) {
+        if (rng > 70) {
           const audio: HTMLAudioElement = new Audio(`mp3/sfx/enemy.mp3`);
           audio.play();
-          document.querySelector('.main-dialoge')!.textContent = `While gathering you encounterd a wolf, you managed to escape but was badly hurt.`;
-          health -= 50
+          document.querySelector(
+            ".main-dialoge"
+          )!.textContent = `While gathering you encounterd a wolf, you managed to escape but was badly hurt.`;
+          health -= 50;
         }
       }
       if (dialogElement && activity?.text) {
@@ -442,6 +448,17 @@ function updateDialogWithInteract(interactId: string): void {
         case "sleep":
           goToSleep(interact.text, dialogElement);
           break;
+          case "investegate":
+            if (currentLocation === "forest") {
+              let ruins = randInt(0, 1);
+              if (ruins) {
+                ruinsFound = true
+              }
+  
+              
+            }
+            returnString = interact.text;
+            break;
         default:
           returnString = interact.text;
           actions -= 1;
