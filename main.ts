@@ -408,6 +408,15 @@ function updateDialogWithActivity(activityId: string): void {
       }
       const audio: HTMLAudioElement = new Audio(`mp3/sfx/${activityId}.mp3`);
       audio.play();
+      if (currentLocation == "deep_forest") {
+        rng = randInt(1, 100);
+        if (rng>70) {
+          const audio: HTMLAudioElement = new Audio(`mp3/sfx/enemy.mp3`);
+          audio.play();
+          document.querySelector('.main-dialoge')!.textContent = `While gathering you encounterd a wolf, you managed to escape but was badly hurt.`;
+          health -= 50
+        }
+      }
       if (dialogElement && activity?.text) {
         dialogElement.innerHTML = returnString;
       }
