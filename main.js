@@ -128,6 +128,14 @@ function transition(location) {
         });
     });
 }
+function canCraft(recipe) {
+    recipe.forEach(function (element) {
+        if (!inventory.includes(element)) {
+            return false;
+        }
+        return true;
+    });
+}
 function goToSleep(text, textElement) {
     return __awaiter(this, void 0, void 0, function () {
         var _loop_3, i, recovered, _loop_4, j;

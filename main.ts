@@ -52,6 +52,15 @@ async function transition(location: string): Promise<void> {
   }
 }
 
+function canCraft(recipe: string[]): boolean{
+    recipe.forEach(element => {
+        if(!inventory.includes(element)){
+            return false
+        }
+        return true
+    });
+}
+
 async function goToSleep(
   text: string,
   textElement: HTMLElement
