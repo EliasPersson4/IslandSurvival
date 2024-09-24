@@ -229,6 +229,49 @@ function isDrink(item) {
 function getDrinkItems(inventory) {
   return inventory.filter(isDrink);
 }
+
+const recipes = {
+'spear': ['stick', 'stone', 'twine'],
+'fishing rod': ['stick', 'twine'],
+'stone axe': ['stick', 'stone'],
+'campfire': ['stick', 'stone'],
+'sleeping bag': ['twine', `leather`]
+};
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(1)')!.addEventListener('click', () => {
+craftItem('spear');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(2)')!.addEventListener('click', () => {
+craftItem('fishing rod');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(3)')!.addEventListener('click', () => {
+craftItem('stone axe');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(4)')!.addEventListener('click', () => {
+craftItem('campfire');
+});
+
+document.querySelector('.crafting-list .btn-secondary:nth-child(5)')!.addEventListener('click', () => {
+craftItem('sleeping bag');
+});
+
+function craftItem(itemName) {
+const recipe = recipes[itemName];
+
+if (recipe.every(material => inventory.includes(material))) {
+  recipe.forEach(material => inventory.splice(inventory.indexOf(material)))
+
+  getItem(itemName);
+
+  document.querySelector('.main-dialoge')!.textContent = `You have crafted a ${itemName}!`;
+} else {
+  document.querySelector('.main-dialoge')!.textContent = `You don't have the necessary materials to craft a ${itemName}.`;
+}
+}
+
 async function getText(location: string): Promise<void> {
   let data;
   await fetch("./locations.json")

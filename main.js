@@ -326,6 +326,39 @@ function isDrink(item) {
 function getDrinkItems(inventory) {
     return inventory.filter(isDrink);
 }
+var recipes = {
+    'spear': ['stick', 'stone', 'twine'],
+    'fishing rod': ['stick', 'twine'],
+    'stone axe': ['stick', 'stone'],
+    'campfire': ['stick', 'stone'],
+    'sleeping bag': ['twine', "leather"]
+};
+document.querySelector('.crafting-list .btn-secondary:nth-child(1)').addEventListener('click', function () {
+    craftItem('spear');
+});
+document.querySelector('.crafting-list .btn-secondary:nth-child(2)').addEventListener('click', function () {
+    craftItem('fishing rod');
+});
+document.querySelector('.crafting-list .btn-secondary:nth-child(3)').addEventListener('click', function () {
+    craftItem('stone axe');
+});
+document.querySelector('.crafting-list .btn-secondary:nth-child(4)').addEventListener('click', function () {
+    craftItem('campfire');
+});
+document.querySelector('.crafting-list .btn-secondary:nth-child(5)').addEventListener('click', function () {
+    craftItem('sleeping bag');
+});
+function craftItem(itemName) {
+    var recipe = recipes[itemName];
+    if (recipe.every(function (material) { return inventory.includes(material); })) {
+        recipe.forEach(function (material) { return inventory.splice(inventory.indexOf(material)); });
+        getItem(itemName);
+        document.querySelector('.main-dialoge').textContent = "You have crafted a ".concat(itemName, "!");
+    }
+    else {
+        document.querySelector('.main-dialoge').textContent = "You don't have the necessary materials to craft a ".concat(itemName, ".");
+    }
+}
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
         var data, id, entry, activityIds, interactIds;
