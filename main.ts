@@ -25,6 +25,8 @@ const eatElement: HTMLElement = document.querySelector(".eat-menu")!;
 const drinkElement: HTMLElement = document.querySelector(".drink-menu")!;
 const transHideElement = document.querySelectorAll(".trans-hidden");
 
+let ruinsFound: boolean = false
+
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 let visited: string[] = [];
@@ -571,7 +573,9 @@ function PopulateDropdown(
       let buttonElement: HTMLButtonElement = document.createElement("button");
       buttonElement.textContent = element.replace("_", " ");
       buttonElement.className = `btn btn-secondary w-100 ${extraCss.join(" ")}`;
-
+      if (buttonElement.textContent == "ruins" && !ruinsFound) {
+        buttonElement.hidden = true
+      }
       listElement.appendChild(buttonElement);
       parent.appendChild(listElement);
     });

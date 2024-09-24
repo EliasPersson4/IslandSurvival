@@ -58,6 +58,7 @@ var discardElement = document.querySelector(".discard-menu");
 var eatElement = document.querySelector(".eat-menu");
 var drinkElement = document.querySelector(".drink-menu");
 var transHideElement = document.querySelectorAll(".trans-hidden");
+var ruinsFound = false;
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
@@ -688,6 +689,9 @@ function PopulateDropdown(parent, array) {
             var buttonElement = document.createElement("button");
             buttonElement.textContent = element.replace("_", " ");
             buttonElement.className = "btn btn-secondary w-100 ".concat(extraCss.join(" "));
+            if (buttonElement.textContent == "ruins" && ) {
+                buttonElement.hidden = true;
+            }
             listElement.appendChild(buttonElement);
             parent.appendChild(listElement);
         });
