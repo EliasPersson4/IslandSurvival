@@ -575,6 +575,15 @@ function updateDialogWithActivity(activityId) {
         }
         var audio = new Audio("mp3/sfx/".concat(activityId, ".mp3"));
         audio.play();
+        if (currentLocation == "deep_forest") {
+            rng = randInt(1, 100);
+            if (rng > 70) {
+                var audio_1 = new Audio("mp3/sfx/enemy.mp3");
+                audio_1.play();
+                document.querySelector('.main-dialoge').textContent = "While gathering you encounterd a wolf, you managed to escape but was badly hurt.";
+                health -= 50;
+            }
+        }
         if (dialogElement && (activity === null || activity === void 0 ? void 0 : activity.text)) {
             dialogElement.innerHTML = returnString;
         }
