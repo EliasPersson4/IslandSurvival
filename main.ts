@@ -25,6 +25,8 @@ const eatElement: HTMLElement = document.querySelector(".eat-menu")!;
 const drinkElement: HTMLElement = document.querySelector(".drink-menu")!;
 const transHideElement = document.querySelectorAll(".trans-hidden");
 
+let ruinsFound: boolean = false
+
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 let visited: string[] = [];
@@ -33,6 +35,22 @@ let currentLocation: string = "beach";
 
 let inventory: string[] = [];
 
+async function fadeIn() {
+  transitionElement.style.opacity = "1"
+  transHideElement.forEach(element => {
+    element.style.opacity = "0"
+  });
+  Relocate("beach")
+  await sleep(300)
+  for (let j = 100; j > 0; j -= 5) {
+    await sleep(40);
+    transitionElement.style.opacity = `${j / 100}`;
+    transHideElement.forEach((element) => {
+      element.style.opacity = `${1 - j / 100}`;
+    });
+  }
+}
+fadeIn()
 async function transition(location: string): Promise<void> {
   for (let i = 0; i < 100; i += 5) {
     await sleep(30);
@@ -135,6 +153,7 @@ function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
 function setupDiscardButtons() {
   document.querySelectorAll(".discard-btn").forEach((element) => {
     element.addEventListener("click", function () {
@@ -198,6 +217,16 @@ function setupDrinkButtons() {
       let index = inventory.indexOf(element.innerHTML);
       if (index > -1) {
         inventory.splice(index, 1);
+      }
+      switch (element.innerHTML) {
+        case "Water":
+            water += 40
+            break;
+        case "Dirty Water":
+            water += 15
+            poisoned = true
+        default:
+            break;
       }
       UpdateStats();
       let drinkItems = getDrinkItems(inventory);
@@ -270,6 +299,20 @@ function craftItem(itemName) {
     )!.textContent = `You don't have the necessary materials to craft a ${itemName}.`;
   }
 }
+
+function CapitalizeCase(input: string): string{
+    let string: string = ""
+    input = input.replace("_", " ")
+    for (let i = 0; i < input.length; i++) {
+        if (input[i-1] == " " || i == 0)
+            string += input[i].toUpperCase()
+        else
+            string += input[i]
+    }
+    return string
+}
+
+console.log(CapitalizeCase("deep_forest"))
 
 async function getText(location: string): Promise<void> {
   let data;
@@ -359,6 +402,18 @@ function updateDialogWithActivity(activityId: string): void {
       let returnString: string = "";
 
       switch (activityId) {
+        case "foraging":
+        returnString = activity.text    
+        let type = randInt(0,1)
+            if (type) {
+                returnString = returnString.replace("y,", "berries,")
+                getItem("Berries")
+            }    
+            else{
+                returnString = returnString.replace("y,", "mushroom,")
+                getItem("Mushroom")
+            }
+        break
         case "fish":
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
@@ -384,11 +439,9 @@ function updateDialogWithActivity(activityId: string): void {
           break;
         case "sticks":
         case "twine":
-          let text = activityId[0].toUpperCase() + activityId.slice(1);
-
           let amount: number = randInt(1, 3);
           for (let i = 0; i < amount; i++) {
-            getItem(text.trim());
+            getItem(CapitalizeCase(activityId).trim());
           }
           returnString = activity.text.replace("x", amount);
           break;
@@ -406,7 +459,7 @@ function updateDialogWithActivity(activityId: string): void {
           returnString = activity.text;
           break;
         default:
-          getItem(activityId.trim());
+          getItem(CapitalizeCase(activityId).trim());
           returnString = activity.text;
           break;
       }
@@ -537,14 +590,14 @@ function PopulateDropdown(
       let buttonElement: HTMLButtonElement = document.createElement("button");
       buttonElement.textContent = element.replace("_", " ");
       buttonElement.className = `btn btn-secondary w-100 ${extraCss.join(" ")}`;
-
+      if (buttonElement.textContent == "ruins" && !ruinsFound) {
+        buttonElement.hidden = true
+      }
       listElement.appendChild(buttonElement);
       parent.appendChild(listElement);
     });
   }
 }
-Relocate("beach");
-
 function togglePlay(): void {
   if (audioElement) {
     audioElement.muted = !audioElement.muted;
