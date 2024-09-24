@@ -62,13 +62,58 @@ var sleep = function (delay) { return new Promise(function (resolve) { return se
 var visited = [];
 var currentLocation = "beach";
 var inventory = [];
-function transition(location) {
+function fadeIn() {
     return __awaiter(this, void 0, void 0, function () {
-        var _loop_1, i, _loop_2, j;
+        var _loop_1, j;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _loop_1 = function (i) {
+                    transitionElement.style.opacity = "1";
+                    transHideElement.forEach(function (element) {
+                        element.style.opacity = "0";
+                    });
+                    Relocate("beach");
+                    return [4 /*yield*/, sleep(300)];
+                case 1:
+                    _a.sent();
+                    _loop_1 = function (j) {
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0: return [4 /*yield*/, sleep(40)];
+                                case 1:
+                                    _b.sent();
+                                    transitionElement.style.opacity = "".concat(j / 100);
+                                    transHideElement.forEach(function (element) {
+                                        element.style.opacity = "".concat(1 - j / 100);
+                                    });
+                                    return [2 /*return*/];
+                            }
+                        });
+                    };
+                    j = 100;
+                    _a.label = 2;
+                case 2:
+                    if (!(j > 0)) return [3 /*break*/, 5];
+                    return [5 /*yield**/, _loop_1(j)];
+                case 3:
+                    _a.sent();
+                    _a.label = 4;
+                case 4:
+                    j -= 5;
+                    return [3 /*break*/, 2];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+fadeIn();
+function transition(location) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _loop_2, i, _loop_3, j;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _loop_2 = function (i) {
                         return __generator(this, function (_b) {
                             switch (_b.label) {
                                 case 0: return [4 /*yield*/, sleep(30)];
@@ -86,7 +131,7 @@ function transition(location) {
                     _a.label = 1;
                 case 1:
                     if (!(i < 100)) return [3 /*break*/, 4];
-                    return [5 /*yield**/, _loop_1(i)];
+                    return [5 /*yield**/, _loop_2(i)];
                 case 2:
                     _a.sent();
                     _a.label = 3;
@@ -98,7 +143,7 @@ function transition(location) {
                     return [4 /*yield*/, sleep(200)];
                 case 5:
                     _a.sent();
-                    _loop_2 = function (j) {
+                    _loop_3 = function (j) {
                         return __generator(this, function (_c) {
                             switch (_c.label) {
                                 case 0: return [4 /*yield*/, sleep(30)];
@@ -116,7 +161,7 @@ function transition(location) {
                     _a.label = 6;
                 case 6:
                     if (!(j > 0)) return [3 /*break*/, 9];
-                    return [5 /*yield**/, _loop_2(j)];
+                    return [5 /*yield**/, _loop_3(j)];
                 case 7:
                     _a.sent();
                     _a.label = 8;
@@ -138,13 +183,13 @@ function canCraft(recipe) {
 }
 function goToSleep(text, textElement) {
     return __awaiter(this, void 0, void 0, function () {
-        var audio, _loop_3, i, recovered, _loop_4, j;
+        var audio, _loop_4, i, recovered, _loop_5, j;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     audio = new Audio("mp3/sfx/sleep.mp3");
                     audio.play();
-                    _loop_3 = function (i) {
+                    _loop_4 = function (i) {
                         return __generator(this, function (_b) {
                             switch (_b.label) {
                                 case 0: return [4 /*yield*/, sleep(30)];
@@ -162,7 +207,7 @@ function goToSleep(text, textElement) {
                     _a.label = 1;
                 case 1:
                     if (!(i < 100)) return [3 /*break*/, 4];
-                    return [5 /*yield**/, _loop_3(i)];
+                    return [5 /*yield**/, _loop_4(i)];
                 case 2:
                     _a.sent();
                     _a.label = 3;
@@ -185,7 +230,7 @@ function goToSleep(text, textElement) {
                     }
                     textElement.innerHTML = text;
                     UpdateStats();
-                    _loop_4 = function (j) {
+                    _loop_5 = function (j) {
                         return __generator(this, function (_c) {
                             switch (_c.label) {
                                 case 0: return [4 /*yield*/, sleep(30)];
@@ -203,7 +248,7 @@ function goToSleep(text, textElement) {
                     _a.label = 5;
                 case 5:
                     if (!(j > 0)) return [3 /*break*/, 8];
-                    return [5 /*yield**/, _loop_4(j)];
+                    return [5 /*yield**/, _loop_5(j)];
                 case 6:
                     _a.sent();
                     _a.label = 7;
@@ -298,6 +343,16 @@ function setupDrinkButtons() {
             if (index > -1) {
                 inventory.splice(index, 1);
             }
+            switch (element.innerHTML) {
+                case "Water":
+                    water += 40;
+                    break;
+                case "Dirty Water":
+                    water += 15;
+                    poisoned = true;
+                default:
+                    break;
+            }
             UpdateStats();
             var drinkItems = getDrinkItems(inventory);
             if (drinkItems.length) {
@@ -357,6 +412,18 @@ function craftItem(itemName) {
         document.querySelector('.main-dialoge').textContent = "You don't have the necessary materials to craft a ".concat(itemName, ".");
     }
 }
+function CapitalizeCase(input) {
+    var string = "";
+    input = input.replace("_", " ");
+    for (var i = 0; i < input.length; i++) {
+        if (input[i - 1] == " " || i == 0)
+            string += input[i].toUpperCase();
+        else
+            string += input[i];
+    }
+    return string;
+}
+console.log(CapitalizeCase("deep_forest"));
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
         var data, id, entry, activityIds, interactIds;
@@ -446,6 +513,18 @@ function updateDialogWithActivity(activityId) {
         var rng;
         var returnString = "";
         switch (activityId) {
+            case "foraging":
+                returnString = activity.text;
+                var type = randInt(0, 1);
+                if (type) {
+                    returnString = returnString.replace("y,", "berries,");
+                    getItem("Berries");
+                }
+                else {
+                    returnString = returnString.replace("y,", "mushroom,");
+                    getItem("Mushroom");
+                }
+                break;
             case "fish":
                 returnString += activity.text.split("|")[0];
                 rng = randInt(1, 100);
@@ -470,10 +549,9 @@ function updateDialogWithActivity(activityId) {
                 break;
             case "sticks":
             case "twine":
-                var text = activityId[0].toUpperCase() + activityId.slice(1);
                 var amount = randInt(1, 3);
                 for (var i = 0; i < amount; i++) {
-                    getItem(text.trim());
+                    getItem(CapitalizeCase(activityId).trim());
                 }
                 returnString = activity.text.replace("x", amount);
                 break;
@@ -491,7 +569,7 @@ function updateDialogWithActivity(activityId) {
                 returnString = activity.text;
                 break;
             default:
-                getItem(activityId.trim());
+                getItem(CapitalizeCase(activityId).trim());
                 returnString = activity.text;
                 break;
         }
@@ -606,7 +684,6 @@ function PopulateDropdown(parent, array) {
         });
     }
 }
-Relocate("beach");
 function togglePlay() {
     if (audioElement) {
         audioElement.muted = !audioElement.muted;
