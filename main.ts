@@ -138,7 +138,7 @@ function Relocate(location: string): void {
     locationElement.textContent = location;
   }
 
-  currentLocation = location;
+  currentLocation = location.replace(" ", "_");
 
   getText(location.replace(" ", "_"));
   if (visited.length) {
@@ -307,8 +307,6 @@ function CapitalizeCase(input: string): string{
     }
     return string
 }
-
-console.log(CapitalizeCase("deep_forest"))
 
 async function getText(location: string): Promise<void> {
   let data;
