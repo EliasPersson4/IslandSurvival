@@ -603,7 +603,7 @@ function updateDialogWithInteract(interactId) {
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
-        var data, interact, returnString, ruins, machete, monster, audio_2, audio;
+        var data, interact, returnString, ruins, machete, monster, audio_2, repairprogres, index, audio;
         return __generator(this, function (_a) {
             data = json[currentLocation];
             interact = data.interact.find(function (inter) { return inter.id === interactId; });
@@ -651,6 +651,19 @@ function updateDialogWithInteract(interactId) {
                                 health = 0;
                             }
                         }
+                    }
+                    break;
+                case "repair":
+                    returnString = interact.text;
+                    repairprogres = void 0;
+                    if (inventory.includes("Planks")) {
+                        index = inventory.indexOf("Planks");
+                        inventory.splice(index, 1);
+                        repairprogres += 1;
+                        returnString = "You have repaired a part of the boat, you only need to repair ".concat(10 - repairprogres, " parts to have it fully repaired");
+                    }
+                    if (repairprogres == 10) {
+                        returnString = "You have repaired the boat, finely you can go home";
                     }
                     break;
                 default:

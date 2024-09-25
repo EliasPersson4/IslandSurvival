@@ -533,6 +533,20 @@ function updateDialogWithInteract(interactId: string): void {
             }
           }
           break;
+          case "repair":
+            returnString = interact.text;
+            let repairprogres;
+            if (inventory.includes("Planks")) {
+              let index = inventory.indexOf("Planks")
+              inventory.splice(index, 1)
+              repairprogres += 1
+              returnString = `You have repaired a part of the boat, you only need to repair ${10 - repairprogres} parts to have it fully repaired`;
+
+            }
+            if (repairprogres == 10) {
+              returnString = "You have repaired the boat, finely you can go home";
+            }
+            break;
         default:
           returnString = interact.text;
           actions -= 1;
