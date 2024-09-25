@@ -571,9 +571,19 @@ function updateDialogWithInteract(interactId: string): void {
             }
             if (repairprogres == 10) {
               returnString = "You have repaired the boat, finely you can go home";
-              Relocate("victory!")
+              const interactIds = data.interact.map((interact) => interact.id);
+  PopulateDropdown(interactElement, interactIds, "interact-btn");
+  document.querySelectorAll(".interact-btn").forEach((element) => {
+    element.addEventListener("click", function () {
+      updateDialogWithInteract(element.textContent!.replace(" ", "_"));
+    });
+  });
             }
             break;
+            case "escape":
+              Relocate("victory!")
+              GameOver("escape")
+              break;
         default:
           returnString = interact.text;
           actions -= 1;
@@ -660,6 +670,9 @@ function PopulateDropdown(
       buttonElement.textContent = element.replace("_", " ");
       buttonElement.className = `btn btn-secondary w-100 ${extraCss.join(" ")}`;
       if (buttonElement.textContent == "ruins" && !ruinsFound) {
+        buttonElement.hidden = true;
+      }
+      if (buttonElement.textContent == "escape" && repairprogres!==10) {
         buttonElement.hidden = true;
       }
       listElement.appendChild(buttonElement);

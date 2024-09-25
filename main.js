@@ -624,7 +624,7 @@ function updateDialogWithInteract(interactId) {
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
-        var data, interact, returnString, ruins, machete, monster, audio_2, index, audio;
+        var data, interact, returnString, ruins, machete, monster, audio_2, index, interactIds, audio;
         return __generator(this, function (_a) {
             data = json[currentLocation];
             interact = data.interact.find(function (inter) { return inter.id === interactId; });
@@ -685,8 +685,18 @@ function updateDialogWithInteract(interactId) {
                     }
                     if (repairprogres == 10) {
                         returnString = "You have repaired the boat, finely you can go home";
-                        Relocate("victory!");
+                        interactIds = data.interact.map(function (interact) { return interact.id; });
+                        PopulateDropdown(interactElement, interactIds, "interact-btn");
+                        document.querySelectorAll(".interact-btn").forEach(function (element) {
+                            element.addEventListener("click", function () {
+                                updateDialogWithInteract(element.textContent.replace(" ", "_"));
+                            });
+                        });
                     }
+                    break;
+                case "escape":
+                    Relocate("victory!");
+                    GameOver("escape");
                     break;
                 default:
                     returnString = interact.text;
@@ -771,6 +781,9 @@ function PopulateDropdown(parent, array) {
             buttonElement.textContent = element.replace("_", " ");
             buttonElement.className = "btn btn-secondary w-100 ".concat(extraCss.join(" "));
             if (buttonElement.textContent == "ruins" && !ruinsFound) {
+                buttonElement.hidden = true;
+            }
+            if (buttonElement.textContent == "escape" && repairprogres !== 10) {
                 buttonElement.hidden = true;
             }
             listElement.appendChild(buttonElement);
