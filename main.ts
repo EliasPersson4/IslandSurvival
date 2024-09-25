@@ -48,7 +48,10 @@ function GameOver(type:string) {
     case "monster":
       dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over"  
     break
-  }
+    case "escape":
+    dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, you have survived"  
+    break
+    }
 }
 
 async function fadeIn() {

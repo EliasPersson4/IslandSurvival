@@ -75,6 +75,9 @@ function GameOver(type) {
         case "monster":
             dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over";
             break;
+        case "escape":
+            dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, you have survived";
+            break;
     }
 }
 function fadeIn() {
@@ -532,7 +535,6 @@ function updateDialogWithActivity(activityId) {
         var activity = data.activities.find(function (act) { return act.id === activityId; });
         var rng;
         var returnString = "";
-        var hasSpear = inventory.includes("Spear") ? 20 : 0;
         switch (activityId) {
             case "foraging":
                 returnString = activity.text;
