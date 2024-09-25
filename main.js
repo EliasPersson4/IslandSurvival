@@ -59,11 +59,28 @@ var eatElement = document.querySelector(".eat-menu");
 var drinkElement = document.querySelector(".drink-menu");
 var transHideElement = document.querySelectorAll(".trans-hidden");
 var ruinsFound = false;
+var volcanoTimer = 2;
 var repairprogres = 0;
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
 var inventory = ["Planks", "Planks", "Planks", "Planks", "Planks", "Planks", "Stone Axe"];
+function GameOver(type) {
+    switch (type) {
+        case "eruption":
+            dialogElement.innerHTML = "As you were sleeping the volcano erupted, but alas, it is too late for you, you die just seconds after waking up, barely realizing what happened. Game Over";
+            break;
+        case "health":
+            dialogElement.innerHTML = "Your body cannot take the burden of living anymore the damages you have accumulated are too grave to heal, you collapse on the ground just in time to see the sunset one last time, you die. Game Over";
+            break;
+        case "monster":
+            dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over";
+            break;
+        case "escape":
+            dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, you have survived";
+            break;
+    }
+}
 function fadeIn() {
     return __awaiter(this, void 0, void 0, function () {
         var _loop_1, j;
@@ -231,6 +248,12 @@ function goToSleep(text, textElement) {
                         }
                     }
                     textElement.innerHTML = text;
+                    if (volcanoTimer != 5) {
+                        volcanoTimer += randInt(1, 100) > 70 ? 1 : 0;
+                    }
+                    else if (randInt(1, 100) > 70) {
+                        GameOver("eruption");
+                    }
                     UpdateStats();
                     _loop_5 = function (j) {
                         return __generator(this, function (_c) {
@@ -526,9 +549,9 @@ function updateDialogWithActivity(activityId) {
             case "fish":
                 returnString += activity.text.split("|")[0];
                 rng = randInt(1, 100);
-                if (rng > 50) {
+                if (rng > 50 - hasSpear) {
                     returnString += activity.text.split("|")[1];
-                    getItem(("Raw_" + activityId).replace("_", " "));
+                    getItem("Raw Fish");
                 }
                 else {
                     returnString += activity.text.split("|")[2];
@@ -537,9 +560,9 @@ function updateDialogWithActivity(activityId) {
             case "hunt":
                 returnString += activity.text.split("|")[0];
                 rng = randInt(1, 100);
-                if (rng > 70) {
+                if (rng > 70 - hasSpear) {
                     returnString += activity.text.split("|")[1];
-                    getItem("Raw_Meat".replace("_", " "));
+                    getItem("Raw Meat");
                 }
                 else {
                     returnString += activity.text.split("|")[2];
@@ -612,6 +635,7 @@ function updateDialogWithInteract(interactId) {
                 case "investegate":
                     returnString = interact.text;
                     if (currentLocation === "forest") {
+                        actions -= 1;
                         ruins = randInt(0, 1);
                         if (ruins) {
                             ruinsFound = true;
@@ -688,6 +712,8 @@ function getItem(string) {
     UpdateStats();
 }
 function UpdateStats() {
+    health -= (food == 0) ? 5 : 0;
+    health -= (water == 0) ? 10 : 0;
     if (healthElement) {
         healthElement.style.width = "".concat(health, "%");
     }
@@ -726,6 +752,9 @@ function UpdateStats() {
         setupDiscardButtons();
         setupEatButtons();
         setupDrinkButtons();
+        if (health <= 0) {
+            GameOver("health");
+        }
     }
 }
 function PopulateDropdown(parent, array) {

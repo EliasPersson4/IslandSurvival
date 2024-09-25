@@ -25,7 +25,9 @@ const eatElement: HTMLElement = document.querySelector(".eat-menu")!;
 const drinkElement: HTMLElement = document.querySelector(".drink-menu")!;
 const transHideElement = document.querySelectorAll(".trans-hidden");
 
-let ruinsFound: boolean = false;
+let ruinsFound: boolean = false
+
+let volcanoTimer: number = 2
 
 let repairprogres = 0;
 
@@ -36,6 +38,23 @@ let visited: string[] = [];
 let currentLocation: string = "beach";
 
 let inventory: string[] = ["Planks","Planks","Planks","Planks","Planks","Planks","Stone Axe"];
+
+function GameOver(type:string) {
+  switch(type){
+    case "eruption":
+      dialogElement.innerHTML = "As you were sleeping the volcano erupted, but alas, it is too late for you, you die just seconds after waking up, barely realizing what happened. Game Over"
+      break
+    case "health":
+      dialogElement.innerHTML = "Your body cannot take the burden of living anymore the damages you have accumulated are too grave to heal, you collapse on the ground just in time to see the sunset one last time, you die. Game Over"
+      break
+    case "monster":
+      dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over"  
+    break
+    case "escape":
+    dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, you have survived"  
+    break
+    }
+}
 
 async function fadeIn() {
   transitionElement.style.opacity = "1";
@@ -110,6 +129,14 @@ async function goToSleep(
     }
   }
   textElement.innerHTML = text;
+  if (volcanoTimer != 5) {
+    volcanoTimer += randInt(1,100) > 70 ? 1 : 0
+  }
+  else
+    if(randInt(1,100) > 70){
+      GameOver("eruption")
+    }
+
   UpdateStats();
 
   for (let j = 100; j > 0; j -= 5) {
@@ -395,7 +422,7 @@ function updateDialogWithActivity(activityId: string): void {
       const activity = data.activities.find((act) => act.id === activityId);
       let rng: number;
       let returnString: string = "";
-
+      
       switch (activityId) {
         case "foraging":
           returnString = activity.text;
@@ -411,10 +438,9 @@ function updateDialogWithActivity(activityId: string): void {
         case "fish":
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
-
-          if (rng > 50) {
+          if (rng > 50 - hasSpear) {
             returnString += activity.text.split("|")[1];
-            getItem(("Raw_" + activityId).replace("_", " "));
+            getItem("Raw Fish");
           } else {
             returnString += activity.text.split("|")[2];
           }
@@ -424,9 +450,9 @@ function updateDialogWithActivity(activityId: string): void {
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
 
-          if (rng > 70) {
+          if (rng > 70 - hasSpear) {
             returnString += activity.text.split("|")[1];
-            getItem("Raw_Meat".replace("_", " "));
+            getItem("Raw Meat");
           } else {
             returnString += activity.text.split("|")[2];
           }
@@ -496,6 +522,7 @@ function updateDialogWithInteract(interactId: string): void {
         case "investegate":
           returnString = interact.text;
           if (currentLocation === "forest") {
+            actions -= 1
             let ruins = randInt(0, 1);
             if (ruins) {
               ruinsFound = true;
@@ -572,6 +599,9 @@ function getItem(string: string): void {
 }
 
 function UpdateStats(): void {
+  health -= (food == 0) ? 5 : 0
+  health -= (water == 0) ? 10 : 0
+
   if (healthElement) {
     healthElement.style.width = `${health}%`;
   }
@@ -608,6 +638,10 @@ function UpdateStats(): void {
     setupDiscardButtons();
     setupEatButtons();
     setupDrinkButtons();
+
+    if (health <= 0) {
+      GameOver("health")
+    }
   }
 }
 
