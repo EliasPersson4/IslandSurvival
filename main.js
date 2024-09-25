@@ -580,7 +580,7 @@ function updateDialogWithActivity(activityId) {
             if (rng > 70) {
                 var audio_1 = new Audio("mp3/sfx/enemy.mp3");
                 audio_1.play();
-                document.querySelector('.main-dialoge').textContent = "While gathering you encounterd a wolf, you managed to escape but was badly hurt.";
+                returnString += "While gathering you encounterd a wolf, you managed to escape but was badly hurt.";
                 health -= 50;
             }
         }
@@ -603,13 +603,32 @@ function updateDialogWithInteract(interactId) {
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
-        var data, interact, returnString, audio;
+        var data, interact, returnString, ruins, audio;
         return __generator(this, function (_a) {
             data = json[currentLocation];
             interact = data.interact.find(function (inter) { return inter.id === interactId; });
             switch (interactId) {
                 case "sleep":
                     goToSleep(interact.text, dialogElement);
+                    break;
+                case "investegate":
+                    if (currentLocation === "forest") {
+                        ruins = randInt(0, 1);
+                        if (ruins) {
+                            ruinsFound = true;
+                            PopulateDropdown(travelElement, data.connections, "travel-btn");
+                            document.querySelectorAll(".travel-btn").forEach(function (element) {
+                                element.addEventListener("click", function () {
+                                    transition(element.textContent.trim());
+                                });
+                            });
+                            returnString =
+                                "While investegating you found a hidden stone path";
+                        }
+                        else {
+                            returnString = interact.text;
+                        }
+                    }
                     break;
                 default:
                     returnString = interact.text;

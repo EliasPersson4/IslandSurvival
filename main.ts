@@ -464,8 +464,8 @@ function updateDialogWithActivity(activityId: string): void {
         if (rng>70) {
           const audio: HTMLAudioElement = new Audio(`mp3/sfx/enemy.mp3`);
           audio.play();
-          document.querySelector('.main-dialoge')!.textContent = `While gathering you encounterd a wolf, you managed to escape but was badly hurt.`;
-          health -= 50
+          returnString += `While gathering you encounterd a wolf, you managed to escape but was badly hurt.`;
+          health -= 50;
         }
       }
       if (dialogElement && activity?.text) {
@@ -492,6 +492,24 @@ function updateDialogWithInteract(interactId: string): void {
       switch (interactId) {
         case "sleep":
           goToSleep(interact.text, dialogElement);
+          break;
+        case "investegate":
+          if (currentLocation === "forest") {
+            let ruins = randInt(0, 1);
+            if (ruins) {
+              ruinsFound = true;
+              PopulateDropdown(travelElement, data.connections, "travel-btn");
+              document.querySelectorAll(".travel-btn").forEach((element) => {
+                element.addEventListener("click", function () {
+                  transition(element.textContent!.trim());
+                });
+              });
+              returnString =
+                "While investegating you found a hidden stone path";
+            } else {
+              returnString = interact.text;
+            }
+          }
           break;
         default:
           returnString = interact.text;
