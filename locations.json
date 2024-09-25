@@ -86,7 +86,7 @@
   },
   {
     "id": "investegate",
-    "text": "You investegated the beach but found noting of intrest."
+    "text": "You investegated the shipwreck but found noting of intrest."
   },
   {
     "id": "repair",
@@ -194,7 +194,7 @@
   },
   {
     "id": "investegate",
-    "text": "You investegated the beach but found noting of intrest."
+    "text": "You investegated the river but found noting of intrest."
   },
   {
     "id": "bath",
@@ -254,7 +254,7 @@
   },
   {
     "id": "investegate",
-    "text": "You investegated the forest but found noting of intrest."
+    "text": "You investegated the deep forest but found noting of intrest."
   }
   ]  },
   "lake": {
@@ -302,7 +302,7 @@
   },
   {
     "id": "investegate",
-    "text": "You investegated the beach but found noting of intrest."
+    "text": "You investegated the lake but found noting of intrest."
   },
   {
     "id": "bath",
@@ -345,7 +345,7 @@
   },
   {
     "id": "investegate",
-    "text": "You investegated the beach but found noting of intrest."
+    "text": "You investegated the volcano but found noting of intrest."
   }
   ]  },
   "hotspring": {
@@ -380,7 +380,7 @@
   },
   {
     "id": "investegate",
-    "text": "You investegated the beach but found noting of intrest."
+    "text": "You investegated the hotspring but found noting of intrest."
   },
   {
     "id": "bath",
@@ -419,7 +419,7 @@
   },
   {
     "id": "investegate",
-    "text": "You investegated the beach but found noting of intrest."
+    "text": "You investegated the ruins but found noting of intrest."
   }
   ]  }
 }

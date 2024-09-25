@@ -391,13 +391,13 @@ function getDrinkItems(inventory) {
     return inventory.filter(isDrink);
 }
 var recipes = {
-    'Spear': ['Sticks', 'Stone', 'Twine'],
-    'Fishing Rod': ['Sticks', 'Twine'],
-    'Stone Axe': ['Sticks', 'Stone'],
-    'Campfire': ['Sticks', 'Stone'],
-    'Sleeping Bag': ['Twine', 'Leather']
+    Spear: ["Sticks", "Stone", "Twine"],
+    "Fishing Rod": ["Sticks", "Twine"],
+    "Stone Axe": ["Sticks", "Stone"],
+    Campfire: ["Sticks", "Stone"],
+    "Sleeping Bag": ["Twine", "Leather"],
 };
-document.querySelectorAll('.crafting').forEach(function (element) {
+document.querySelectorAll(".crafting").forEach(function (element) {
     element.addEventListener("click", function () {
         craftItem(element.innerHTML);
     });
@@ -407,10 +407,10 @@ function craftItem(itemName) {
     if (canCraft(recipe)) {
         recipe.forEach(function (material) { return inventory.splice(inventory.indexOf(material)); });
         getItem(itemName);
-        document.querySelector('.main-dialoge').textContent = "You have crafted a ".concat(itemName, "!");
+        document.querySelector(".main-dialoge").textContent = "You have crafted a ".concat(itemName, "!");
     }
     else {
-        document.querySelector('.main-dialoge').textContent = "You don't have the necessary materials to craft a ".concat(itemName, ".");
+        document.querySelector(".main-dialoge").textContent = "You don't have the necessary materials to craft a ".concat(itemName, ".");
     }
 }
 function CapitalizeCase(input) {
@@ -580,7 +580,7 @@ function updateDialogWithActivity(activityId) {
             if (rng > 70) {
                 var audio_1 = new Audio("mp3/sfx/enemy.mp3");
                 audio_1.play();
-                returnString += "While gathering you encounterd a wolf, you managed to escape but was badly hurt.";
+                returnString += " While gathering you encounterd a wolf, you managed to escape but was badly hurt.";
                 health -= 50;
             }
         }
@@ -612,6 +612,7 @@ function updateDialogWithInteract(interactId) {
                     goToSleep(interact.text, dialogElement);
                     break;
                 case "investegate":
+                    returnString = interact.text;
                     if (currentLocation === "forest") {
                         ruins = randInt(0, 1);
                         if (ruins) {
@@ -634,13 +635,15 @@ function updateDialogWithInteract(interactId) {
                         monster = randInt(0, 1);
                         if (machete) {
                             getItem("Machete");
-                            returnString = "While locking for somthing intresting you came acros a old machete. I can use this to defend myself";
+                            returnString =
+                                "While locking for somthing intresting you came acros a old machete. I can use this to defend myself";
                         }
                         if (monster) {
                             audio_2 = new Audio("mp3/sfx/enemy.mp3");
                             audio_2.play();
                             if (inventory.includes("Machete")) {
-                                returnString = "While locking for somthing intresting you encounterd monster, you managed to escape thanks to the machete but was badly hurt.";
+                                returnString =
+                                    "While locking for somthing intresting you encounterd monster, you managed to escape thanks to the machete but was badly hurt.";
                                 health = 5;
                             }
                             else {
