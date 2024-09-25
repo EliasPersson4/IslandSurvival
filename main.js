@@ -273,7 +273,7 @@ function Relocate(location) {
     if (locationElement) {
         locationElement.textContent = location;
     }
-    currentLocation = location;
+    currentLocation = location.replace(" ", "_");
     getText(location.replace(" ", "_"));
     if (visited.length) {
         actions -= 1;
@@ -424,7 +424,6 @@ function CapitalizeCase(input) {
     }
     return string;
 }
-console.log(CapitalizeCase("deep_forest"));
 function getText(location) {
     return __awaiter(this, void 0, void 0, function () {
         var data, id, entry, activityIds, interactIds;
