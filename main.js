@@ -604,7 +604,7 @@ function updateDialogWithInteract(interactId) {
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
-        var data, interact, returnString, ruins, audio;
+        var data, interact, returnString, ruins, machete, monster, audio_2, audio;
         return __generator(this, function (_a) {
             data = json[currentLocation];
             interact = data.interact.find(function (inter) { return inter.id === interactId; });
@@ -628,6 +628,26 @@ function updateDialogWithInteract(interactId) {
                         }
                         else {
                             returnString = interact.text;
+                        }
+                    }
+                    if (currentLocation === "ruins") {
+                        machete = randInt(0, 1);
+                        monster = randInt(0, 1);
+                        if (machete) {
+                            getItem("Machete");
+                            returnString = "While locking for somthing intresting you came acros a old machete. I can use this to defend myself";
+                        }
+                        if (monster) {
+                            audio_2 = new Audio("mp3/sfx/enemy.mp3");
+                            audio_2.play();
+                            if (inventory.includes("Machete")) {
+                                returnString = "While locking for somthing intresting you encounterd monster, you managed to escape thanks to the machete but was badly hurt.";
+                                health = 5;
+                            }
+                            else {
+                                returnString = "You died";
+                                health = 0;
+                            }
                         }
                     }
                     break;

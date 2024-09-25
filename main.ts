@@ -512,6 +512,26 @@ function updateDialogWithInteract(interactId: string): void {
               returnString = interact.text;
             }
           }
+          if (currentLocation === "ruins") {
+            let machete = randInt(0, 1);
+            let monster = randInt(0, 1);
+            if (machete) {
+                getItem("Machete");
+                returnString = "While locking for somthing intresting you came acros a old machete. I can use this to defend myself";
+            }
+            if (monster) {
+              const audio: HTMLAudioElement = new Audio(`mp3/sfx/enemy.mp3`);
+              audio.play();
+                if (inventory.includes("Machete")) {
+                    returnString = "While locking for somthing intresting you encounterd monster, you managed to escape thanks to the machete but was badly hurt.";
+                    health = 5;
+                }
+                else {
+                    returnString = "You died";
+                    health = 0;
+                }
+            }
+        }
           break;
         default:
           returnString = interact.text;
