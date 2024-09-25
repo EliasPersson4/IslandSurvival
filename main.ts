@@ -52,12 +52,12 @@ function GameOver(type:string) {
 }
 
 async function fadeIn() {
-  transitionElement.style.opacity = "1"
-  transHideElement.forEach(element => {
-    element.style.opacity = "0"
+  transitionElement.style.opacity = "1";
+  transHideElement.forEach((element) => {
+    element.style.opacity = "0";
   });
-  Relocate("beach")
-  await sleep(300)
+  Relocate("beach");
+  await sleep(300);
   for (let j = 100; j > 0; j -= 5) {
     await sleep(40);
     transitionElement.style.opacity = `${j / 100}`;
@@ -66,7 +66,7 @@ async function fadeIn() {
     });
   }
 }
-fadeIn()
+fadeIn();
 async function transition(location: string): Promise<void> {
   for (let i = 0; i < 100; i += 5) {
     await sleep(30);
@@ -87,13 +87,13 @@ async function transition(location: string): Promise<void> {
   }
 }
 
-function canCraft(recipe: string[]): boolean{
-    recipe.forEach(element => {
-        if(!inventory.includes(element)){
-            return false
-        }
-    });
-    return true
+function canCraft(recipe: string[]): boolean {
+  recipe.forEach((element) => {
+    if (!inventory.includes(element)) {
+      return false;
+    }
+  });
+  return true;
 }
 
 async function goToSleep(
@@ -177,7 +177,6 @@ function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
 function setupDiscardButtons() {
   document.querySelectorAll(".discard-btn").forEach((element) => {
     element.addEventListener("click", function () {
@@ -244,13 +243,13 @@ function setupDrinkButtons() {
       }
       switch (element.innerHTML) {
         case "Water":
-            water += 40
-            break;
+          water += 40;
+          break;
         case "Dirty Water":
-            water += 15
-            poisoned = true
+          water += 15;
+          poisoned = true;
         default:
-            break;
+          break;
       }
       UpdateStats();
       let drinkItems = getDrinkItems(inventory);
@@ -293,43 +292,45 @@ function getDrinkItems(inventory) {
 }
 
 const recipes = {
-'Spear': ['Sticks', 'Stone', 'Twine'],
-'Fishing Rod': ['Sticks', 'Twine'],
-'Stone Axe': ['Sticks', 'Stone'],
-'Campfire': ['Sticks', 'Stone'],
-'Sleeping Bag': ['Twine', 'Leather']
+  Spear: ["Sticks", "Stone", "Twine"],
+  "Fishing Rod": ["Sticks", "Twine"],
+  "Stone Axe": ["Sticks", "Stone"],
+  Campfire: ["Sticks", "Stone"],
+  "Sleeping Bag": ["Twine", "Leather"],
 };
 
-document.querySelectorAll('.crafting')!.forEach(element => {
-   element.addEventListener("click", function(){
-    craftItem(element.innerHTML)
-   }) 
+document.querySelectorAll(".crafting")!.forEach((element) => {
+  element.addEventListener("click", function () {
+    craftItem(element.innerHTML);
+  });
 });
 
 function craftItem(itemName) {
-const recipe = recipes[itemName];
+  const recipe = recipes[itemName];
 
-if (canCraft(recipe)) {
-  recipe.forEach(material => inventory.splice(inventory.indexOf(material)))
+  if (canCraft(recipe)) {
+    recipe.forEach((material) => inventory.splice(inventory.indexOf(material)));
 
-  getItem(itemName);
+    getItem(itemName);
 
-  document.querySelector('.main-dialoge')!.textContent = `You have crafted a ${itemName}!`;
-} else {
-  document.querySelector('.main-dialoge')!.textContent = `You don't have the necessary materials to craft a ${itemName}.`;
+    document.querySelector(
+      ".main-dialoge"
+    )!.textContent = `You have crafted a ${itemName}!`;
+  } else {
+    document.querySelector(
+      ".main-dialoge"
+    )!.textContent = `You don't have the necessary materials to craft a ${itemName}.`;
+  }
 }
-}
 
-function CapitalizeCase(input: string): string{
-    let string: string = ""
-    input = input.replace("_", " ")
-    for (let i = 0; i < input.length; i++) {
-        if (input[i-1] == " " || i == 0)
-            string += input[i].toUpperCase()
-        else
-            string += input[i]
-    }
-    return string
+function CapitalizeCase(input: string): string {
+  let string: string = "";
+  input = input.replace("_", " ");
+  for (let i = 0; i < input.length; i++) {
+    if (input[i - 1] == " " || i == 0) string += input[i].toUpperCase();
+    else string += input[i];
+  }
+  return string;
 }
 
 async function getText(location: string): Promise<void> {
@@ -419,20 +420,18 @@ function updateDialogWithActivity(activityId: string): void {
       let rng: number;
       let returnString: string = "";
       
-      let hasSpear = inventory.includes("Spear") ? 20 : 0
       switch (activityId) {
         case "foraging":
-        returnString = activity.text    
-        let type = randInt(0,1)
-            if (type) {
-                returnString = returnString.replace("y,", "berries,")
-                getItem("Berries")
-            }    
-            else{
-                returnString = returnString.replace("y,", "mushroom,")
-                getItem("Mushroom")
-            }
-        break
+          returnString = activity.text;
+          let type = randInt(0, 1);
+          if (type) {
+            returnString = returnString.replace("y,", "berries,");
+            getItem("Berries");
+          } else {
+            returnString = returnString.replace("y,", "mushroom,");
+            getItem("Mushroom");
+          }
+          break;
         case "fish":
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
@@ -472,10 +471,10 @@ function updateDialogWithActivity(activityId: string): void {
           getItem("Cooked_Meat".replace("_", " "));
           getItem("Water");
           break;
-          case "stone":
-            getItem("Stone")
-            returnString = activity.text;
-            break
+        case "stone":
+          getItem("Stone");
+          returnString = activity.text;
+          break;
         default:
           getItem(CapitalizeCase(activityId).trim());
           returnString = activity.text;
@@ -485,10 +484,10 @@ function updateDialogWithActivity(activityId: string): void {
       audio.play();
       if (currentLocation == "deep_forest") {
         rng = randInt(1, 100);
-        if (rng>70) {
+        if (rng > 70) {
           const audio: HTMLAudioElement = new Audio(`mp3/sfx/enemy.mp3`);
           audio.play();
-          returnString += `While gathering you encounterd a wolf, you managed to escape but was badly hurt.`;
+          returnString += ` While gathering you encounterd a wolf, you managed to escape but was badly hurt.`;
           health -= 50;
         }
       }
@@ -518,6 +517,7 @@ function updateDialogWithInteract(interactId: string): void {
           goToSleep(interact.text, dialogElement);
           break;
         case "investegate":
+          returnString = interact.text;
           if (currentLocation === "forest") {
             actions -= 1
             let ruins = randInt(0, 1);
@@ -535,7 +535,42 @@ function updateDialogWithInteract(interactId: string): void {
               returnString = interact.text;
             }
           }
+          if (currentLocation === "ruins") {
+            let machete = randInt(0, 1);
+            let monster = randInt(0, 1);
+            if (machete) {
+              getItem("Machete");
+              returnString =
+                "While locking for somthing intresting you came acros a old machete. I can use this to defend myself";
+            }
+            if (monster) {
+              const audio: HTMLAudioElement = new Audio(`mp3/sfx/enemy.mp3`);
+              audio.play();
+              if (inventory.includes("Machete")) {
+                returnString =
+                  "While locking for somthing intresting you encounterd monster, you managed to escape thanks to the machete but was badly hurt.";
+                health = 5;
+              } else {
+                returnString = "You died";
+                health = 0;
+              }
+            }
+          }
           break;
+          case "repair":
+            returnString = interact.text;
+            let repairprogres;
+            if (inventory.includes("Planks")) {
+              let index = inventory.indexOf("Planks")
+              inventory.splice(index, 1)
+              repairprogres += 1
+              returnString = `You have repaired a part of the boat, you only need to repair ${10 - repairprogres} parts to have it fully repaired`;
+
+            }
+            if (repairprogres == 10) {
+              returnString = "You have repaired the boat, finely you can go home";
+            }
+            break;
         default:
           returnString = interact.text;
           actions -= 1;
@@ -622,7 +657,7 @@ function PopulateDropdown(
       buttonElement.textContent = element.replace("_", " ");
       buttonElement.className = `btn btn-secondary w-100 ${extraCss.join(" ")}`;
       if (buttonElement.textContent == "ruins" && !ruinsFound) {
-        buttonElement.hidden = true
+        buttonElement.hidden = true;
       }
       listElement.appendChild(buttonElement);
       parent.appendChild(listElement);
