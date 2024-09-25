@@ -59,10 +59,11 @@ var eatElement = document.querySelector(".eat-menu");
 var drinkElement = document.querySelector(".drink-menu");
 var transHideElement = document.querySelectorAll(".trans-hidden");
 var ruinsFound = false;
+var repairprogres = 0;
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
-var inventory = [];
+var inventory = ["Planks", "Planks", "Planks", "Planks", "Planks", "Planks", "Stone Axe"];
 function fadeIn() {
     return __awaiter(this, void 0, void 0, function () {
         var _loop_1, j;
@@ -408,6 +409,7 @@ function craftItem(itemName) {
         recipe.forEach(function (material) { return inventory.splice(inventory.indexOf(material)); });
         getItem(itemName);
         document.querySelector(".main-dialoge").textContent = "You have crafted a ".concat(itemName, "!");
+        checkForItems();
     }
     else {
         document.querySelector(".main-dialoge").textContent = "You don't have the necessary materials to craft a ".concat(itemName, ".");
@@ -479,28 +481,24 @@ function getText(location) {
     });
 }
 function checkForItems() {
-    if (!inventory.includes("Campfire")) {
-        var bTags = document.querySelectorAll(".interact-btn");
-        var searchText2_1 = "campfire";
-        var found2_1;
-        bTags.forEach(function (element2) {
-            if (element2.textContent == searchText2_1) {
-                found2_1 = element2;
-                found2_1.disabled = true;
-            }
-        });
-    }
-    if (!inventory.includes("Stone Axe")) {
-        var aTags = document.querySelectorAll(".hunt-gather-btn");
-        var searchText_1 = "planks";
-        var found_1;
-        aTags.forEach(function (element) {
-            if (element.textContent == searchText_1) {
-                found_1 = element;
-                found_1.disabled = true;
-            }
-        });
-    }
+    var bTags = document.querySelectorAll(".interact-btn");
+    var searchText2 = "campfire";
+    var found2;
+    bTags.forEach(function (element2) {
+        if (element2.textContent == searchText2) {
+            found2 = element2;
+            found2.disabled = !inventory.includes("Campfire");
+        }
+    });
+    var aTags = document.querySelectorAll(".hunt-gather-btn");
+    var searchText = "planks";
+    var found;
+    aTags.forEach(function (element) {
+        if (element.textContent == searchText) {
+            found = element;
+            found.disabled = !inventory.includes("Stone Axe");
+        }
+    });
 }
 function updateDialogWithActivity(activityId) {
     if (!actions)
@@ -603,7 +601,7 @@ function updateDialogWithInteract(interactId) {
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
-        var data, interact, returnString, ruins, machete, monster, audio_2, repairprogres, index, audio;
+        var data, interact, returnString, ruins, machete, monster, audio_2, index, audio;
         return __generator(this, function (_a) {
             data = json[currentLocation];
             interact = data.interact.find(function (inter) { return inter.id === interactId; });
@@ -655,7 +653,6 @@ function updateDialogWithInteract(interactId) {
                     break;
                 case "repair":
                     returnString = interact.text;
-                    repairprogres = void 0;
                     if (inventory.includes("Planks")) {
                         index = inventory.indexOf("Planks");
                         inventory.splice(index, 1);
@@ -664,6 +661,7 @@ function updateDialogWithInteract(interactId) {
                     }
                     if (repairprogres == 10) {
                         returnString = "You have repaired the boat, finely you can go home";
+                        Relocate("victory!");
                     }
                     break;
                 default:

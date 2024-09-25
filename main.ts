@@ -27,13 +27,15 @@ const transHideElement = document.querySelectorAll(".trans-hidden");
 
 let ruinsFound: boolean = false;
 
+let repairprogres = 0;
+
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 let visited: string[] = [];
 
 let currentLocation: string = "beach";
 
-let inventory: string[] = [];
+let inventory: string[] = ["Planks","Planks","Planks","Planks","Planks","Planks","Stone Axe"];
 
 async function fadeIn() {
   transitionElement.style.opacity = "1";
@@ -292,6 +294,7 @@ function craftItem(itemName) {
     document.querySelector(
       ".main-dialoge"
     )!.textContent = `You have crafted a ${itemName}!`;
+    checkForItems()
   } else {
     document.querySelector(
       ".main-dialoge"
@@ -359,7 +362,6 @@ async function getText(location: string): Promise<void> {
 }
 
 function checkForItems() {
-  if (!inventory.includes("Campfire")) {
     let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
     let searchText2: string = "campfire";
     let found2;
@@ -367,11 +369,10 @@ function checkForItems() {
     bTags.forEach((element2) => {
       if (element2.textContent == searchText2) {
         found2 = element2;
-        found2.disabled = true;
+        found2.disabled = !inventory.includes("Campfire");
       }
     });
-  }
-  if (!inventory.includes("Stone Axe")) {
+
     let aTags: NodeListOf<Element> =
       document.querySelectorAll(".hunt-gather-btn");
     let searchText: string = "planks";
@@ -380,11 +381,10 @@ function checkForItems() {
     aTags.forEach((element) => {
       if (element.textContent == searchText) {
         found = element;
-        found.disabled = true;
+        found.disabled = !inventory.includes("Stone Axe");
       }
     });
   }
-}
 
 function updateDialogWithActivity(activityId: string): void {
   if (!actions) return;
@@ -535,7 +535,6 @@ function updateDialogWithInteract(interactId: string): void {
           break;
           case "repair":
             returnString = interact.text;
-            let repairprogres;
             if (inventory.includes("Planks")) {
               let index = inventory.indexOf("Planks")
               inventory.splice(index, 1)
@@ -545,6 +544,7 @@ function updateDialogWithInteract(interactId: string): void {
             }
             if (repairprogres == 10) {
               returnString = "You have repaired the boat, finely you can go home";
+              Relocate("victory!")
             }
             break;
         default:
