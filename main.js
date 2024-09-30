@@ -470,6 +470,9 @@ function getText(location) {
                         id = 1;
                         visited.push(location.replace(" ", "_"));
                     }
+                    if (location == "volcano") {
+                        id = volcanoTimer;
+                    }
                     entry = data.description.find(function (item) { return item.id === id; });
                     if (dialogElement && (entry === null || entry === void 0 ? void 0 : entry.description)) {
                         dialogElement.innerHTML = entry.description;
@@ -699,6 +702,13 @@ function updateDialogWithInteract(interactId) {
                     Relocate("victory!");
                     GameOver("escape");
                     break;
+                case "bath":
+                    returnString = interact.text;
+                    if (currentLocation == "hotspring") {
+                        health += 20;
+                        poisoned = false;
+                    }
+                    break;
                 default:
                     returnString = interact.text;
                     actions -= 1;
@@ -787,6 +797,10 @@ function PopulateDropdown(parent, array) {
             if (buttonElement.textContent == "escape" && repairprogres !== 10) {
                 buttonElement.hidden = true;
             }
+            buttonElement.addEventListener("click", function () {
+                var audio = new Audio("mp3/sfx/button".concat(1 + Math.floor(Math.random() * 3), ".mp3"));
+                audio.play();
+            });
             listElement.appendChild(buttonElement);
             parent.appendChild(listElement);
         });
