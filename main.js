@@ -628,7 +628,7 @@ function updateDialogWithInteract(interactId) {
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {
-        var data, interact, returnString, ruins, machete, monster, audio_2, index, interactIds, audio;
+        var data, interact, returnString, index, element, ruins, machete, monster, audio_2, index, interactIds, audio;
         return __generator(this, function (_a) {
             data = json[currentLocation];
             interact = data.interact.find(function (inter) { return inter.id === interactId; });
@@ -636,6 +636,13 @@ function updateDialogWithInteract(interactId) {
                 case "sleep":
                     goToSleep(interact.text, dialogElement);
                     break;
+                case "campfire":
+                    for (index = 0; index < inventory.length; index++) {
+                        element = inventory[index];
+                        element.replace("raw", "cooked");
+                        element.replace("dirty", "");
+                    }
+                    ;
                 case "investegate":
                     returnString = interact.text;
                     if (currentLocation === "forest") {

@@ -522,6 +522,13 @@ function updateDialogWithInteract(interactId: string): void {
         case "sleep":
           goToSleep(interact.text, dialogElement);
           break;
+          case"campfire":
+          for (let index = 0; index < inventory.length; index++) {
+            const element = inventory[index];
+            element.replace("raw", "cooked")
+            element.replace("dirty", "")
+          }
+          ;
         case "investegate":
           returnString = interact.text;
           if (currentLocation === "forest") {
