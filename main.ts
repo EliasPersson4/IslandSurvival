@@ -49,7 +49,7 @@ function GameOver(type:string) {
       dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over"  
     break
     case "escape":
-    dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, you have survived"  
+    dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived"  
     break
     }
 }
@@ -422,7 +422,7 @@ function updateDialogWithActivity(activityId: string): void {
       const activity = data.activities.find((act) => act.id === activityId);
       let rng: number;
       let returnString: string = "";
-      
+      let hasSpear: boolean
       switch (activityId) {
         case "foraging":
           returnString = activity.text;
