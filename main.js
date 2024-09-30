@@ -125,7 +125,8 @@ function fadeIn() {
         });
     });
 }
-fadeIn();
+//fadeIn();
+Relocate("beach");
 function transition(location) {
     return __awaiter(this, void 0, void 0, function () {
         var _loop_2, i, _loop_3, j;

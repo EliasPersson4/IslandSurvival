@@ -71,7 +71,8 @@ async function fadeIn() {
     });
   }
 }
-fadeIn();
+//fadeIn();
+Relocate("beach")
 async function transition(location: string): Promise<void> {
   for (let i = 0; i < 100; i += 5) {
     await sleep(30);
