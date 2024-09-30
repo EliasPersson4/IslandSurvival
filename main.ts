@@ -356,6 +356,9 @@ async function getText(location: string): Promise<void> {
     id = 1;
     visited.push(location.replace(" ", "_"));
   }
+  if (location == "volcano") {
+    id = volcanoTimer
+  }
 
   const entry = data.description.find((item) => item.id === id);
 
@@ -591,6 +594,13 @@ function updateDialogWithInteract(interactId: string): void {
               Relocate("victory!")
               GameOver("escape")
               break;
+              case "bath":
+                returnString = interact.text
+                if (currentLocation == "hotspring") {
+                  health += 20
+                  poisoned = false
+                }  
+              break
         default:
           returnString = interact.text;
           actions -= 1;
@@ -682,6 +692,12 @@ function PopulateDropdown(
       if (buttonElement.textContent == "escape" && repairprogres!==10) {
         buttonElement.hidden = true;
       }
+      buttonElement.addEventListener("click", function () {
+        const audio: HTMLAudioElement = new Audio(
+          `mp3/sfx/button${1 + Math.floor(Math.random() * 3)}.mp3`
+        );
+        audio.play();
+      })
       listElement.appendChild(buttonElement);
       parent.appendChild(listElement);
     });
