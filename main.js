@@ -64,7 +64,7 @@ var repairprogres = 0;
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
-var inventory = ["Planks", "Planks", "Planks", "Planks", "Planks", "Planks", "Stone Axe"];
+var inventory = [];
 function GameOver(type) {
     switch (type) {
         case "eruption":

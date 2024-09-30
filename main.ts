@@ -37,7 +37,7 @@ let visited: string[] = [];
 
 let currentLocation: string = "beach";
 
-let inventory: string[] = ["Planks","Planks","Planks","Planks","Planks","Planks","Stone Axe"];
+let inventory: string[] = [];
 
 function GameOver(type:string) {
   switch(type){
