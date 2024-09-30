@@ -77,7 +77,7 @@ function GameOver(type) {
             dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over";
             break;
         case "escape":
-            dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, you have survived";
+            dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived";
             break;
     }
 }
@@ -533,6 +533,7 @@ function updateDialogWithActivity(activityId) {
         var activity = data.activities.find(function (act) { return act.id === activityId; });
         var rng;
         var returnString = "";
+        var hasSpear;
         switch (activityId) {
             case "foraging":
                 returnString = activity.text;
