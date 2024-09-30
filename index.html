@@ -14,7 +14,8 @@
   </head>
   <body class="bg-dark-subtle bg">
     <div class="row position-fixed w-100 text-center m-auto top-50">
-      <div class="col-md-6"><button class="btn btn-success" data-bs-toggle="#perkModal">Start</button></div>
+      <div class="col-md-6"><button class="btn btn-success"           data-bs-toggle="modal"
+        data-bs-target="#perkModal">Start</button></div>
       <div class="col-md-6"><button class="btn btn-success">Load</button></div>
     </div>
     <div class="transition"></div>
@@ -105,7 +106,7 @@
         <button
           class="btn col-md-2 m-auto bg-secondary border-dark border border-5 rounded-3 bg-opacity-75"
           data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
+          data-bs-target="#inventoryModal"
         >
           <h4 class="">Inventory</h4>
         </button>
@@ -186,9 +187,9 @@
       </div>
     </div>
     <div
-      class="modal fade show"
+      class="modal fade"
       id="perkModal"
-      tabindex="-1"
+      tabindex="2"
       aria-labelledby="perkModalLabel"
       aria-hidden="true"
     >

@@ -426,7 +426,7 @@ function updateDialogWithActivity(activityId: string): void {
       const activity = data.activities.find((act) => act.id === activityId);
       let rng: number;
       let returnString: string = "";
-      let hasSpear: boolean
+      let hasSpear: number = inventory.includes("Spear") ? 20 : 0
       switch (activityId) {
         case "foraging":
           returnString = activity.text;

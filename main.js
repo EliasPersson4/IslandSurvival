@@ -537,7 +537,7 @@ function updateDialogWithActivity(activityId) {
         var activity = data.activities.find(function (act) { return act.id === activityId; });
         var rng;
         var returnString = "";
-        var hasSpear;
+        var hasSpear = inventory.includes("Spear") ? 20 : 0;
         switch (activityId) {
             case "foraging":
                 returnString = activity.text;
