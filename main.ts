@@ -29,6 +29,8 @@ let ruinsFound: boolean = false
 
 let volcanoTimer: number = 2
 
+let repairprogres = 0;
+
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 let visited: string[] = [];
@@ -319,6 +321,7 @@ function craftItem(itemName) {
     document.querySelector(
       ".main-dialoge"
     )!.textContent = `You have crafted a ${itemName}!`;
+    checkForItems()
   } else {
     document.querySelector(
       ".main-dialoge"
@@ -386,7 +389,6 @@ async function getText(location: string): Promise<void> {
 }
 
 function checkForItems() {
-  if (!inventory.includes("Campfire")) {
     let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
     let searchText2: string = "campfire";
     let found2;
@@ -394,11 +396,10 @@ function checkForItems() {
     bTags.forEach((element2) => {
       if (element2.textContent == searchText2) {
         found2 = element2;
-        found2.disabled = true;
+        found2.disabled = !inventory.includes("Campfire");
       }
     });
-  }
-  if (!inventory.includes("Stone Axe")) {
+
     let aTags: NodeListOf<Element> =
       document.querySelectorAll(".hunt-gather-btn");
     let searchText: string = "planks";
@@ -407,11 +408,10 @@ function checkForItems() {
     aTags.forEach((element) => {
       if (element.textContent == searchText) {
         found = element;
-        found.disabled = true;
+        found.disabled = !inventory.includes("Stone Axe");
       }
     });
   }
-}
 
 function updateDialogWithActivity(activityId: string): void {
   if (!actions) return;
@@ -562,7 +562,6 @@ function updateDialogWithInteract(interactId: string): void {
           break;
           case "repair":
             returnString = interact.text;
-            let repairprogres;
             if (inventory.includes("Planks")) {
               let index = inventory.indexOf("Planks")
               inventory.splice(index, 1)
@@ -572,8 +571,19 @@ function updateDialogWithInteract(interactId: string): void {
             }
             if (repairprogres == 10) {
               returnString = "You have repaired the boat, finely you can go home";
+              const interactIds = data.interact.map((interact) => interact.id);
+  PopulateDropdown(interactElement, interactIds, "interact-btn");
+  document.querySelectorAll(".interact-btn").forEach((element) => {
+    element.addEventListener("click", function () {
+      updateDialogWithInteract(element.textContent!.replace(" ", "_"));
+    });
+  });
             }
             break;
+            case "escape":
+              Relocate("victory!")
+              GameOver("escape")
+              break;
         default:
           returnString = interact.text;
           actions -= 1;
@@ -660,6 +670,9 @@ function PopulateDropdown(
       buttonElement.textContent = element.replace("_", " ");
       buttonElement.className = `btn btn-secondary w-100 ${extraCss.join(" ")}`;
       if (buttonElement.textContent == "ruins" && !ruinsFound) {
+        buttonElement.hidden = true;
+      }
+      if (buttonElement.textContent == "escape" && repairprogres!==10) {
         buttonElement.hidden = true;
       }
       listElement.appendChild(buttonElement);
