@@ -27,14 +27,14 @@ const transHideElement = document.querySelectorAll(".trans-hidden");
 
 let ruinsFound: boolean = false
 
-let outdoorsman
-let gatherer
-let hunter
-let expolrer
+let outdoorsman: boolean = false;
+let gatherer: boolean = false;
+let hunter: boolean = false;
+let explorer: boolean = false;
 
 let volcanoTimer: number = 2
 
-let repairprogres = 0;
+let repairProgress: number = 0;
 
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
@@ -109,17 +109,17 @@ function canCraft(recipe: string[]): boolean {
 
 document.querySelectorAll(".perk")!.forEach((element) => {
   element.addEventListener("click", function() {
-    if (element.innerHTML == "Outdoorsman") {
+    if (element.innerHTML.trim() == "Outdoorsman") {
       outdoorsman = true
     }
-    if (element.innerHTML == "Gatherer") {
+    if (element.innerHTML.trim() == "Gatherer") {
       gatherer = true
     }
-    if (element.innerHTML == "Hunter") {
+    if (element.innerHTML.trim() == "Hunter") {
       hunter = true
     }
-    if (element.innerHTML == "Explorer") {
-      expolrer = true
+    if (element.innerHTML.trim() == "Explorer") {
+      explorer = true
     }
     visited = []
     document.querySelector(".start-menu")!.style.visibility = "hidden"
@@ -197,7 +197,7 @@ function Relocate(location: string): void {
 
   getText(location.replace(" ", "_"));
   if (visited.length) {
-    if (randInt(1,100) > 70 && expolrer) {
+    if (randInt(1,100) > 70 && explorer) {
       
     }
     else{
@@ -612,11 +612,11 @@ function updateDialogWithInteract(interactId: string): void {
             if (inventory.includes("Planks")) {
               let index = inventory.indexOf("Planks")
               inventory.splice(index, 1)
-              repairprogres += 1
-              returnString = `You have repaired a part of the boat, you only need to repair ${10 - repairprogres} parts to have it fully repaired`;
+              repairProgress += 1
+              returnString = `You have repaired a part of the boat, you only need to repair ${10 - repairProgress} parts to have it fully repaired`;
 
             }
-            if (repairprogres == 10) {
+            if (repairProgress == 10) {
               returnString = "You have repaired the boat, finely you can go home";
               const interactIds = data.interact.map((interact) => interact.id);
   PopulateDropdown(interactElement, interactIds, "interact-btn");
@@ -702,7 +702,6 @@ function UpdateStats(): void {
     setupDiscardButtons();
     setupEatButtons();
     setupDrinkButtons();
-
     if (health <= 0) {
       GameOver("health")
     }
@@ -726,7 +725,7 @@ function PopulateDropdown(
       if (buttonElement.textContent == "ruins" && !ruinsFound) {
         buttonElement.hidden = true;
       }
-      if (buttonElement.textContent == "escape" && repairprogres!==10) {
+      if (buttonElement.textContent == "escape" && repairProgress!==10) {
         buttonElement.hidden = true;
       }
       buttonElement.addEventListener("click", function () {
@@ -756,3 +755,42 @@ document.querySelectorAll("button").forEach((element) => {
 });
 
 document.querySelector(".music-toggle")?.addEventListener("click", togglePlay);
+
+interface GameState {
+  ruinsFound: boolean;
+  outdoorsman: boolean;
+  gatherer: boolean;
+  hunter: boolean;
+  explorer: boolean;
+  volcanoTimer: number;
+  repairProgress: number;
+  visited: string[];
+  currentLocation: string;
+  inventory: string[];
+}
+
+document.querySelector(".save")?.addEventListener("click", function(){
+  let gameState: GameState = {
+    ruinsFound: ruinsFound,
+    outdoorsman: outdoorsman,
+    gatherer: gatherer,
+    hunter: hunter,
+    explorer: explorer,
+    volcanoTimer: volcanoTimer,
+    repairProgress: repairProgress,
+    visited: visited,
+    currentLocation: currentLocation,
+    inventory: inventory
+  };
+  localStorage.setItem('gameState', JSON.stringify(gameState));
+});
+
+document.querySelector(".load")?.addEventListener("click", function(){
+  const savedGameState = localStorage.getItem('gameState');
+    if (savedGameState) {
+        let gameState = JSON.parse(savedGameState) as GameState;
+    } else {
+        console.log('No saved game state found.');
+    }
+});
+

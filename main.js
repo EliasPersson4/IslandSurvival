@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _a;
+var _a, _b, _c;
 var bgElement = document.querySelector(".bg");
 var healthElement = document.querySelector(".health");
 var health = 90;
@@ -59,12 +59,12 @@ var eatElement = document.querySelector(".eat-menu");
 var drinkElement = document.querySelector(".drink-menu");
 var transHideElement = document.querySelectorAll(".trans-hidden");
 var ruinsFound = false;
-var outdoorsman;
-var gatherer;
-var hunter;
-var expolrer;
+var outdoorsman = false;
+var gatherer = false;
+var hunter = false;
+var explorer = false;
 var volcanoTimer = 2;
-var repairprogres = 0;
+var repairProgress = 0;
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
@@ -207,17 +207,17 @@ function canCraft(recipe) {
 }
 document.querySelectorAll(".perk").forEach(function (element) {
     element.addEventListener("click", function () {
-        if (element.innerHTML == "Outdoorsman") {
+        if (element.innerHTML.trim() == "Outdoorsman") {
             outdoorsman = true;
         }
-        if (element.innerHTML == "Gatherer") {
+        if (element.innerHTML.trim() == "Gatherer") {
             gatherer = true;
         }
-        if (element.innerHTML == "Hunter") {
+        if (element.innerHTML.trim() == "Hunter") {
             hunter = true;
         }
-        if (element.innerHTML == "Explorer") {
-            expolrer = true;
+        if (element.innerHTML.trim() == "Explorer") {
+            explorer = true;
         }
         visited = [];
         document.querySelector(".start-menu").style.visibility = "hidden";
@@ -324,7 +324,7 @@ function Relocate(location) {
     currentLocation = location.replace(" ", "_");
     getText(location.replace(" ", "_"));
     if (visited.length) {
-        if (randInt(1, 100) > 70 && expolrer) {
+        if (randInt(1, 100) > 70 && explorer) {
         }
         else {
             actions -= 1;
@@ -725,10 +725,10 @@ function updateDialogWithInteract(interactId) {
                     if (inventory.includes("Planks")) {
                         index = inventory.indexOf("Planks");
                         inventory.splice(index, 1);
-                        repairprogres += 1;
-                        returnString = "You have repaired a part of the boat, you only need to repair ".concat(10 - repairprogres, " parts to have it fully repaired");
+                        repairProgress += 1;
+                        returnString = "You have repaired a part of the boat, you only need to repair ".concat(10 - repairProgress, " parts to have it fully repaired");
                     }
-                    if (repairprogres == 10) {
+                    if (repairProgress == 10) {
                         returnString = "You have repaired the boat, finely you can go home";
                         interactIds = data.interact.map(function (interact) { return interact.id; });
                         PopulateDropdown(interactElement, interactIds, "interact-btn");
@@ -835,7 +835,7 @@ function PopulateDropdown(parent, array) {
             if (buttonElement.textContent == "ruins" && !ruinsFound) {
                 buttonElement.hidden = true;
             }
-            if (buttonElement.textContent == "escape" && repairprogres !== 10) {
+            if (buttonElement.textContent == "escape" && repairProgress !== 10) {
                 buttonElement.hidden = true;
             }
             buttonElement.addEventListener("click", function () {
@@ -859,3 +859,27 @@ document.querySelectorAll("button").forEach(function (element) {
     });
 });
 (_a = document.querySelector(".music-toggle")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", togglePlay);
+(_b = document.querySelector(".save")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", function () {
+    var gameState = {
+        ruinsFound: ruinsFound,
+        outdoorsman: outdoorsman,
+        gatherer: gatherer,
+        hunter: hunter,
+        explorer: explorer,
+        volcanoTimer: volcanoTimer,
+        repairProgress: repairProgress,
+        visited: visited,
+        currentLocation: currentLocation,
+        inventory: inventory
+    };
+    localStorage.setItem('gameState', JSON.stringify(gameState));
+});
+(_c = document.querySelector(".load")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", function () {
+    var savedGameState = localStorage.getItem('gameState');
+    if (savedGameState) {
+        var gameState = JSON.parse(savedGameState);
+    }
+    else {
+        console.log('No saved game state found.');
+    }
+});
