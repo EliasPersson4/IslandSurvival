@@ -13,7 +13,7 @@
     />
   </head>
   <body class="bg-dark-subtle bg">
-    <div class="row position-fixed w-100 text-center m-auto top-50">
+    <div class="row position-fixed w-100 text-center m-auto top-50 start-menu">
       <div class="col-md-6"><button class="btn btn-success"           data-bs-toggle="modal"
         data-bs-target="#perkModal">Start</button></div>
       <div class="col-md-6"><button class="btn btn-success">Load</button></div>
@@ -197,20 +197,21 @@
       <div class="modal-dialog">
         <div class="modal-content bg-dark text-light">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="perkModalLabel">Chose Perks</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h1 class="modal-title fs-5" id="perkModalLabel">Choose Perks</h1>
           </div>
           <div class="modal-body perk-list">
-            <button type="button" class="btn btn-secondary">perk</button>
-            <button type="button" class="btn btn-secondary">perk</button>
-            <button type="button" class="btn btn-secondary">perk</button>
-            <button type="button" class="btn btn-secondary">perk</button>
-            <button type="button" class="btn btn-secondary">perk</button>
+            <button type="button" class="btn btn-secondary perk" data-toggle="tooltip" data-bs-dismiss="modal" data-placement="top" title="No risk of being poisend by mushrooms and berries">
+              Outdoorsman
+            </button>              
+            <button type="button" class="btn btn-secondary perk" data-toggle="tooltip" data-bs-dismiss="modal" data-placement="top" title="Get at least 2 when gathering">
+              Gatherer
+            </button>            
+            <button type="button" class="btn btn-secondary perk" data-toggle="tooltip" data-bs-dismiss="modal" data-placement="top" title="Bigger chans to get meat or hide">
+              Hunter
+            </button>
+            <button type="button" class="btn btn-secondary perk" data-toggle="tooltip" data-bs-dismiss="modal" data-placement="top" title="Chans of not taking actions when traveling">
+              Explorer
+            </button>
           </div>
         </div>
       </div>

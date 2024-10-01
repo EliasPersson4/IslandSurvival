@@ -27,6 +27,11 @@ const transHideElement = document.querySelectorAll(".trans-hidden");
 
 let ruinsFound: boolean = false
 
+let outdoorsman
+let gatherer
+let hunter
+let expolrer
+
 let volcanoTimer: number = 2
 
 let repairprogres = 0;
@@ -102,6 +107,26 @@ function canCraft(recipe: string[]): boolean {
   return true;
 }
 
+document.querySelectorAll(".perk")!.forEach((element) => {
+  element.addEventListener("click", function() {
+    if (element.innerHTML == "Outdoorsman") {
+      outdoorsman = true
+    }
+    if (element.innerHTML == "Gatherer") {
+      gatherer = true
+    }
+    if (element.innerHTML == "Hunter") {
+      hunter = true
+    }
+    if (element.innerHTML == "Explorer") {
+      expolrer = true
+    }
+    visited = []
+    document.querySelector(".start-menu")!.style.visibility = "hidden"
+    fadeIn();
+  });
+});
+
 async function goToSleep(
   text: string,
   textElement: HTMLElement
@@ -172,7 +197,12 @@ function Relocate(location: string): void {
 
   getText(location.replace(" ", "_"));
   if (visited.length) {
-    actions -= 1;
+    if (randInt(1,100) > 70 && expolrer) {
+      
+    }
+    else{
+      actions -= 1;
+    }
     food -= 5;
     water -= 10;
   }
@@ -225,7 +255,9 @@ function setupEatButtons() {
           food += 35;
         case "Berry":
           food += 25;
-          poisoned = randInt(1, 100) > 70;
+          if (!outdoorsman) {
+            poisoned = randInt(1, 100) > 70;
+          }
           break;
 
         default:
@@ -427,6 +459,7 @@ function updateDialogWithActivity(activityId: string): void {
       let rng: number;
       let returnString: string = "";
       let hasSpear: number = inventory.includes("Spear") ? 20 : 0
+      let isHunter: number = hunter ? 20 : 0
       switch (activityId) {
         case "foraging":
           returnString = activity.text;
@@ -442,7 +475,7 @@ function updateDialogWithActivity(activityId: string): void {
         case "fish":
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
-          if (rng > 50 - hasSpear) {
+          if (rng > 50 - hasSpear - isHunter) {
             returnString += activity.text.split("|")[1];
             getItem("Raw Fish");
           } else {
@@ -454,7 +487,7 @@ function updateDialogWithActivity(activityId: string): void {
           returnString += activity.text.split("|")[0];
           rng = randInt(1, 100);
 
-          if (rng > 70 - hasSpear) {
+          if (rng > 70 - hasSpear - isHunter) {
             returnString += activity.text.split("|")[1];
             getItem("Raw Meat");
           } else {
@@ -464,6 +497,9 @@ function updateDialogWithActivity(activityId: string): void {
         case "sticks":
         case "twine":
           let amount: number = randInt(1, 3);
+          if (gatherer) {
+            amount + 1
+          }
           for (let i = 0; i < amount; i++) {
             getItem(CapitalizeCase(activityId).trim());
           }

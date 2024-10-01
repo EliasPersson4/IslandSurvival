@@ -59,6 +59,10 @@ var eatElement = document.querySelector(".eat-menu");
 var drinkElement = document.querySelector(".drink-menu");
 var transHideElement = document.querySelectorAll(".trans-hidden");
 var ruinsFound = false;
+var outdoorsman;
+var gatherer;
+var hunter;
+var expolrer;
 var volcanoTimer = 2;
 var repairprogres = 0;
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
@@ -201,6 +205,25 @@ function canCraft(recipe) {
     });
     return true;
 }
+document.querySelectorAll(".perk").forEach(function (element) {
+    element.addEventListener("click", function () {
+        if (element.innerHTML == "Outdoorsman") {
+            outdoorsman = true;
+        }
+        if (element.innerHTML == "Gatherer") {
+            gatherer = true;
+        }
+        if (element.innerHTML == "Hunter") {
+            hunter = true;
+        }
+        if (element.innerHTML == "Explorer") {
+            expolrer = true;
+        }
+        visited = [];
+        document.querySelector(".start-menu").style.visibility = "hidden";
+        fadeIn();
+    });
+});
 function goToSleep(text, textElement) {
     return __awaiter(this, void 0, void 0, function () {
         var audio, _loop_4, i, recovered, _loop_5, j;
@@ -301,7 +324,11 @@ function Relocate(location) {
     currentLocation = location.replace(" ", "_");
     getText(location.replace(" ", "_"));
     if (visited.length) {
-        actions -= 1;
+        if (randInt(1, 100) > 70 && expolrer) {
+        }
+        else {
+            actions -= 1;
+        }
         food -= 5;
         water -= 10;
     }
@@ -349,7 +376,9 @@ function setupEatButtons() {
                     food += 35;
                 case "Berry":
                     food += 25;
-                    poisoned = randInt(1, 100) > 70;
+                    if (!outdoorsman) {
+                        poisoned = randInt(1, 100) > 70;
+                    }
                     break;
                 default:
                     break;
@@ -538,6 +567,7 @@ function updateDialogWithActivity(activityId) {
         var rng;
         var returnString = "";
         var hasSpear = inventory.includes("Spear") ? 20 : 0;
+        var isHunter = hunter ? 20 : 0;
         switch (activityId) {
             case "foraging":
                 returnString = activity.text;
@@ -554,7 +584,7 @@ function updateDialogWithActivity(activityId) {
             case "fish":
                 returnString += activity.text.split("|")[0];
                 rng = randInt(1, 100);
-                if (rng > 50 - hasSpear) {
+                if (rng > 50 - hasSpear - isHunter) {
                     returnString += activity.text.split("|")[1];
                     getItem("Raw Fish");
                 }
@@ -565,7 +595,7 @@ function updateDialogWithActivity(activityId) {
             case "hunt":
                 returnString += activity.text.split("|")[0];
                 rng = randInt(1, 100);
-                if (rng > 70 - hasSpear) {
+                if (rng > 70 - hasSpear - isHunter) {
                     returnString += activity.text.split("|")[1];
                     getItem("Raw Meat");
                 }
@@ -576,6 +606,9 @@ function updateDialogWithActivity(activityId) {
             case "sticks":
             case "twine":
                 var amount = randInt(1, 3);
+                if (gatherer) {
+                    amount + 1;
+                }
                 for (var i = 0; i < amount; i++) {
                     getItem(CapitalizeCase(activityId).trim());
                 }
