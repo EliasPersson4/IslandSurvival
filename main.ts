@@ -545,10 +545,10 @@ function updateDialogWithActivity(activityId: string): void {
       }
       actions -= 1;
       food -= 10;
-      if(food >= 0)
+      if(food <= 0)
         food = 0
       water -= 5;
-      if(water >= 0)
+      if(water <= 0)
         water = 0
       if (poisoned) {
         health -= 5;
@@ -665,10 +665,10 @@ function updateDialogWithInteract(interactId: string): void {
       const audio: HTMLAudioElement = new Audio(`mp3/sfx/${interactId}.mp3`);
       audio.play();
       food -= 10;
-      if(food >= 0)
+      if(food <= 0)
         food = 0
       water -= 5;
-      if(water >= 0)
+      if(water <= 0)
         water = 0
       UpdateStats();
     });
