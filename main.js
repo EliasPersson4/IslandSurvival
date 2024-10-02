@@ -510,6 +510,10 @@ function getText(location) {
                     PopulateDropdown(travelElement, data.connections, "travel-btn");
                     document.querySelectorAll(".travel-btn").forEach(function (element) {
                         element.addEventListener("click", function () {
+                            if (!actions) {
+                                dialogElement.innerHTML = "Not enough actions";
+                                return;
+                            }
                             transition(element.textContent.trim());
                         });
                     });
@@ -557,8 +561,10 @@ function checkForItems() {
     });
 }
 function updateDialogWithActivity(activityId) {
-    if (!actions)
+    if (!actions) {
+        dialogElement.innerHTML = "Not enough actions";
         return;
+    }
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) {
@@ -657,8 +663,10 @@ function updateDialogWithActivity(activityId) {
 }
 function updateDialogWithInteract(interactId) {
     var _this = this;
-    if (!actions && interactId != "sleep")
+    if (!actions && interactId != "sleep") {
+        dialogElement.innerHTML = "Not enough actions";
         return;
+    }
     fetch("./locations.json")
         .then(function (response) { return response.json(); })
         .then(function (json) { return __awaiter(_this, void 0, void 0, function () {

@@ -401,6 +401,10 @@ async function getText(location: string): Promise<void> {
   PopulateDropdown(travelElement, data.connections, "travel-btn");
   document.querySelectorAll(".travel-btn").forEach((element) => {
     element.addEventListener("click", function () {
+      if(!actions){
+        dialogElement.innerHTML = "Not enough actions"
+        return;
+      }
       transition(element.textContent!.trim());
     });
   });
@@ -450,7 +454,10 @@ function checkForItems() {
   }
 
 function updateDialogWithActivity(activityId: string): void {
-  if (!actions) return;
+  if (!actions){
+    dialogElement.innerHTML = "Not enough actions"
+    return;
+  } 
   fetch("./locations.json")
     .then((response) => response.json())
     .then((json) => {
@@ -548,7 +555,10 @@ function updateDialogWithActivity(activityId: string): void {
 }
 
 function updateDialogWithInteract(interactId: string): void {
-  if (!actions && interactId != "sleep") return;
+  if (!actions && interactId != "sleep"){
+      dialogElement.innerHTML = "Not enough actions"
+      return;
+    } 
   fetch("./locations.json")
     .then((response) => response.json())
     .then(async (json) => {
