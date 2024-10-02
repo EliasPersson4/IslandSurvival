@@ -533,7 +533,7 @@ function updateDialogWithActivity(activityId: string): void {
               returnString += activity.text.split("|")[2];
             }
             if (currentLocation === "deep_forest") {
-              returnString += activity.text.split("|")[1];
+              returnString = activity.text;
               getItem("Planks");
             }
           break;
