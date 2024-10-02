@@ -511,17 +511,19 @@ function updateDialogWithActivity(activityId: string): void {
 
           break;
           case "planks":
+            returnString += activity.text.split("|")[0];
             rng = randInt(1, 100);
-            if (currentLocation === "deep_forest") {
-              returnString += activity.text.split("|")[0];
-              getItem("planks");
-            }
-            else if (rng > 70 && currentLocation === "forest") {
-              returnString += activity.text.split("|")[0];
-              getItem("planks");
+            
+            if (rng > 70 && currentLocation === "forest") {
+              returnString += activity.text.split("|")[1];
+              getItem("Planks");
             } 
             else {
+              returnString += activity.text.split("|")[2];
+            }
+            if (currentLocation === "deep_forest") {
               returnString += activity.text.split("|")[1];
+              getItem("Planks");
             }
           break;
         case "sticks":
