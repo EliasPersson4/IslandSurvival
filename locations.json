@@ -124,7 +124,7 @@
       },
       {
         "id": "planks",
-        "text": "You chop some trees and try to make a plank out of the materials, |the materials are too badly damaged to be able to make anything with.|its low quality but it will do."
+        "text": "You chop some trees and try to make a plank out of the materials, |its low quality but it will do. |the materials are too badly damaged to be able to make anything with."
       },
       {
         "id": "twine",
