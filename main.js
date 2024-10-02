@@ -278,7 +278,6 @@ function goToSleep(text, textElement) {
                     textElement.innerHTML = text;
                     if (volcanoTimer != 5) {
                         volcanoTimer += randInt(1, 100) > 70 ? 1 : 0;
-                        console.log(volcanoTimer);
                     }
                     else if (randInt(1, 100) > 70) {
                         GameOver("eruption");
@@ -968,7 +967,6 @@ var gameState;
             document.querySelector(".start-menu").style.visibility = "hidden";
             fadeIn();
             UpdateStats();
-            console.log('Game state loaded:', gameState);
         }
         else {
             console.log('No saved game state found.');

@@ -159,7 +159,6 @@ async function goToSleep(
   textElement.innerHTML = text;
   if (volcanoTimer != 5) {
     volcanoTimer += randInt(1,100) > 70 ? 1 : 0
-    console.log(volcanoTimer)
   }
   else
     if(randInt(1,100) > 70){
@@ -887,9 +886,7 @@ document.querySelectorAll(".load")?.forEach((element) => {
          fadeIn();
          UpdateStats();
   
-  
-         console.log('Game state loaded:', gameState);
-      } else {
+        } else {
           console.log('No saved game state found.');
       }
   });
