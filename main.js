@@ -500,7 +500,7 @@ function getText(location) {
                         id = 1;
                         visited.push(location.replace(" ", "_"));
                     }
-                    if (location == "volcano") {
+                    if (location == "volcano" && visited.includes("volcano")) {
                         id = volcanoTimer;
                     }
                     entry = data.description.find(function (item) { return item.id === id; });

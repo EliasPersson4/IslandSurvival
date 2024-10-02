@@ -24,7 +24,6 @@ const discardElement: HTMLElement = document.querySelector(".discard-menu")!;
 const eatElement: HTMLElement = document.querySelector(".eat-menu")!;
 const drinkElement: HTMLElement = document.querySelector(".drink-menu")!;
 const transHideElement = document.querySelectorAll(".trans-hidden");
-
 let ruinsFound: boolean = false
 
 let outdoorsman: boolean = false;
@@ -389,7 +388,7 @@ async function getText(location: string): Promise<void> {
     id = 1;
     visited.push(location.replace(" ", "_"));
   }
-  if (location == "volcano") {
+  if (location == "volcano" && visited.includes("volcano")) {
     id = volcanoTimer
   }
 
