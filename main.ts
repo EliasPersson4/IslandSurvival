@@ -66,7 +66,7 @@ async function fadeIn() {
   transHideElement.forEach((element) => {
     element.style.opacity = "0";
   });
-  Relocate("beach");
+  Relocate(currentLocation);
   await sleep(300);
   for (let j = 100; j > 0; j -= 5) {
     await sleep(40);
@@ -777,10 +777,15 @@ interface GameState {
   visited: string[];
   currentLocation: string;
   inventory: string[];
+  actions: number;
+  health: number;
+  food: number;
+  water: number;
+  poisoned: boolean;
 }
-
+let gameState: GameState
 document.querySelector(".save")?.addEventListener("click", function(){
-  let gameState: GameState = {
+   gameState = {
     ruinsFound: ruinsFound,
     outdoorsman: outdoorsman,
     gatherer: gatherer,
@@ -790,7 +795,12 @@ document.querySelector(".save")?.addEventListener("click", function(){
     repairProgress: repairProgress,
     visited: visited,
     currentLocation: currentLocation,
-    inventory: inventory
+    inventory: inventory,
+    actions: actions,
+    health: health,
+    food: food,
+    water: water,
+    poisoned: poisoned
   };
   localStorage.setItem('gameState', JSON.stringify(gameState));
 });
@@ -798,7 +808,30 @@ document.querySelector(".save")?.addEventListener("click", function(){
 document.querySelector(".load")?.addEventListener("click", function(){
   const savedGameState = localStorage.getItem('gameState');
     if (savedGameState) {
-        let gameState = JSON.parse(savedGameState) as GameState;
+       gameState = JSON.parse(savedGameState) as GameState;
+
+       ruinsFound = gameState.ruinsFound;
+       outdoorsman = gameState.outdoorsman;
+       gatherer = gameState.gatherer;
+       hunter = gameState.hunter;
+       explorer = gameState.explorer;
+       volcanoTimer = gameState.volcanoTimer;
+       repairProgress = gameState.repairProgress;
+       currentLocation = gameState.currentLocation;
+       inventory = gameState.inventory;
+       visited = gameState.visited;
+       actions = gameState.actions+1;
+       health = gameState.health;
+       food = gameState.food;
+       water = gameState.water;
+       poisoned = gameState.poisoned;
+
+       document.querySelector(".start-menu")!.style.visibility = "hidden"
+       fadeIn();
+       UpdateStats();
+
+
+       console.log('Game state loaded:', gameState);
     } else {
         console.log('No saved game state found.');
     }
