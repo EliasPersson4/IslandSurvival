@@ -334,10 +334,9 @@ function getDrinkItems(inventory) {
 
 const recipes = {
   Spear: ["Sticks", "Stone", "Twine"],
-  "Fishing Rod": ["Sticks", "Twine"],
-  "Stone Axe": ["Sticks", "Stone"],
+  "Stone Axe": ["Sticks", "Twine", "Stone"],
   Campfire: ["Sticks", "Stone"],
-  "Sleeping Bag": ["Twine", "Leather"],
+  "Sleeping Bag": ["Twine", "Hide"],
 };
 
 document.querySelectorAll(".crafting")!.forEach((element) => {
@@ -500,9 +499,30 @@ function updateDialogWithActivity(activityId: string): void {
           if (rng > 70 - hasSpear - isHunter) {
             returnString += activity.text.split("|")[1];
             getItem("Raw Meat");
+            if (rng > 70 - isHunter && currentLocation === "deep_forest") {
+              returnString += " You managed to get some hide from the animal.";
+              getItem("Hide");
+            } else {
+              returnString += " The hide was to badly damaged to use.";
+            }
           } else {
             returnString += activity.text.split("|")[2];
           }
+
+          break;
+          case "planks":
+            rng = randInt(1, 100);
+            if (currentLocation === "deep_forest") {
+              returnString += activity.text.split("|")[0];
+              getItem("planks");
+            }
+            else if (rng > 70 && currentLocation === "forest") {
+              returnString += activity.text.split("|")[0];
+              getItem("planks");
+            } 
+            else {
+              returnString += activity.text.split("|")[1];
+            }
           break;
         case "sticks":
         case "twine":
