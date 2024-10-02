@@ -228,7 +228,7 @@
     "activities": [
       {
         "id": "hunt",
-        "text": "You found some footprints from a deer and followed them, you found a rabbit and attacked it and you managed to land a hit and killed it. |You found some footprints from a deer and followed them, you found a rabbit and attacked it but it fled."
+        "text": "You found some footprints from a deer and followed them. |You found a deer and attacked it and you managed to land a hit and killed it. |You found some footprints from a deer and followed them, you found a deer and attacked it but it fled."
       },
       {
         "id": "sticks",
