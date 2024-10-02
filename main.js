@@ -820,6 +820,8 @@ function getItem(string) {
 function UpdateStats() {
     health -= (food == 0) ? 5 : 0;
     health -= (water == 0) ? 10 : 0;
+    if (health <= 0)
+        health = 0;
     if (healthElement) {
         healthElement.style.width = "".concat(health, "%");
     }
