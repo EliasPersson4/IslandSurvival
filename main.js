@@ -654,7 +654,11 @@ function updateDialogWithActivity(activityId) {
         }
         actions -= 1;
         food -= 10;
+        if (food >= 0)
+            food = 0;
         water -= 5;
+        if (water >= 0)
+            water = 0;
         if (poisoned) {
             health -= 5;
         }
@@ -770,6 +774,12 @@ function updateDialogWithInteract(interactId) {
             }
             audio = new Audio("mp3/sfx/".concat(interactId, ".mp3"));
             audio.play();
+            food -= 10;
+            if (food >= 0)
+                food = 0;
+            water -= 5;
+            if (water >= 0)
+                water = 0;
             UpdateStats();
             return [2 /*return*/];
         });
