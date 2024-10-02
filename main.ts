@@ -40,7 +40,7 @@ const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 let visited: string[] = [];
 
 let currentLocation: string = "beach";
-
+let gameOver: boolean = false
 let inventory: string[] = [];
 
 function GameOver(type:string) {
@@ -58,6 +58,9 @@ function GameOver(type:string) {
     dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived"  
     break
     }
+    document.querySelectorAll(".button-game-important").forEach(element => {
+      element.setAttribute("disabled", "")
+    });
 }
 
 async function fadeIn() {
@@ -156,6 +159,7 @@ async function goToSleep(
   textElement.innerHTML = text;
   if (volcanoTimer != 5) {
     volcanoTimer += randInt(1,100) > 70 ? 1 : 0
+    console.log(volcanoTimer)
   }
   else
     if(randInt(1,100) > 70){
@@ -309,7 +313,7 @@ function isFood(item) {
     case "Cooked Meat":
     case "Cooked Fish":
     case "Mushroom":
-    case "Berry":
+    case "Berries":
       return true;
     default:
       return false;
@@ -349,7 +353,7 @@ function craftItem(itemName) {
   const recipe = recipes[itemName];
 
   if (canCraft(recipe)) {
-    recipe.forEach((material) => inventory.splice(inventory.indexOf(material)));
+    recipe.forEach((material) => inventory.splice(inventory.indexOf(material), 1));
 
     getItem(itemName);
 
@@ -460,6 +464,14 @@ function updateDialogWithActivity(activityId: string): void {
     dialogElement.innerHTML = "Not enough actions"
     return;
   } 
+  if(inventory.length == 7){
+    dialogElement.innerHTML = "No inventory space"
+    return
+  }
+  else if (inventory.length >= 5 && activityId == "food") {
+    dialogElement.innerHTML = "No inventory space"
+    return
+  }
   fetch("./locations.json")
     .then((response) => response.json())
     .then((json) => {
@@ -580,6 +592,10 @@ function updateDialogWithActivity(activityId: string): void {
       if (poisoned) {
         health -= 5;
       }
+      while(inventory.length > 7){
+        inventory.splice(-1)
+      }
+
       UpdateStats();
     });
 }
@@ -864,7 +880,9 @@ document.querySelectorAll(".load")?.forEach((element) => {
          food = gameState.food;
          water = gameState.water;
          poisoned = gameState.poisoned;
-        
+         document.querySelectorAll(".button-game-important").forEach(element => {
+          element.removeAttribute("disabled")
+        });
          document.querySelector(".start-menu")!.style.visibility = "hidden"
          fadeIn();
          UpdateStats();

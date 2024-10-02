@@ -68,6 +68,7 @@ var repairProgress = 0;
 var sleep = function (delay) { return new Promise(function (resolve) { return setTimeout(resolve, delay); }); };
 var visited = [];
 var currentLocation = "beach";
+var gameOver = false;
 var inventory = [];
 function GameOver(type) {
     switch (type) {
@@ -84,6 +85,9 @@ function GameOver(type) {
             dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived";
             break;
     }
+    document.querySelectorAll(".button-game-important").forEach(function (element) {
+        element.setAttribute("disabled", "");
+    });
 }
 function fadeIn() {
     return __awaiter(this, void 0, void 0, function () {
@@ -274,6 +278,7 @@ function goToSleep(text, textElement) {
                     textElement.innerHTML = text;
                     if (volcanoTimer != 5) {
                         volcanoTimer += randInt(1, 100) > 70 ? 1 : 0;
+                        console.log(volcanoTimer);
                     }
                     else if (randInt(1, 100) > 70) {
                         GameOver("eruption");
@@ -427,7 +432,7 @@ function isFood(item) {
         case "Cooked Meat":
         case "Cooked Fish":
         case "Mushroom":
-        case "Berry":
+        case "Berries":
             return true;
         default:
             return false;
@@ -462,7 +467,7 @@ document.querySelectorAll(".crafting").forEach(function (element) {
 function craftItem(itemName) {
     var recipe = recipes[itemName];
     if (canCraft(recipe)) {
-        recipe.forEach(function (material) { return inventory.splice(inventory.indexOf(material)); });
+        recipe.forEach(function (material) { return inventory.splice(inventory.indexOf(material), 1); });
         getItem(itemName);
         document.querySelector(".main-dialoge").textContent = "You have crafted a ".concat(itemName, "!");
         checkForItems();
@@ -566,6 +571,14 @@ function checkForItems() {
 function updateDialogWithActivity(activityId) {
     if (!actions) {
         dialogElement.innerHTML = "Not enough actions";
+        return;
+    }
+    if (inventory.length == 7) {
+        dialogElement.innerHTML = "No inventory space";
+        return;
+    }
+    else if (inventory.length >= 5 && activityId == "food") {
+        dialogElement.innerHTML = "No inventory space";
         return;
     }
     fetch("./locations.json")
@@ -687,6 +700,9 @@ function updateDialogWithActivity(activityId) {
             water = 0;
         if (poisoned) {
             health -= 5;
+        }
+        while (inventory.length > 7) {
+            inventory.splice(-1);
         }
         UpdateStats();
     });
@@ -946,6 +962,9 @@ var gameState;
             food = gameState.food;
             water = gameState.water;
             poisoned = gameState.poisoned;
+            document.querySelectorAll(".button-game-important").forEach(function (element) {
+                element.removeAttribute("disabled");
+            });
             document.querySelector(".start-menu").style.visibility = "hidden";
             fadeIn();
             UpdateStats();
