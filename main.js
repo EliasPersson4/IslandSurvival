@@ -330,10 +330,10 @@ function Relocate(location) {
             actions -= 1;
         }
         food -= 5;
-        if (food >= 0)
+        if (food <= 0)
             food = 0;
         water -= 10;
-        if (water >= 0)
+        if (water <= 0)
             water = 0;
     }
     UpdateStats();
