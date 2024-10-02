@@ -643,7 +643,7 @@ function updateDialogWithActivity(activityId) {
                     getItem(CapitalizeCase(activityId).trim());
                 }
                 returnString = activity.text.replace("x", amount);
-                returnString += amount > 1 ? "s" : "";
+                returnString += amount > 1 ? "s." : ".";
                 break;
             case "food":
                 returnString += activity.text.split("|")[0];
