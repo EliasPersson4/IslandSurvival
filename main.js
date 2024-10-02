@@ -73,16 +73,20 @@ var inventory = [];
 function GameOver(type) {
     switch (type) {
         case "eruption":
-            dialogElement.innerHTML = "As you were sleeping the volcano erupted, but alas, it is too late for you, you die just seconds after waking up, barely realizing what happened. Game Over";
+            dialogElement.innerHTML =
+                "As you were sleeping the volcano erupted, but alas, it is too late for you, you die just seconds after waking up, barely realizing what happened. Game Over";
             break;
         case "health":
-            dialogElement.innerHTML = "Your body cannot take the burden of living anymore the damages you have accumulated are too grave to heal, you collapse on the ground just in time to see the sunset one last time, you die. Game Over";
+            dialogElement.innerHTML =
+                "Your body cannot take the burden of living anymore the damages you have accumulated are too grave to heal, you collapse on the ground just in time to see the sunset one last time, you die. Game Over";
             break;
         case "monster":
-            dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over";
+            dialogElement.innerHTML =
+                "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over";
             break;
         case "escape":
-            dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived";
+            dialogElement.innerHTML =
+                "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived";
             break;
     }
     document.querySelectorAll(".button-game-important").forEach(function (element) {
@@ -466,7 +470,9 @@ document.querySelectorAll(".crafting").forEach(function (element) {
 function craftItem(itemName) {
     var recipe = recipes[itemName];
     if (canCraft(recipe)) {
-        recipe.forEach(function (material) { return inventory.splice(inventory.indexOf(material), 1); });
+        recipe.forEach(function (material) {
+            return inventory.splice(inventory.indexOf(material), 1);
+        });
         getItem(itemName);
         document.querySelector(".main-dialoge").textContent = "You have crafted a ".concat(itemName, "!");
         checkForItems();
@@ -729,7 +735,6 @@ function updateDialogWithInteract(interactId) {
                         element.replace("raw", "cooked");
                         element.replace("dirty", "");
                     }
-                    ;
                 case "investegate":
                     returnString = interact.text;
                     if (currentLocation === "forest") {
@@ -833,8 +838,8 @@ function getItem(string) {
     UpdateStats();
 }
 function UpdateStats() {
-    health -= (food == 0) ? 5 : 0;
-    health -= (water == 0) ? 10 : 0;
+    health -= food == 0 ? 5 : 0;
+    health -= water == 0 ? 10 : 0;
     if (health <= 0)
         health = 0;
     if (healthElement) {
@@ -937,13 +942,13 @@ var gameState;
         health: health,
         food: food,
         water: water,
-        poisoned: poisoned
+        poisoned: poisoned,
     };
-    localStorage.setItem('gameState', JSON.stringify(gameState));
+    localStorage.setItem("gameState", JSON.stringify(gameState));
 });
 (_c = document.querySelectorAll(".load")) === null || _c === void 0 ? void 0 : _c.forEach(function (element) {
     element.addEventListener("click", function () {
-        var savedGameState = localStorage.getItem('gameState');
+        var savedGameState = localStorage.getItem("gameState");
         if (savedGameState) {
             gameState = JSON.parse(savedGameState);
             ruinsFound = gameState.ruinsFound;
@@ -969,7 +974,7 @@ var gameState;
             UpdateStats();
         }
         else {
-            console.log('No saved game state found.');
+            console.log("No saved game state found.");
         }
     });
 });

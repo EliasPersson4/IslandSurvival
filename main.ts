@@ -24,14 +24,14 @@ const discardElement: HTMLElement = document.querySelector(".discard-menu")!;
 const eatElement: HTMLElement = document.querySelector(".eat-menu")!;
 const drinkElement: HTMLElement = document.querySelector(".drink-menu")!;
 const transHideElement = document.querySelectorAll(".trans-hidden");
-let ruinsFound: boolean = false
+let ruinsFound: boolean = false;
 
 let outdoorsman: boolean = false;
 let gatherer: boolean = false;
 let hunter: boolean = false;
 let explorer: boolean = false;
 
-let volcanoTimer: number = 2
+let volcanoTimer: number = 2;
 
 let repairProgress: number = 0;
 
@@ -40,27 +40,31 @@ const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 let visited: string[] = [];
 
 let currentLocation: string = "beach";
-let gameOver: boolean = false
+let gameOver: boolean = false;
 let inventory: string[] = [];
 
-function GameOver(type:string) {
-  switch(type){
+function GameOver(type: string) {
+  switch (type) {
     case "eruption":
-      dialogElement.innerHTML = "As you were sleeping the volcano erupted, but alas, it is too late for you, you die just seconds after waking up, barely realizing what happened. Game Over"
-      break
+      dialogElement.innerHTML =
+        "As you were sleeping the volcano erupted, but alas, it is too late for you, you die just seconds after waking up, barely realizing what happened. Game Over";
+      break;
     case "health":
-      dialogElement.innerHTML = "Your body cannot take the burden of living anymore the damages you have accumulated are too grave to heal, you collapse on the ground just in time to see the sunset one last time, you die. Game Over"
-      break
+      dialogElement.innerHTML =
+        "Your body cannot take the burden of living anymore the damages you have accumulated are too grave to heal, you collapse on the ground just in time to see the sunset one last time, you die. Game Over";
+      break;
     case "monster":
-      dialogElement.innerHTML = "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over"  
-    break
+      dialogElement.innerHTML =
+        "The beast overpowers you and crushes your spine with its jaw, you die instantly. Game over";
+      break;
     case "escape":
-    dialogElement.innerHTML = "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived"  
-    break
-    }
-    document.querySelectorAll(".button-game-important").forEach(element => {
-      element.setAttribute("disabled", "")
-    });
+      dialogElement.innerHTML =
+        "You repaied the boat and now you're cruising home leaving the island behind you, soon this will all be a bad memory, you have survived";
+      break;
+  }
+  document.querySelectorAll(".button-game-important").forEach((element) => {
+    element.setAttribute("disabled", "");
+  });
 }
 
 async function fadeIn() {
@@ -79,7 +83,7 @@ async function fadeIn() {
   }
 }
 //fadeIn();
-Relocate("beach")
+Relocate("beach");
 async function transition(location: string): Promise<void> {
   for (let i = 0; i < 100; i += 5) {
     await sleep(30);
@@ -110,21 +114,21 @@ function canCraft(recipe: string[]): boolean {
 }
 
 document.querySelectorAll(".perk")!.forEach((element) => {
-  element.addEventListener("click", function() {
+  element.addEventListener("click", function () {
     if (element.innerHTML.trim() == "Outdoorsman") {
-      outdoorsman = true
+      outdoorsman = true;
     }
     if (element.innerHTML.trim() == "Gatherer") {
-      gatherer = true
+      gatherer = true;
     }
     if (element.innerHTML.trim() == "Hunter") {
-      hunter = true
+      hunter = true;
     }
     if (element.innerHTML.trim() == "Explorer") {
-      explorer = true
+      explorer = true;
     }
-    visited = []
-    document.querySelector(".start-menu")!.style.visibility = "hidden"
+    visited = [];
+    document.querySelector(".start-menu")!.style.visibility = "hidden";
     fadeIn();
   });
 });
@@ -158,12 +162,10 @@ async function goToSleep(
   }
   textElement.innerHTML = text;
   if (volcanoTimer != 5) {
-    volcanoTimer += randInt(1,100) > 70 ? 1 : 0
+    volcanoTimer += randInt(1, 100) > 70 ? 1 : 0;
+  } else if (randInt(1, 100) > 70) {
+    GameOver("eruption");
   }
-  else
-    if(randInt(1,100) > 70){
-      GameOver("eruption")
-    }
 
   UpdateStats();
 
@@ -199,18 +201,14 @@ function Relocate(location: string): void {
 
   getText(location.replace(" ", "_"));
   if (visited.length) {
-    if (randInt(1,100) > 70 && explorer) {
-      
-    }
-    else{
+    if (randInt(1, 100) > 70 && explorer) {
+    } else {
       actions -= 1;
     }
     food -= 5;
-    if(food <= 0)
-      food = 0
+    if (food <= 0) food = 0;
     water -= 10;
-    if(water <= 0)
-      water = 0
+    if (water <= 0) water = 0;
   }
   UpdateStats();
 }
@@ -352,14 +350,16 @@ function craftItem(itemName) {
   const recipe = recipes[itemName];
 
   if (canCraft(recipe)) {
-    recipe.forEach((material) => inventory.splice(inventory.indexOf(material), 1));
+    recipe.forEach((material) =>
+      inventory.splice(inventory.indexOf(material), 1)
+    );
 
     getItem(itemName);
 
     document.querySelector(
       ".main-dialoge"
     )!.textContent = `You have crafted a ${itemName}!`;
-    checkForItems()
+    checkForItems();
   } else {
     document.querySelector(
       ".main-dialoge"
@@ -395,7 +395,7 @@ async function getText(location: string): Promise<void> {
     visited.push(location.replace(" ", "_"));
   }
   if (location == "volcano" && visited.includes("volcano")) {
-    id = volcanoTimer
+    id = volcanoTimer;
   }
 
   const entry = data.description.find((item) => item.id === id);
@@ -406,8 +406,8 @@ async function getText(location: string): Promise<void> {
   PopulateDropdown(travelElement, data.connections, "travel-btn");
   document.querySelectorAll(".travel-btn").forEach((element) => {
     element.addEventListener("click", function () {
-      if(!actions){
-        dialogElement.innerHTML = "Not enough actions"
+      if (!actions) {
+        dialogElement.innerHTML = "Not enough actions";
         return;
       }
       transition(element.textContent!.trim());
@@ -434,42 +434,41 @@ async function getText(location: string): Promise<void> {
 }
 
 function checkForItems() {
-    let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
-    let searchText2: string = "campfire";
-    let found2;
+  let bTags: NodeListOf<Element> = document.querySelectorAll(".interact-btn");
+  let searchText2: string = "campfire";
+  let found2;
 
-    bTags.forEach((element2) => {
-      if (element2.textContent == searchText2) {
-        found2 = element2;
-        found2.disabled = !inventory.includes("Campfire");
-      }
-    });
+  bTags.forEach((element2) => {
+    if (element2.textContent == searchText2) {
+      found2 = element2;
+      found2.disabled = !inventory.includes("Campfire");
+    }
+  });
 
-    let aTags: NodeListOf<Element> =
-      document.querySelectorAll(".hunt-gather-btn");
-    let searchText: string = "planks";
-    let found;
+  let aTags: NodeListOf<Element> =
+    document.querySelectorAll(".hunt-gather-btn");
+  let searchText: string = "planks";
+  let found;
 
-    aTags.forEach((element) => {
-      if (element.textContent == searchText) {
-        found = element;
-        found.disabled = !inventory.includes("Stone Axe");
-      }
-    });
-  }
+  aTags.forEach((element) => {
+    if (element.textContent == searchText) {
+      found = element;
+      found.disabled = !inventory.includes("Stone Axe");
+    }
+  });
+}
 
 function updateDialogWithActivity(activityId: string): void {
-  if (!actions){
-    dialogElement.innerHTML = "Not enough actions"
+  if (!actions) {
+    dialogElement.innerHTML = "Not enough actions";
     return;
-  } 
-  if(inventory.length == 7){
-    dialogElement.innerHTML = "No inventory space"
-    return
   }
-  else if (inventory.length >= 5 && activityId == "food") {
-    dialogElement.innerHTML = "No inventory space"
-    return
+  if (inventory.length == 7) {
+    dialogElement.innerHTML = "No inventory space";
+    return;
+  } else if (inventory.length >= 5 && activityId == "food") {
+    dialogElement.innerHTML = "No inventory space";
+    return;
   }
   fetch("./locations.json")
     .then((response) => response.json())
@@ -478,8 +477,8 @@ function updateDialogWithActivity(activityId: string): void {
       const activity = data.activities.find((act) => act.id === activityId);
       let rng: number;
       let returnString: string = "";
-      let hasSpear: number = inventory.includes("Spear") ? 20 : 0
-      let isHunter: number = hunter ? 20 : 0
+      let hasSpear: number = inventory.includes("Spear") ? 20 : 0;
+      let isHunter: number = hunter ? 20 : 0;
       switch (activityId) {
         case "foraging":
           returnString = activity.text;
@@ -521,33 +520,32 @@ function updateDialogWithActivity(activityId: string): void {
           }
 
           break;
-          case "planks":
-            returnString += activity.text.split("|")[0];
-            rng = randInt(1, 100);
-            
-            if (rng > 70 && currentLocation === "forest") {
-              returnString += activity.text.split("|")[1];
-              getItem("Planks");
-            } 
-            else {
-              returnString += activity.text.split("|")[2];
-            }
-            if (currentLocation === "deep_forest") {
-              returnString = activity.text;
-              getItem("Planks");
-            }
+        case "planks":
+          returnString += activity.text.split("|")[0];
+          rng = randInt(1, 100);
+
+          if (rng > 70 && currentLocation === "forest") {
+            returnString += activity.text.split("|")[1];
+            getItem("Planks");
+          } else {
+            returnString += activity.text.split("|")[2];
+          }
+          if (currentLocation === "deep_forest") {
+            returnString = activity.text;
+            getItem("Planks");
+          }
           break;
         case "sticks":
         case "twine":
           let amount: number = randInt(1, 3);
           if (gatherer) {
-            amount + 1
+            amount + 1;
           }
           for (let i = 0; i < amount; i++) {
             getItem(CapitalizeCase(activityId).trim());
           }
           returnString = activity.text.replace("x", amount);
-          returnString += amount > 1 ? "s." : "."
+          returnString += amount > 1 ? "s." : ".";
           break;
         case "food":
           returnString += activity.text.split("|")[0];
@@ -583,16 +581,14 @@ function updateDialogWithActivity(activityId: string): void {
       }
       actions -= 1;
       food -= 10;
-      if(food <= 0)
-        food = 0
+      if (food <= 0) food = 0;
       water -= 5;
-      if(water <= 0)
-        water = 0
+      if (water <= 0) water = 0;
       if (poisoned) {
         health -= 5;
       }
-      while(inventory.length > 7){
-        inventory.splice(-1)
+      while (inventory.length > 7) {
+        inventory.splice(-1);
       }
 
       UpdateStats();
@@ -600,10 +596,10 @@ function updateDialogWithActivity(activityId: string): void {
 }
 
 function updateDialogWithInteract(interactId: string): void {
-  if (!actions && interactId != "sleep"){
-      dialogElement.innerHTML = "Not enough actions"
-      return;
-    } 
+  if (!actions && interactId != "sleep") {
+    dialogElement.innerHTML = "Not enough actions";
+    return;
+  }
   fetch("./locations.json")
     .then((response) => response.json())
     .then(async (json) => {
@@ -614,17 +610,16 @@ function updateDialogWithInteract(interactId: string): void {
         case "sleep":
           goToSleep(interact.text, dialogElement);
           break;
-          case"campfire":
+        case "campfire":
           for (let index = 0; index < inventory.length; index++) {
             const element = inventory[index];
-            element.replace("raw", "cooked")
-            element.replace("dirty", "")
+            element.replace("raw", "cooked");
+            element.replace("dirty", "");
           }
-          ;
         case "investegate":
           returnString = interact.text;
           if (currentLocation === "forest") {
-            actions -= 1
+            actions -= 1;
             let ruins = randInt(0, 1);
             if (ruins) {
               ruinsFound = true;
@@ -662,37 +657,40 @@ function updateDialogWithInteract(interactId: string): void {
             }
           }
           break;
-          case "repair":
-            returnString = interact.text;
-            if (inventory.includes("Planks")) {
-              let index = inventory.indexOf("Planks")
-              inventory.splice(index, 1)
-              repairProgress += 1
-              returnString = `You have repaired a part of the boat, you only need to repair ${10 - repairProgress} parts to have it fully repaired`;
-
-            }
-            if (repairProgress == 10) {
-              returnString = "You have repaired the boat, finely you can go home";
-              const interactIds = data.interact.map((interact) => interact.id);
-  PopulateDropdown(interactElement, interactIds, "interact-btn");
-  document.querySelectorAll(".interact-btn").forEach((element) => {
-    element.addEventListener("click", function () {
-      updateDialogWithInteract(element.textContent!.replace(" ", "_"));
-    });
-  });
-            }
-            break;
-            case "escape":
-              Relocate("victory!")
-              GameOver("escape")
-              break;
-              case "bath":
-                returnString = interact.text
-                if (currentLocation == "hotspring") {
-                  health += 20
-                  poisoned = false
-                }  
-              break
+        case "repair":
+          returnString = interact.text;
+          if (inventory.includes("Planks")) {
+            let index = inventory.indexOf("Planks");
+            inventory.splice(index, 1);
+            repairProgress += 1;
+            returnString = `You have repaired a part of the boat, you only need to repair ${
+              10 - repairProgress
+            } parts to have it fully repaired`;
+          }
+          if (repairProgress == 10) {
+            returnString = "You have repaired the boat, finely you can go home";
+            const interactIds = data.interact.map((interact) => interact.id);
+            PopulateDropdown(interactElement, interactIds, "interact-btn");
+            document.querySelectorAll(".interact-btn").forEach((element) => {
+              element.addEventListener("click", function () {
+                updateDialogWithInteract(
+                  element.textContent!.replace(" ", "_")
+                );
+              });
+            });
+          }
+          break;
+        case "escape":
+          Relocate("victory!");
+          GameOver("escape");
+          break;
+        case "bath":
+          returnString = interact.text;
+          if (currentLocation == "hotspring") {
+            health += 20;
+            poisoned = false;
+          }
+          break;
         default:
           returnString = interact.text;
           actions -= 1;
@@ -707,11 +705,9 @@ function updateDialogWithInteract(interactId: string): void {
       const audio: HTMLAudioElement = new Audio(`mp3/sfx/${interactId}.mp3`);
       audio.play();
       food -= 10;
-      if(food <= 0)
-        food = 0
+      if (food <= 0) food = 0;
       water -= 5;
-      if(water <= 0)
-        water = 0
+      if (water <= 0) water = 0;
       UpdateStats();
     });
 }
@@ -724,10 +720,9 @@ function getItem(string: string): void {
 }
 
 function UpdateStats(): void {
-  health -= (food == 0) ? 5 : 0
-  health -= (water == 0) ? 10 : 0
-  if(health <= 0)
-    health = 0
+  health -= food == 0 ? 5 : 0;
+  health -= water == 0 ? 10 : 0;
+  if (health <= 0) health = 0;
 
   if (healthElement) {
     healthElement.style.width = `${health}%`;
@@ -766,7 +761,7 @@ function UpdateStats(): void {
     setupEatButtons();
     setupDrinkButtons();
     if (health <= 0) {
-      GameOver("health")
+      GameOver("health");
     }
   }
 }
@@ -788,7 +783,7 @@ function PopulateDropdown(
       if (buttonElement.textContent == "ruins" && !ruinsFound) {
         buttonElement.hidden = true;
       }
-      if (buttonElement.textContent == "escape" && repairProgress!==10) {
+      if (buttonElement.textContent == "escape" && repairProgress !== 10) {
         buttonElement.hidden = true;
       }
       buttonElement.addEventListener("click", function () {
@@ -796,7 +791,7 @@ function PopulateDropdown(
           `mp3/sfx/button${1 + Math.floor(Math.random() * 3)}.mp3`
         );
         audio.play();
-      })
+      });
       listElement.appendChild(buttonElement);
       parent.appendChild(listElement);
     });
@@ -836,9 +831,9 @@ interface GameState {
   water: number;
   poisoned: boolean;
 }
-let gameState: GameState
-document.querySelector(".save")?.addEventListener("click", function(){
-   gameState = {
+let gameState: GameState;
+document.querySelector(".save")?.addEventListener("click", function () {
+  gameState = {
     ruinsFound: ruinsFound,
     outdoorsman: outdoorsman,
     gatherer: gatherer,
@@ -853,42 +848,40 @@ document.querySelector(".save")?.addEventListener("click", function(){
     health: health,
     food: food,
     water: water,
-    poisoned: poisoned
+    poisoned: poisoned,
   };
-  localStorage.setItem('gameState', JSON.stringify(gameState));
+  localStorage.setItem("gameState", JSON.stringify(gameState));
 });
 
 document.querySelectorAll(".load")?.forEach((element) => {
-  element.addEventListener("click", function(){
-    const savedGameState = localStorage.getItem('gameState');
-      if (savedGameState) {
-         gameState = JSON.parse(savedGameState) as GameState;
-  
-         ruinsFound = gameState.ruinsFound;
-         outdoorsman = gameState.outdoorsman;
-         gatherer = gameState.gatherer;
-         hunter = gameState.hunter;
-         explorer = gameState.explorer;
-         volcanoTimer = gameState.volcanoTimer;
-         repairProgress = gameState.repairProgress;
-         currentLocation = gameState.currentLocation;
-         inventory = gameState.inventory;
-         visited = gameState.visited;
-         actions = gameState.actions+1;
-         health = gameState.health;
-         food = gameState.food;
-         water = gameState.water;
-         poisoned = gameState.poisoned;
-         document.querySelectorAll(".button-game-important").forEach(element => {
-          element.removeAttribute("disabled")
-        });
-         document.querySelector(".start-menu")!.style.visibility = "hidden"
-         fadeIn();
-         UpdateStats();
-  
-        } else {
-          console.log('No saved game state found.');
-      }
-  });
-})
+  element.addEventListener("click", function () {
+    const savedGameState = localStorage.getItem("gameState");
+    if (savedGameState) {
+      gameState = JSON.parse(savedGameState) as GameState;
 
+      ruinsFound = gameState.ruinsFound;
+      outdoorsman = gameState.outdoorsman;
+      gatherer = gameState.gatherer;
+      hunter = gameState.hunter;
+      explorer = gameState.explorer;
+      volcanoTimer = gameState.volcanoTimer;
+      repairProgress = gameState.repairProgress;
+      currentLocation = gameState.currentLocation;
+      inventory = gameState.inventory;
+      visited = gameState.visited;
+      actions = gameState.actions + 1;
+      health = gameState.health;
+      food = gameState.food;
+      water = gameState.water;
+      poisoned = gameState.poisoned;
+      document.querySelectorAll(".button-game-important").forEach((element) => {
+        element.removeAttribute("disabled");
+      });
+      document.querySelector(".start-menu")!.style.visibility = "hidden";
+      fadeIn();
+      UpdateStats();
+    } else {
+      console.log("No saved game state found.");
+    }
+  });
+});
