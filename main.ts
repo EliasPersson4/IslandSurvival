@@ -604,12 +604,25 @@ function updateDialogWithInteract(interactId: string): void {
         case "sleep":
           goToSleep(interact.text, dialogElement);
           break;
-        case "campfire":
-          for (let index = 0; index < inventory.length; index++) {
-            const element = inventory[index];
-            element.replace("raw", "cooked");
-            element.replace("dirty", "");
-          }
+          case "campfire":
+            for (let index = 0; index < inventory.length; index++) {
+              let element = inventory[index];
+          
+              // Replace "Raw Meat" with "Cooked Meat"
+              if (element === "Raw Meat") {
+                inventory[index] = "Cooked Meat";
+              }
+          
+              // Replace "Raw Fish" with "Cooked Fish"
+              if (element === "Raw Fish") {
+                inventory[index] = "Cooked Fish";
+              }
+          
+              // Replace "Dirty Water" with "Water"
+              if (element === "Dirty Water") {
+                inventory[index] = "Water";
+              }
+            }
         case "investegate":
           returnString = interact.text;
           if (currentLocation === "forest") {

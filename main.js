@@ -728,8 +728,18 @@ function updateDialogWithInteract(interactId) {
                 case "campfire":
                     for (index = 0; index < inventory.length; index++) {
                         element = inventory[index];
-                        element.replace("raw", "cooked");
-                        element.replace("dirty", "");
+                        // Replace "Raw Meat" with "Cooked Meat"
+                        if (element === "Raw Meat") {
+                            inventory[index] = "Cooked Meat";
+                        }
+                        // Replace "Raw Fish" with "Cooked Fish"
+                        if (element === "Raw Fish") {
+                            inventory[index] = "Cooked Fish";
+                        }
+                        // Replace "Dirty Water" with "Water"
+                        if (element === "Dirty Water") {
+                            inventory[index] = "Water";
+                        }
                     }
                 case "investegate":
                     returnString = interact.text;
