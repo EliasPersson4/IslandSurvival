@@ -105,12 +105,7 @@ async function transition(location: string): Promise<void> {
 }
 
 function canCraft(recipe: string[]): boolean {
-  recipe.forEach((element) => {
-    if (!inventory.includes(element)) {
-      return false;
-    }
-  });
-  return true;
+  return recipe.every((element) => inventory.includes(element));
 }
 
 document.querySelectorAll(".perk")!.forEach((element) => {
@@ -334,9 +329,9 @@ function getDrinkItems(inventory) {
 }
 
 const recipes = {
-  Spear: ["Sticks", "Stone", "Twine"],
+  "Spear": ["Sticks", "Stone", "Twine"],
   "Stone Axe": ["Sticks", "Twine", "Stone"],
-  Campfire: ["Sticks", "Stone"],
+  "Campfire": ["Sticks", "Stone"],
   "Sleeping Bag": ["Twine", "Hide"],
 };
 
@@ -345,7 +340,6 @@ document.querySelectorAll(".crafting")!.forEach((element) => {
     craftItem(element.innerHTML);
   });
 });
-
 function craftItem(itemName) {
   const recipe = recipes[itemName];
 
@@ -353,7 +347,7 @@ function craftItem(itemName) {
     recipe.forEach((material) =>
       inventory.splice(inventory.indexOf(material), 1)
     );
-
+    console.log(recipe);
     getItem(itemName);
 
     document.querySelector(
