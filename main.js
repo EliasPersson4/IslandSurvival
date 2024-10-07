@@ -206,12 +206,7 @@ function transition(location) {
     });
 }
 function canCraft(recipe) {
-    recipe.forEach(function (element) {
-        if (!inventory.includes(element)) {
-            return false;
-        }
-    });
-    return true;
+    return recipe.every(function (element) { return inventory.includes(element); });
 }
 document.querySelectorAll(".perk").forEach(function (element) {
     element.addEventListener("click", function () {
@@ -457,9 +452,9 @@ function getDrinkItems(inventory) {
     return inventory.filter(isDrink);
 }
 var recipes = {
-    Spear: ["Sticks", "Stone", "Twine"],
+    "Spear": ["Sticks", "Stone", "Twine"],
     "Stone Axe": ["Sticks", "Twine", "Stone"],
-    Campfire: ["Sticks", "Stone"],
+    "Campfire": ["Sticks", "Stone"],
     "Sleeping Bag": ["Twine", "Hide"],
 };
 document.querySelectorAll(".crafting").forEach(function (element) {
@@ -473,6 +468,7 @@ function craftItem(itemName) {
         recipe.forEach(function (material) {
             return inventory.splice(inventory.indexOf(material), 1);
         });
+        console.log(recipe);
         getItem(itemName);
         document.querySelector(".main-dialoge").textContent = "You have crafted a ".concat(itemName, "!");
         checkForItems();
@@ -732,8 +728,18 @@ function updateDialogWithInteract(interactId) {
                 case "campfire":
                     for (index = 0; index < inventory.length; index++) {
                         element = inventory[index];
-                        element.replace("raw", "cooked");
-                        element.replace("dirty", "");
+                        // Replace "Raw Meat" with "Cooked Meat"
+                        if (element === "Raw Meat") {
+                            inventory[index] = "Cooked Meat";
+                        }
+                        // Replace "Raw Fish" with "Cooked Fish"
+                        if (element === "Raw Fish") {
+                            inventory[index] = "Cooked Fish";
+                        }
+                        // Replace "Dirty Water" with "Water"
+                        if (element === "Dirty Water") {
+                            inventory[index] = "Water";
+                        }
                     }
                 case "investegate":
                     returnString = interact.text;

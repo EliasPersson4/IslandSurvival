@@ -105,12 +105,7 @@ async function transition(location: string): Promise<void> {
 }
 
 function canCraft(recipe: string[]): boolean {
-  recipe.forEach((element) => {
-    if (!inventory.includes(element)) {
-      return false;
-    }
-  });
-  return true;
+  return recipe.every((element) => inventory.includes(element));
 }
 
 document.querySelectorAll(".perk")!.forEach((element) => {
@@ -334,9 +329,9 @@ function getDrinkItems(inventory) {
 }
 
 const recipes = {
-  Spear: ["Sticks", "Stone", "Twine"],
+  "Spear": ["Sticks", "Stone", "Twine"],
   "Stone Axe": ["Sticks", "Twine", "Stone"],
-  Campfire: ["Sticks", "Stone"],
+  "Campfire": ["Sticks", "Stone"],
   "Sleeping Bag": ["Twine", "Hide"],
 };
 
@@ -345,7 +340,6 @@ document.querySelectorAll(".crafting")!.forEach((element) => {
     craftItem(element.innerHTML);
   });
 });
-
 function craftItem(itemName) {
   const recipe = recipes[itemName];
 
@@ -353,7 +347,7 @@ function craftItem(itemName) {
     recipe.forEach((material) =>
       inventory.splice(inventory.indexOf(material), 1)
     );
-
+    console.log(recipe);
     getItem(itemName);
 
     document.querySelector(
@@ -610,12 +604,25 @@ function updateDialogWithInteract(interactId: string): void {
         case "sleep":
           goToSleep(interact.text, dialogElement);
           break;
-        case "campfire":
-          for (let index = 0; index < inventory.length; index++) {
-            const element = inventory[index];
-            element.replace("raw", "cooked");
-            element.replace("dirty", "");
-          }
+          case "campfire":
+            for (let index = 0; index < inventory.length; index++) {
+              let element = inventory[index];
+          
+              // Replace "Raw Meat" with "Cooked Meat"
+              if (element === "Raw Meat") {
+                inventory[index] = "Cooked Meat";
+              }
+          
+              // Replace "Raw Fish" with "Cooked Fish"
+              if (element === "Raw Fish") {
+                inventory[index] = "Cooked Fish";
+              }
+          
+              // Replace "Dirty Water" with "Water"
+              if (element === "Dirty Water") {
+                inventory[index] = "Water";
+              }
+            }
         case "investegate":
           returnString = interact.text;
           if (currentLocation === "forest") {
