@@ -257,7 +257,7 @@ function setupEatButtons() {
           break;
         case "Mushroom":
           food += 35;
-        case "Berry":
+        case "Berries":
           food += 25;
           if (!outdoorsman) {
             poisoned = randInt(1, 100) > 70;
