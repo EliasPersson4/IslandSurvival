@@ -381,7 +381,7 @@ function setupEatButtons() {
                     break;
                 case "Mushroom":
                     food += 35;
-                case "Berry":
+                case "Berries":
                     food += 25;
                     if (!outdoorsman) {
                         poisoned = randInt(1, 100) > 70;
@@ -662,10 +662,6 @@ function updateDialogWithActivity(activityId) {
                 break;
             case "food":
                 returnString += activity.text.split("|")[0];
-                if (randInt(1, 100) > 70) {
-                    returnString += activity.text.split("|")[1];
-                    getItem("flare");
-                }
                 getItem("Cooked_Meat".replace("_", " "));
                 getItem("Water");
                 break;
@@ -743,8 +739,8 @@ function updateDialogWithInteract(interactId) {
                     }
                 case "investegate":
                     returnString = interact.text;
+                    actions -= 1;
                     if (currentLocation === "forest") {
-                        actions -= 1;
                         ruins = randInt(0, 1);
                         if (ruins) {
                             ruinsFound = true;
